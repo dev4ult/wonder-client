@@ -9,14 +9,16 @@ import NotFound404 from './pages/NotFound404';
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/article_list" element={<ArticleList />} />
-        <Route path="/article" element={<Article />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="*" element={<NotFound404 />} />
-      </Routes>
+      <div className="container mx-auto font-poppins">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/article_list" element={<ArticleList />} />
+          <Route path="/article" element={<Article />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="*" element={<NotFound404 />} />
+        </Routes>
+      </div>
     </Router>
   );
 }
