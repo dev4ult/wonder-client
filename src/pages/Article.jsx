@@ -1,7 +1,12 @@
-import React from 'react';
+import Navbar from '../components/Navbar';
 
 function Article() {
-  return <div>Article</div>;
+  return (
+    <div>
+      <Navbar />
+      Article
+    </div>
+  );
 }
 
 export default Article;

@@ -5,8 +5,10 @@ export default {
     extend: {
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],
+        spacemono: ['Space Mono', 'sans-serif'],
+        archivo: ['Archivo', 'sans-serif'],
       },
     },
   },
-  plugins: [],
+  plugins: [require('daisyui')],
 };

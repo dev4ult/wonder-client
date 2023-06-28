@@ -1,12 +1,12 @@
 import Navbar from '../components/Navbar';
 
-function Profile() {
+function ArticleDetail() {
   return (
     <div>
       <Navbar />
-      Profile
+      ArticleDetail
     </div>
   );
 }
 
-export default Profile;
+export default ArticleDetail;
