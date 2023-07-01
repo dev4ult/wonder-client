@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom';
 
+import DefaultProfileImg from '../icons/person.svg';
+
 function Navbar() {
   return (
     <div className="flex justify-between my-7 gap-7 items-center ">
       <Link to={'/'} className="text-lg font-bold uppercase relative font-spacemono">
         Discover
-        <div className="w-3 h-3 rounded-full absolute top-0 -right-4 bg-black"></div>
+        <div className="w-3 h-3 rounded-full absolute top-0 -right-4 bg-accent"></div>
       </Link>
       <div className="flex gap-7 items-center text-lg font-medium">
         <Link to={'/discover'} className="hover:underline">
@@ -27,7 +29,12 @@ function Navbar() {
           </div>
         </div>
         <div className="dropdown dropdown-end">
-          <div tabIndex={0} className="w-10 h-10 bg-black rounded-full cursor-pointer"></div>
+          <div tabIndex={0} className="p-2 px-4 bg-slate-100 flex items-center gap-3 cursor-pointer shadow-sm rounded-full">
+            <span className="text-sm font-medium">Guest</span>
+            <div className="w-7 h-7 flex items-center justify-center bg-white rounded-full overflow-hidden">
+              <img src={DefaultProfileImg} alt="profile" className="w-8 h-8" />
+            </div>
+          </div>
           <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-44">
             <li className="">
               <Link to={'/profile'}>Profile</Link>
