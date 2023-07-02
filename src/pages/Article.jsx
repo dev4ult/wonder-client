@@ -24,7 +24,7 @@ function Article() {
         <h1 className="text-2xl font-semibold">Artikel</h1>
         <p className="">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nobis assumenda porro dolores dolor modi esse</p>
       </div>
-      <div className="flex flex-wrap gap-10">{cards()}</div>
+      <div className="flex flex-wrap gap-5">{cards()}</div>
     </div>
   );
 }

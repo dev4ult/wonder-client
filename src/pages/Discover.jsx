@@ -20,7 +20,7 @@ function Discover() {
         <h1 className="text-2xl font-semibold">Objek Wisata</h1>
         <p className="">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nobis assumenda porro dolores dolor modi esse</p>
       </div>
-      <div className="flex gap-5 flex-wrap">{cards()}</div>
+      <div className="grid grid-flow-row grid-cols-3 gap-5 flex-wrap">{cards()}</div>
     </div>
   );
 }

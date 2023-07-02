@@ -5,7 +5,7 @@ import { BsPersonCircle } from 'react-icons/bs';
 
 function NavbarStick() {
   return (
-    <div className="border-y-2 sticky flex gap-8 justify-between w-full py-3">
+    <div className="border-y-2 sticky top-0 bg-white flex gap-8 justify-between w-full py-4">
       <div className="flex gap-8 items-center">
         <Link to={'/'} className="text-lg font-bold uppercase relative font-spacemono">
           Discover

@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import { BsPersonCircle } from 'react-icons/bs';
+import { BsFillPersonFill } from 'react-icons/bs';
 import { CiSearch } from 'react-icons/ci';
 
 function Navbar() {
@@ -22,20 +22,20 @@ function Navbar() {
           <CiSearch className="absolute right-5 top-1/2 -translate-y-1/2 text-black/30 peer-focus:text-black" size="1.8rem" />
         </div>
         <div className="dropdown dropdown-end">
-          <div tabIndex={0} className="p-2 px-4 bg-slate-100 flex items-center gap-3 cursor-pointer shadow-sm rounded-full">
-            <span className="text-sm font-medium">Guest</span>
-            <div className="w-7 h-7 flex items-center justify-center bg-white rounded-full overflow-hidden">
-              <BsPersonCircle size="1.7rem" />
+          <div tabIndex={0} className="p-2 px-4 bg-primary bg-black/10 hover:bg-black/20 flex items-center gap-3 cursor-pointer rounded-full">
+            <span className="text-sm font-medium ">Guest</span>
+            <div className="rounded-full p-1 bg-black/30">
+              <BsFillPersonFill size="1.3rem" />
             </div>
           </div>
-          <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-44">
+          <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-44 mt-2">
             <li className="">
               <Link to={'/profile'}>Profile</Link>
             </li>
             <li className="bg-red-500 rounded-lg">
               <a className="font-semibold text-white hover:text-white">Logout</a>
             </li>
-            <li className="bg-green-500 rounded-lg">
+            <li className="bg-accent rounded-lg">
               <Link className="font-semibold text-white hover:text-white" to="/auth">
                 Login
               </Link>
