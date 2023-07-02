@@ -20,7 +20,7 @@ function NavbarStick() {
         <Link to="/discover" className="font-medium text-black/30 hover:text-black">
           Wisata
         </Link>
-        <Link to="/discover" className="font-medium text-black/30 hover:text-black">
+        <Link to="/article" className="font-medium text-black/30 hover:text-black">
           Artikel
         </Link>
         <Link to="/auth" className="btn btn-sm btn-accent rounded-full capitalize">

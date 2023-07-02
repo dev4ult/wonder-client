@@ -4,8 +4,7 @@ import NavbarStick from '../components/NavbarStick';
 import Comment from '../components/Comment';
 import NoImage from '../images/no-image.jpg';
 
-import { AiOutlineHeart } from 'react-icons/ai';
-import { FaRegComment } from 'react-icons/fa';
+import { AiOutlineHeart, AiOutlineComment } from 'react-icons/ai';
 import { BsPersonCircle, BsSendFill } from 'react-icons/bs';
 
 function ArticleDetail() {
@@ -26,7 +25,7 @@ function ArticleDetail() {
               <span className="text-lg">0</span>
             </div>
             <a href="#comment-section" className="flex items-center gap-2 hover:text-black cursor-pointer">
-              <FaRegComment title="Comment" size="1.7rem" />
+              <AiOutlineComment title="Comment" size="1.7rem" />
               <span className="text-lg">3</span>
             </a>
           </div>
