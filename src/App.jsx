@@ -13,7 +13,7 @@ import NotFound404 from './pages/NotFound404';
 function App() {
   return (
     <Router>
-      <div className="container mx-auto font-poppins max-w-6xl">
+      <div className="container mx-auto font-poppins max-w-5xl">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/auth" element={<Login />} />

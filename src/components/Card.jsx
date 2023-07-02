@@ -1,22 +1,22 @@
 import { Link } from 'react-router-dom';
-
-import LikeIcon from '../icons/like.svg';
-import CommentIcon from '../icons/comment.svg';
+import { AiOutlineHeart, AiOutlineComment } from 'react-icons/ai';
 import NoImage from '../images/no-image.jpg';
 
-function Card({ src = NoImage, name, description }) {
+function Card({ src = NoImage, name, description, linkTo = '/' }) {
   return (
-    <Link className="border-2 flex-1 min-w-[15rem] hover:shadow-md" to={'/discover_detail'}>
+    <div className="border-2 flex-1 min-w-[15rem] hover:shadow">
       <img src={src} alt="Objek Wisata" className="h-44 w-full object-cover" />
       <div className="p-4">
         <div className="flex justify-end items-center gap-1 ">
-          <img src={LikeIcon} className="w-6" alt="like" />
-          <img src={CommentIcon} className="w-7" alt="comment" />
+          <AiOutlineHeart title="Like" className="text-black/50 cursor-pointer hover:text-black" size="1.7rem" />
+          <AiOutlineComment title="Comment" className="text-black/50 cursor-pointer hover:text-black" size="1.7rem" />
         </div>
-        <h2 className="text-lg font-medium">{name}</h2>
-        <h3 className="text-sm">{description}</h3>
+        <Link to={linkTo} className="group">
+          <h2 className="text-lg font-medium group-hover:text-blue-700">{name}</h2>
+          <h3 className="text-sm group-hover:text-blue-700">{description}</h3>
+        </Link>
       </div>
-    </Link>
+    </div>
   );
 }
 
