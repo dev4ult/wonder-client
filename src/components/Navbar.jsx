@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-
-import { BsFillPersonFill } from 'react-icons/bs';
 import { CiSearch } from 'react-icons/ci';
+
+import DefaultUserPhoto from './DefaultUserPhoto';
 
 function Navbar() {
   return (
@@ -24,9 +24,7 @@ function Navbar() {
         <div className="dropdown dropdown-end">
           <div tabIndex={0} className="p-2 px-4 bg-black/10 hover:bg-black/20 flex items-center gap-3 cursor-pointer rounded-full">
             <span className="text-sm font-medium ">Guest</span>
-            <div className="rounded-full p-1 bg-black/30">
-              <BsFillPersonFill size="1.3rem" />
-            </div>
+            <DefaultUserPhoto />
           </div>
           <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-44 mt-2">
             <li className="">

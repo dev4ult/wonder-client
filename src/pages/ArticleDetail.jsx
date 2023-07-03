@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 import NavbarStick from '../components/NavbarStick';
 import Comment from '../components/Comment';
-import NoImage from '../images/no-image.jpg';
+import NoImage from '../images/no-image.webp';
 
 import { AiOutlineHeart, AiOutlineComment } from 'react-icons/ai';
 import { BsPersonCircle, BsSendFill } from 'react-icons/bs';

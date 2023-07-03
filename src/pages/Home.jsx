@@ -1,7 +1,12 @@
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 
-import NoImage from '../images/no-image.jpg';
+import NoImage from '../images/no-image.webp';
+
+import BeachImage from '../images/beach.webp';
+import CampImage from '../images/camp.webp';
+import MountainImage from '../images/mountain.webp';
+import WaveImage from '../images/wave.webp';
 
 function Home() {
   return (
@@ -20,9 +25,20 @@ function Home() {
             </Link>
           </div>
         </div>
-        <div>
-          <img src={NoImage} alt="no" className="w-96" />
+        <div className="grid w-[30rem] grid-flow-row grid-cols-2">
+          <img src={CampImage} alt="camp" className="border-2  row-span-2" />
+          <img src={BeachImage} alt="beach" className="border-2 h-full" />
+          <img src={MountainImage} alt="mountain" className="border-2 h-full" />
         </div>
+      </div>
+      <div className="py-14">
+        <h2 className="font-semibold text-xl">Rekomendasi</h2>
+        <div className="grid grid-flow-row grid-cols-3 gap-5">
+          <div></div>
+        </div>
+      </div>
+      <div className="py-14">
+        <h2 className="font-semibold text-xl">Artikel paling banyak disukai</h2>
       </div>
     </div>
   );

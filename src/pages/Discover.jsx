@@ -1,7 +1,6 @@
 import Navbar from '../components/Navbar';
 import Card from '../components/Card';
-
-import BeachImg from '../images/beach.jpg';
+import CategoryButton from '../components/CategoryButton';
 
 function cards() {
   let cards = [];
@@ -16,12 +15,23 @@ function Discover() {
   return (
     <>
       <Navbar />
-      <div className="mt-7">
-        <div className="mb-7">
-          <h1 className="text-2xl font-semibold">Objek Wisata</h1>
-          <p className="">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nobis assumenda porro dolores dolor modi esse</p>
-        </div>
-        <div className="grid grid-flow-row grid-cols-3 gap-5 flex-wrap">{cards()}</div>
+      <div className="mt-7 flex items-start gap-10 justify-between">
+        <div className="grid grid-flow-row grid-cols-2 gap-5 max-w-xl">{cards()}</div>
+        <aside className="sticky top-7">
+          <input type="text" placeholder="Cari Wisata..." className="input input-sm border-gray-300 rounded-full" />
+          <div className="py-7 border-b-2 ">
+            <h3 className="text-black/30 font-medium mb-2 text-sm">Filter</h3>
+            <div className="flex flex-wrap gap-2">
+              <CategoryButton>Indonesia</CategoryButton>
+              <CategoryButton>Internasional</CategoryButton>
+              <CategoryButton>Jalan jalan</CategoryButton>
+              <CategoryButton>Solo Travel</CategoryButton>
+            </div>
+          </div>
+          <div className="py-7">
+            <h3 className="text-black/30 font-medium mb-2 text-sm">Rekomendasi</h3>
+          </div>
+        </aside>
       </div>
     </>
   );

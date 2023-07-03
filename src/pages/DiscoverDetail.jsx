@@ -5,7 +5,7 @@ import NavbarStick from '../components/NavbarStick';
 
 import { AiOutlineHeart, AiOutlineComment } from 'react-icons/ai';
 import { BsFillPersonFill, BsSendFill } from 'react-icons/bs';
-import NoImage from '../images/no-image.jpg';
+import NoImage from '../images/no-image.webp';
 
 function DiscoverDetail() {
   return (
