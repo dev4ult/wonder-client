@@ -14,14 +14,16 @@ function cards() {
 
 function Discover() {
   return (
-    <div>
+    <>
       <Navbar />
-      <div className="mb-5">
-        <h1 className="text-2xl font-semibold">Objek Wisata</h1>
-        <p className="">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nobis assumenda porro dolores dolor modi esse</p>
+      <div className="mt-7">
+        <div className="mb-7">
+          <h1 className="text-2xl font-semibold">Objek Wisata</h1>
+          <p className="">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nobis assumenda porro dolores dolor modi esse</p>
+        </div>
+        <div className="grid grid-flow-row grid-cols-3 gap-5 flex-wrap">{cards()}</div>
       </div>
-      <div className="grid grid-flow-row grid-cols-3 gap-5 flex-wrap">{cards()}</div>
-    </div>
+    </>
   );
 }
 

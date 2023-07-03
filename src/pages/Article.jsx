@@ -18,14 +18,16 @@ function cards() {
 
 function Article() {
   return (
-    <div>
+    <>
       <Navbar />
-      <div className="mb-5">
-        <h1 className="text-2xl font-semibold">Artikel</h1>
-        <p className="">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nobis assumenda porro dolores dolor modi esse</p>
+      <div className="mt-7">
+        <div className="mb-7">
+          <h1 className="text-2xl font-semibold">Artikel</h1>
+          <p className="">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nobis assumenda porro dolores dolor modi esse</p>
+        </div>
+        <div className="flex flex-wrap gap-5">{cards()}</div>
       </div>
-      <div className="flex flex-wrap gap-5">{cards()}</div>
-    </div>
+    </>
   );
 }
 

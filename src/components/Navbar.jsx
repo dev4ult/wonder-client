@@ -5,7 +5,7 @@ import { CiSearch } from 'react-icons/ci';
 
 function Navbar() {
   return (
-    <div className="flex justify-between my-7 gap-7 items-center ">
+    <div className="flex justify-between py-7 border-y-2 gap-7 items-center ">
       <Link to={'/'} className="text-lg font-bold uppercase relative font-spacemono">
         Discover
         <div className="w-3 h-3 rounded-full absolute top-0 -right-4 bg-accent"></div>
@@ -22,7 +22,7 @@ function Navbar() {
           <CiSearch className="absolute right-5 top-1/2 -translate-y-1/2 text-black/30 peer-focus:text-black" size="1.8rem" />
         </div>
         <div className="dropdown dropdown-end">
-          <div tabIndex={0} className="p-2 px-4 bg-primary bg-black/10 hover:bg-black/20 flex items-center gap-3 cursor-pointer rounded-full">
+          <div tabIndex={0} className="p-2 px-4 bg-black/10 hover:bg-black/20 flex items-center gap-3 cursor-pointer rounded-full">
             <span className="text-sm font-medium ">Guest</span>
             <div className="rounded-full p-1 bg-black/30">
               <BsFillPersonFill size="1.3rem" />
