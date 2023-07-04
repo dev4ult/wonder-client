@@ -6,15 +6,15 @@ import DefaultUserPhoto from './DefaultUserPhoto';
 function Navbar() {
   return (
     <div className="flex justify-between py-7 border-y-2 gap-7 items-center ">
-      <Link to={'/'} className="text-lg font-bold uppercase relative font-spacemono">
+      <Link to="/" className="text-lg font-bold uppercase relative font-spacemono">
         Discover
         <div className="w-3 h-3 rounded-full absolute top-0 -right-4 bg-accent"></div>
       </Link>
       <div className="flex gap-7 items-center text-lg font-medium">
-        <Link to={'/discover'} className="text-black/30 hover:text-black">
+        <Link to="/places" className="text-black/30 hover:text-black">
           Wisata
         </Link>
-        <Link to={'/article'} className="text-black/30 hover:text-black">
+        <Link to="/articles" className="text-black/30 hover:text-black">
           Artikel
         </Link>
         <div className="relative">

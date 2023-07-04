@@ -11,7 +11,7 @@ function cards() {
   return <>{cards}</>;
 }
 
-function Article() {
+function Articles() {
   return (
     <>
       <Navbar />
@@ -37,4 +37,4 @@ function Article() {
   );
 }
 
-export default Article;
+export default Articles;
