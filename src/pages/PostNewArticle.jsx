@@ -1,5 +1,3 @@
-import React from 'react';
-
 function PostNewArticle() {
   return <div>PostNewArticle</div>;
 }

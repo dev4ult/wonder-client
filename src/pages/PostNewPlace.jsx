@@ -1,7 +1,12 @@
-import React from 'react';
+import NavbarStick from '../components/NavbarStick';
 
 function PostNewPlace() {
-  return <div>PostNewPlace</div>;
+  return (
+    <>
+      <NavbarStick />
+      <div className="mt-7"></div>
+    </>
+  );
 }
 
 export default PostNewPlace;
