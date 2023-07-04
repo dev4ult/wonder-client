@@ -1,6 +1,6 @@
 import React from 'react';
 
-function InputUserProfile({ label, name, value, isTextArea = false }) {
+function InputGroup({ label, name, value, isTextArea = false }) {
   return (
     <div className="form-control">
       <label className="label-text text-black/30" htmlFor={name}>
@@ -17,4 +17,4 @@ function InputUserProfile({ label, name, value, isTextArea = false }) {
   );
 }
 
-export default InputUserProfile;
+export default InputGroup;

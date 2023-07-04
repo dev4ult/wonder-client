@@ -15,10 +15,13 @@ import PostNewPlace from './pages/PostNewPlace';
 import Profile from './pages/Profile';
 import NotFound404 from './pages/NotFound404';
 
+import AsideNavbar from './components/AsideNavbar';
+
 function App() {
   return (
     <Router>
       <div className="container mx-auto font-poppins max-w-5xl px-4">
+        <AsideNavbar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/auth" element={<Login />} />

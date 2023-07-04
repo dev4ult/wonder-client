@@ -3,7 +3,16 @@ import { CiSearch } from 'react-icons/ci';
 
 import DefaultUserPhoto from './DefaultUserPhoto';
 
-function Navbar() {
+function Navbar({ displaySearch = true }) {
+  const SearchInput = () => {
+    return (
+      <div className="relative">
+        <input type="text" placeholder="Cari Wisata..." className="input border-gray-300 rounded-full peer" />
+        <CiSearch className="absolute right-5 top-1/2 -translate-y-1/2 text-black/30 peer-focus:text-black" size="1.8rem" />
+      </div>
+    );
+  };
+
   return (
     <div className="flex justify-between py-7 border-y-2 gap-7 items-center ">
       <Link to="/" className="text-lg font-bold uppercase relative font-spacemono">
@@ -17,10 +26,7 @@ function Navbar() {
         <Link to="/articles" className="text-black/30 hover:text-black">
           Artikel
         </Link>
-        <div className="relative">
-          <input type="text" placeholder="Cari Wisata..." className="input border-gray-300 rounded-full peer" />
-          <CiSearch className="absolute right-5 top-1/2 -translate-y-1/2 text-black/30 peer-focus:text-black" size="1.8rem" />
-        </div>
+        {displaySearch ? SearchInput() : ''}
         <div className="dropdown dropdown-end">
           <div tabIndex={0} className="p-2 px-4 bg-black/10 hover:bg-black/20 flex items-center gap-3 cursor-pointer rounded-full">
             <span className="text-sm font-medium ">Guest</span>

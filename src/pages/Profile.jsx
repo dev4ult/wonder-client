@@ -1,5 +1,5 @@
 import Navbar from '../components/Navbar';
-import InputUserProfile from '../components/InputUserProfile';
+import InputGroup from '../components/InputGroup';
 import HistoryBox from '../components/HistoryBox';
 import DefaultUserPhoto from '../components/DefaultUserPhoto';
 
@@ -31,9 +31,9 @@ function Profile() {
               <input type="file" name="profile-photo" id="profile-photo" className="hidden" />
             </div>
           </div>
-          <InputUserProfile label="Username" name="username" value="NibrasAlyassar" />
-          <InputUserProfile label="Email" name="email" value="nibras@example.com" />
-          <InputUserProfile label="Bio" name="bio" value="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vitae, iste!" isTextArea={true} />
+          <InputGroup label="Username" name="username" value="NibrasAlyassar" />
+          <InputGroup label="Email" name="email" value="nibras@example.com" />
+          <InputGroup label="Bio" name="bio" value="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vitae, iste!" isTextArea={true} />
           <button className="btn btn-primary btn-outline px-5 btn-sm capitalize rounded-full w-fit">simpan</button>
         </div>
         <div className="flex flex-col gap-3 pr-8">
