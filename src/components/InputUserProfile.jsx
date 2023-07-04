@@ -7,7 +7,7 @@ function InputUserProfile({ label, name, value, isTextArea = false }) {
         {label}
       </label>
       {isTextArea ? (
-        <textarea name={name} id={name} className="textarea border-gray-300 text-base resize-none h-36">
+        <textarea name={name} id={name} className="textarea border-gray-300 text-base resize-none h-32">
           {value}
         </textarea>
       ) : (

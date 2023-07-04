@@ -1,6 +1,6 @@
 import Navbar from '../components/Navbar';
 import Card from '../components/Card';
-import RecomendedPlace from '../components/RecomendedPlace';
+import SmallCard from '../components/SmallCard';
 import CategoryButton from '../components/CategoryButton';
 
 function cards() {
@@ -32,9 +32,9 @@ function Discover() {
           <div className="py-7">
             <h3 className="text-black/30 font-medium mb-2 text-sm">Rekomendasi</h3>
             <div className="grid grid-flow-row grid-cols-2 gap-5">
-              <RecomendedPlace title="Pulau Melinjo" description="Lorem ipsum dolor sit amet, consectetur adipisicing elit..." date="" linkTo="/discover_detail" />
-              <RecomendedPlace title="Kawah Putih" description="Lorem ipsum dolor sit amet, consectetur adipisicing elit..." date="" linkTo="/discover_detail" />
-              <RecomendedPlace title="Pantai Indah Kapuk" description="Lorem ipsum dolor sit amet, consectetur adipisicing elit..." date="" linkTo="/discover_detail" />
+              <SmallCard title="Pulau Melinjo" description="Lorem ipsum dolor sit amet, consectetur adipisicing elit..." date="26 Jan 2023" linkTo="/discover_detail" />
+              <SmallCard title="Kawah Putih" description="Lorem ipsum dolor sit amet, consectetur adipisicing elit..." date="" linkTo="/discover_detail" />
+              <SmallCard title="Pantai Indah Kapuk" description="Lorem ipsum dolor sit amet, consectetur adipisicing elit..." date="" linkTo="/discover_detail" />
             </div>
           </div>
         </aside>

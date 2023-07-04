@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 import { AiOutlineHeart, AiOutlineComment } from 'react-icons/ai';
 
-function RecomendedPlace({ title, date, description, linkTo }) {
+function SmallCard({ title, date, description, linkTo }) {
   return (
     <Link to={linkTo}>
       <h3 className="font-bold text-lg">{title}</h3>
@@ -21,4 +21,4 @@ function RecomendedPlace({ title, date, description, linkTo }) {
   );
 }
 
-export default RecomendedPlace;
+export default SmallCard;
