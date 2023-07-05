@@ -1,23 +1,47 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
+
+import { getTravelSpots, reset } from '../features/travelspot/travelSpotSlice';
+
 import Navbar from '../components/Navbar';
 import Card from '../components/Card';
+import SkeletonCard from '../components/SkeletonCard';
 import SmallCard from '../components/SmallCard';
 import CategoryButton from '../components/CategoryButton';
 
-function cards() {
-  let cards = [];
-  for (let i = 0; i < 10; i++) {
-    cards.push(<Card name="Beach asijdis" linkTo="/travelspot_detail" description="Lorem ipsum dolor sit amet, consectetur adipisicing." />);
-  }
-
-  return <>{cards}</>;
-}
+import BeachImage from '../images/beach.webp';
 
 function TravelSpots() {
+  const { travelSpots, isLoading, isSuccessfull } = useSelector((state) => state.travelspot);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(reset());
+
+    dispatch(getTravelSpots());
+  }, []);
+
+  function skeletonCards() {
+    let list = [];
+    for (let i = 0; i < 10; i++) {
+      list.push(<SkeletonCard key={i} />);
+    }
+
+    return <>{list}</>;
+  }
+
+  function travelSpotCards() {
+    return travelSpots.data.map((data) => {
+      const { nama, like } = data.objek_wisata;
+      return <Card title={nama} src={BeachImage} linkTo="/travelspot_detail" description="Lorem ipsum dolor sit amet, consectetur adipisicing." likes={like} />;
+    });
+  }
+
   return (
     <>
       <Navbar />
       <div className="mt-7 flex items-start gap-10 justify-between">
-        <div className="grid grid-flow-row grid-cols-2 gap-5 max-w-xl">{cards()}</div>
+        <div className="grid grid-flow-row grid-cols-2 gap-5 max-w-xl w-full">{isSuccessfull ? travelSpotCards() : skeletonCards()}</div>
         <aside className="sticky top-7">
           <input type="text" placeholder="Cari Wisata..." className="input input-sm border-gray-300 rounded-full" />
           <div className="py-7 border-b-2 ">

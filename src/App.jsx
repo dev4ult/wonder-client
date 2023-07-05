@@ -10,7 +10,7 @@ import PostNewArticle from './pages/PostNewArticle';
 
 import TravelSpots from './pages/TravelSpots';
 import TravelSpotDetail from './pages/TravelSpotDetail';
-import PostNewPlace from './pages/PostNewPlace';
+import PostNewTravelSpot from './pages/PostNewTravelSpot';
 
 import Profile from './pages/Profile';
 import NotFound404 from './pages/NotFound404';
@@ -32,7 +32,7 @@ function App() {
           <Route path="/new_article" element={<PostNewArticle />} />
           <Route path="/travelspots" element={<TravelSpots />} />
           <Route path="/travelspot_detail" element={<TravelSpotDetail />} />
-          <Route path="/new_travelspot" element={<PostNewPlace />} />
+          <Route path="/new_travelspot" element={<PostNewTravelSpot />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound404 />} />
         </Routes>

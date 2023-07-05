@@ -2,42 +2,42 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import travelSpotService from './travelSpotService';
 
 const initialState = {
-  travelSpots: null,
+  travelSpots: [],
   isLoading: false,
   isSuccessfull: false,
   isError: false,
   message: '',
 };
 
-const getAllTravelSpots = createAsyncThunk('/', async (_, thunkApi) => {
+const getTravelSpots = createAsyncThunk('/', async (_, thunkApi) => {
   try {
-    return await travelSpotService.getAllTravelSpots();
+    return await travelSpotService.getTravelSpots();
   } catch (err) {
     return thunkApi.rejectWithValue(err.message);
   }
 });
 
+export { getTravelSpots };
+
 const travelSpot = createSlice({
-  name: 'travel_spot',
+  name: 'travelspot',
   initialState,
   reducers: {
-    reset: (state) => {
-      initialState;
-    },
+    reset: (state) => initialState,
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getAllTravelSpots.pending, (state) => {
+      .addCase(getTravelSpots.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getAllTravelSpots.fulfilled, (state, action) => {
+      .addCase(getTravelSpots.fulfilled, (state, action) => {
         state.isLoading = false;
         state.travelSpots = action.payload;
         state.isSuccessfull = true;
       })
-      .addCase(getAllTravelSpots.rejected, (state, action) => {
+      .addCase(getTravelSpots.rejected, (state, action) => {
         state.isLoading = false;
-        state.travelSpots = null;
+        state.travelSpots = [];
         state.isError = true;
         state.message = action.payload;
       });

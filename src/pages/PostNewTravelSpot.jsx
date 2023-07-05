@@ -3,7 +3,7 @@ import InputGroup from '../components/InputGroup';
 import SelectGroup from '../components/SelectGroup';
 import DragNDropFIle from '../components/DragNDropFile';
 
-function PostNewPlace() {
+function PostNewTravelSpot() {
   return (
     <>
       <NavbarStick />
@@ -31,4 +31,4 @@ function PostNewPlace() {
   );
 }
 
-export default PostNewPlace;
+export default PostNewTravelSpot;
