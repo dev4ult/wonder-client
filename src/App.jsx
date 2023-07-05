@@ -8,8 +8,8 @@ import Articles from './pages/Articles';
 import ArticleDetail from './pages/ArticleDetail';
 import PostNewArticle from './pages/PostNewArticle';
 
-import Places from './pages/Places';
-import PlaceDetail from './pages/PlaceDetail';
+import TravelSpots from './pages/TravelSpots';
+import TravelSpotDetail from './pages/TravelSpotDetail';
 import PostNewPlace from './pages/PostNewPlace';
 
 import Profile from './pages/Profile';
@@ -30,9 +30,9 @@ function App() {
           <Route path="/articles" element={<Articles />} />
           <Route path="/article_detail" element={<ArticleDetail />} />
           <Route path="/new_article" element={<PostNewArticle />} />
-          <Route path="/places" element={<Places />} />
-          <Route path="/place_detail" element={<PlaceDetail />} />
-          <Route path="/new_place" element={<PostNewPlace />} />
+          <Route path="/travelspots" element={<TravelSpots />} />
+          <Route path="/travelspot_detail" element={<TravelSpotDetail />} />
+          <Route path="/new_travelspot" element={<PostNewPlace />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound404 />} />
         </Routes>

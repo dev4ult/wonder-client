@@ -17,7 +17,7 @@ function NavbarStick() {
         </div>
       </div>
       <div className="flex gap-5 items-center">
-        <Link to="/places" className="font-medium text-black/30 hover:text-black">
+        <Link to="/travelspots" className="font-medium text-black/30 hover:text-black">
           Wisata
         </Link>
         <Link to="/articles" className="font-medium text-black/30 hover:text-black">

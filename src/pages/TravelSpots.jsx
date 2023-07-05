@@ -6,13 +6,13 @@ import CategoryButton from '../components/CategoryButton';
 function cards() {
   let cards = [];
   for (let i = 0; i < 10; i++) {
-    cards.push(<Card name="Beach asijdis" linkTo="/discover_detail" description="Lorem ipsum dolor sit amet, consectetur adipisicing." />);
+    cards.push(<Card name="Beach asijdis" linkTo="/travelspot_detail" description="Lorem ipsum dolor sit amet, consectetur adipisicing." />);
   }
 
   return <>{cards}</>;
 }
 
-function Places() {
+function TravelSpots() {
   return (
     <>
       <Navbar />
@@ -43,4 +43,4 @@ function Places() {
   );
 }
 
-export default Places;
+export default TravelSpots;

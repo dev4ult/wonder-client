@@ -20,7 +20,7 @@ function Navbar({ displaySearch = true }) {
         <div className="w-3 h-3 rounded-full absolute top-0 -right-4 bg-accent"></div>
       </Link>
       <div className="flex gap-7 items-center text-lg font-medium">
-        <Link to="/places" className="text-black/30 hover:text-black">
+        <Link to="/travelspots" className="text-black/30 hover:text-black">
           Wisata
         </Link>
         <Link to="/articles" className="text-black/30 hover:text-black">

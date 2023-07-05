@@ -7,7 +7,7 @@ import { AiOutlineHeart, AiOutlineComment } from 'react-icons/ai';
 import { BsFillPersonFill, BsSendFill } from 'react-icons/bs';
 import NoImage from '../images/no-image.webp';
 
-function PlaceDetail() {
+function TravelSpotDetail() {
   return (
     <>
       <NavbarStick />
@@ -86,4 +86,4 @@ function PlaceDetail() {
   );
 }
 
-export default PlaceDetail;
+export default TravelSpotDetail;
