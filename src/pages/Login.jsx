@@ -1,5 +1,7 @@
+import { toast } from 'react-toastify';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
+import { redirect } from 'react-router-dom';
 import { login, reset } from '../features/auth/authSlice';
 import { Link } from 'react-router-dom';
 
@@ -7,7 +9,7 @@ import Navbar from '../components/navbar/Navbar';
 import InputGroup from '../components/InputGroup';
 
 function Login() {
-  const { user, isSuccessfull } = useSelector((state) => state.auth);
+  const { user, isSuccessfull, isError, message } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const [form, setForm] = useState({
@@ -22,12 +24,16 @@ function Login() {
       ...prev,
       [name]: value,
     }));
-
-    console.log(form);
   }
 
   useEffect(() => {
-    console.log(user);
+    if (isSuccessfull) {
+      redirect('/home');
+    }
+
+    if (isError) {
+      toast.error(message);
+    }
   }, [user]);
 
   const { email, password } = form;
@@ -35,7 +41,7 @@ function Login() {
   function handleAuthorization(e) {
     e.preventDefault();
 
-    dispatch(login(email, password));
+    dispatch(login({ email, password }));
   }
 
   return (

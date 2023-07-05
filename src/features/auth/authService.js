@@ -3,10 +3,20 @@ import axios from 'axios';
 const endpoint = import.meta.env.VITE_BASEURL;
 
 const login = async (email, password) => {
-  const response = await axios.post({ email, password }, `${endpoint}/login`);
+  const response = await axios.post(`${endpoint}/login`, JSON.stringify({ email: email, password: password }), {
+    headers: {
+      'content-type': 'application/json',
+    },
+  });
 
   if (response.data) {
-    localStorage.setItem('user', JSON.stringify(response.data));
+    const token_id = response.data;
+    const { username, email } = response.data.user;
+    const user = { username, email, token_id };
+
+    localStorage.setItem('user', JSON.stringify(user));
+
+    return user;
   }
 
   return response.data;

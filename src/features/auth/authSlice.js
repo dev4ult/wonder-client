@@ -57,6 +57,7 @@ const authSlice = createSlice({
         state.user = null;
         state.isError = true;
         state.message = action.payload;
+        console.log(action.payload);
       })
       .addCase(logout.fulfilled, (state) => {
         reset(state);
