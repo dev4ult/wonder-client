@@ -1,12 +1,15 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { getTravelSpots, reset } from '../features/travelspot/travelSpotSlice';
 
 import Navbar from '../components/Navbar';
-import Card from '../components/Card';
-import SkeletonCard from '../components/SkeletonCard';
-import SmallCard from '../components/SmallCard';
+
+import Card from '../components/card/Card';
+import SkeletonCard from '../components/card/SkeletonCard';
+import SmallCard from '../components/card/SmallCard';
+import SkeletonSmallCard from '../components/card/SkeletonSmallCard';
+
 import CategoryButton from '../components/CategoryButton';
 
 import BeachImage from '../images/beach.webp';
@@ -21,6 +24,15 @@ function TravelSpots() {
     dispatch(getTravelSpots());
   }, []);
 
+  function skeletonSmallCards() {
+    let list = [];
+    for (let i = 0; i < 3; i++) {
+      list.push(<SkeletonSmallCard key={i} />);
+    }
+
+    return <>{list}</>;
+  }
+
   function skeletonCards() {
     let list = [];
     for (let i = 0; i < 10; i++) {
@@ -31,10 +43,21 @@ function TravelSpots() {
   }
 
   function travelSpotCards() {
-    return travelSpots.data.map((data) => {
+    return travelSpots.map((data) => {
       const { nama, like } = data.objek_wisata;
       return <Card title={nama} src={BeachImage} linkTo="/travelspot_detail" description="Lorem ipsum dolor sit amet, consectetur adipisicing." likes={like} />;
     });
+  }
+
+  function topRangkedTravelSpotCards() {
+    let list = [];
+
+    for (let i = 0; i < 3; i++) {
+      const { nama, like } = travelSpots[i].objek_wisata;
+      list.push(<SmallCard title={nama} description="Lorem ipsum dolor sit amet, consectetur adipisicing elit..." date="26 Jan 2023" linkTo="/place_detail" />);
+    }
+
+    return <>{list}</>;
   }
 
   return (
@@ -54,12 +77,8 @@ function TravelSpots() {
             </div>
           </div>
           <div className="py-7">
-            <h3 className="text-black/30 font-medium mb-2 text-sm">Rekomendasi</h3>
-            <div className="grid grid-flow-row grid-cols-2 gap-5">
-              <SmallCard title="Pulau Melinjo" description="Lorem ipsum dolor sit amet, consectetur adipisicing elit..." date="26 Jan 2023" linkTo="/place_detail" />
-              <SmallCard title="Kawah Putih" description="Lorem ipsum dolor sit amet, consectetur adipisicing elit..." date="" linkTo="/place_detail" />
-              <SmallCard title="Pantai Indah Kapuk" description="Lorem ipsum dolor sit amet, consectetur adipisicing elit..." date="" linkTo="/place_detail" />
-            </div>
+            <h3 className="text-black/30 font-medium mb-2 text-sm">Rekomendasi Wisata</h3>
+            <div className="grid grid-flow-row grid-cols-2 gap-5">{isSuccessfull ? topRangkedTravelSpotCards() : skeletonSmallCards()}</div>
           </div>
         </aside>
       </div>

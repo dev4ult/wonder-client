@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { AiOutlineHeart } from 'react-icons/ai';
-import NoImage from '../images/no-image.webp';
+import NoImage from '../../images/no-image.webp';
 
 function Card({ title, description, src = NoImage, likes = 0, linkTo = '/' }) {
   return (

@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import { AiOutlineHeart } from 'react-icons/ai';
 
-import DefaultUserPhoto from './DefaultUserPhoto';
+import DefaultUserPhoto from '../DefaultUserPhoto';
 
-import NoImage from '../images/no-image.webp';
+import NoImage from '../../images/no-image.webp';
 
 function ArticleCard({ author, title, description, linkTo }) {
   return (
@@ -16,7 +16,7 @@ function ArticleCard({ author, title, description, linkTo }) {
           <DefaultUserPhoto size="0.8rem" />
           <span className="font-semibold text-sm font-archivo">{author}</span>
         </div>
-        <Link to={linkTo} className="w-full hover:text-blue-700">
+        <Link to={linkTo} className="w-full">
           <h2 className="text-xl font-bold">{title}</h2>
           <p className="text-sm max-w-sm">{description}</p>
         </Link>

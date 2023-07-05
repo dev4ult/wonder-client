@@ -32,7 +32,7 @@ const travelSpot = createSlice({
       })
       .addCase(getTravelSpots.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.travelSpots = action.payload;
+        state.travelSpots = action.payload.data;
         state.isSuccessfull = true;
       })
       .addCase(getTravelSpots.rejected, (state, action) => {

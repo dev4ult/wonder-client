@@ -3,8 +3,7 @@ import InputGroup from '../components/InputGroup';
 import HistoryBox from '../components/HistoryBox';
 import DefaultUserPhoto from '../components/DefaultUserPhoto';
 
-import SmallCard from '../components/SmallCard';
-import SmallArticleCard from '../components/SmallArticleCard';
+import SmallCard from '../components/card/SmallCard';
 
 import { AiFillHeart, AiFillSetting } from 'react-icons/ai';
 import { FaComment } from 'react-icons/fa';

@@ -1,5 +1,3 @@
-import NoImage from '../images/no-image.webp';
-
 function SkeletonCard() {
   return (
     <div className="w-full">
