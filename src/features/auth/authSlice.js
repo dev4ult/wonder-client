@@ -25,7 +25,7 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    reset: () => {
+    reset: (state) => {
       state.isLoading = false;
       state.isSuccessfull = false;
       state.isError = false;
