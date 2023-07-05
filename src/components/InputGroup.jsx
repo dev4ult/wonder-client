@@ -1,6 +1,6 @@
 import React from 'react';
 
-function InputGroup({ label, name, value, isTextArea = false }) {
+function InputGroup({ label, name, type = 'text', placeholder = '...', value, isTextArea = false }) {
   return (
     <div className="form-control">
       <label className="label-text text-black/30" htmlFor={name}>
@@ -11,7 +11,7 @@ function InputGroup({ label, name, value, isTextArea = false }) {
           {value}
         </textarea>
       ) : (
-        <input type="text" name={name} id={name} className="input border-gray-300" value={value} />
+        <input type={type} name={name} id={name} placeholder={placeholder} className="input border-gray-300" value={value} />
       )}
     </div>
   );
