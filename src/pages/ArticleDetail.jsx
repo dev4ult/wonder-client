@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import NavbarStick from '../components/NavbarStick';
+import NavbarStick from '../components/navbar/NavbarStick';
 import Comment from '../components/Comment';
 import NoImage from '../images/no-image.webp';
 

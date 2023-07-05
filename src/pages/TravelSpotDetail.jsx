@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import Comment from '../components/Comment';
-import NavbarStick from '../components/NavbarStick';
+import NavbarStick from '../components/navbar/NavbarStick';
 
 import { AiOutlineHeart, AiOutlineComment } from 'react-icons/ai';
 import { BsFillPersonFill, BsSendFill } from 'react-icons/bs';

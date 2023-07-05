@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 
 import { getTravelSpots, reset } from '../features/travelspot/travelSpotSlice';
 
-import Navbar from '../components/Navbar';
+import Navbar from '../components/navbar/Navbar';
 
 import Card from '../components/card/Card';
 import SkeletonCard from '../components/card/SkeletonCard';

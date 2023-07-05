@@ -1,4 +1,4 @@
-import Navbar from '../components/Navbar';
+import Navbar from '../components/navbar/Navbar';
 import InputGroup from '../components/InputGroup';
 import HistoryBox from '../components/HistoryBox';
 import DefaultUserPhoto from '../components/DefaultUserPhoto';

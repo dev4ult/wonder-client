@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { getArticles, reset } from '../features/article/articleSlise';
 
-import Navbar from '../components/Navbar';
+import Navbar from '../components/navbar/Navbar';
 
 import ArticleCard from '../components/card/ArticleCard';
 import SkeletonArticleCard from '../components/card/SkeletonArticleCard';

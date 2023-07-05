@@ -1,4 +1,4 @@
-import NavbarStick from '../components/NavbarStick';
+import NavbarStick from '../components/navbar/NavbarStick';
 import InputGroup from '../components/InputGroup';
 import SelectGroup from '../components/SelectGroup';
 import DragNDropFIle from '../components/DragNDropFile';

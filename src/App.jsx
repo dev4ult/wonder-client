@@ -15,7 +15,7 @@ import PostNewTravelSpot from './pages/PostNewTravelSpot';
 import Profile from './pages/Profile';
 import NotFound404 from './pages/NotFound404';
 
-import AsideNavbar from './components/AsideNavbar';
+import AsideNavbar from './components/navbar/AsideNavbar';
 
 function App() {
   return (

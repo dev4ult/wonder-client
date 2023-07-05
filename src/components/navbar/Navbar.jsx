@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { CiSearch } from 'react-icons/ci';
 
-import DefaultUserPhoto from './DefaultUserPhoto';
+import DefaultUserPhoto from '../DefaultUserPhoto';
 
 function Navbar({ displaySearch = true }) {
   const SearchInput = () => {
