@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const endpoint = `${import.meta.env.VITE_BASEURL}/v1`;
+const endpoint = import.meta.env.VITE_BASEURL;
 
 const getTravelSpots = async () => {
   const response = await axios.get(`${endpoint}/discover`);
