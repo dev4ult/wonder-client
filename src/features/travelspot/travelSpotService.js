@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 const endpoint = import.meta.env.VITE_BASEURL;
 
@@ -8,12 +8,12 @@ const getTravelSpots = async () => {
   return response.data;
 };
 
-const getDetailTravelSpot = async (travelSpotId) => {
+const getTravelSpotDetail = async (travelSpotId) => {
   const response = await axios.get(`${endpoint}/discover/${travelSpotId}`);
 
   return response.data;
 };
 
-const authService = { getTravelSpots, getDetailTravelSpot };
+const travelSpotService = { getTravelSpots, getTravelSpotDetail };
 
-export default authService;
+export default travelSpotService;
