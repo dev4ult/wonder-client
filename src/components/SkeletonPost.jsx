@@ -1,11 +1,23 @@
+import SkeletonComment from './SkeletonComment';
+import { BsSendFill } from 'react-icons/bs';
+
 function SkeletonPost() {
   function LoopParagraphLine(lines) {
     const paragraphs = [];
     for (let i = 0; i < lines; i++) {
-      paragraphs.push(<div className="animate-pulse bg-gray-300 rounded-full w-full h-4 my-5"></div>);
+      paragraphs.push(<div className="animate-pulse bg-gray-300 rounded-full w-full h-3 my-5"></div>);
     }
 
     return <>{paragraphs}</>;
+  }
+
+  function SkeletonComments() {
+    const comments = [];
+    for (let i = 0; i < 3; i++) {
+      comments.push(<SkeletonComment />);
+    }
+
+    return <>{comments}</>;
   }
 
   return (
@@ -31,22 +43,22 @@ function SkeletonPost() {
             <div className="animate-pulse bg-gray-300 h-2 rounded w-20"></div>
           </div>
         </div>
-        <div id="article-content" className="mt-4 text-lg">
+        <div className="mt-4">
           {LoopParagraphLine(4)}
-          <div className="animate-pulse bg-gray-300 rounded-full w-1/2 h-4 my-5"></div>
+          <div className="animate-pulse bg-gray-300 rounded-full w-1/2 h-3 my-5"></div>
           <div className="mt-8">
             <div className="animate-pulse bg-gray-300 rounded-full w-3/4 h-6 mb-6"></div>
             {LoopParagraphLine(9)}
-            <div className="animate-pulse bg-gray-300 rounded-full w-1/2 h-4 my-5"></div>
+            <div className="animate-pulse bg-gray-300 rounded-full w-1/2 h-3 my-5"></div>
           </div>
           <div className="animate-pulse bg-gray-300 h-[30rem] w-full rounded"></div>
           <div className="mt-8">
             <div className="animate-pulse bg-gray-300 rounded-full w-3/4 h-6 mb-6"></div>
             {LoopParagraphLine(7)}
-            <div className="animate-pulse bg-gray-300 rounded-full w-1/2 h-4 my-5"></div>
+            <div className="animate-pulse bg-gray-300 rounded-full w-1/2 h-3 my-5"></div>
           </div>
         </div>
-        {/* <div id="comment-section" className="mt-8 py-8 border-t-2 border-neutral">
+        <div className="mt-8 py-8 border-t-2 border-neutral">
           <div className="flex gap-3">
             <input type="text" className="input border-neutral input-md rounded-full w-full text-lg" placeholder="Beri komentar..." />
             <button className="btn btn-neutral btn-md rounded-full text-lg capitalize">
@@ -55,13 +67,9 @@ function SkeletonPost() {
           </div>
           <div className="mt-8 py-8">
             <h2 className="text-xl font-bold mb-3">Komentar</h2>
-            <div className="flex flex-col gap-7 mt-7 pl-8 border-l-2">
-              <Comment username="Nibras" date="26 Jan 2023" comment="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quo earum rerum et amet, aut" />
-              <Comment username="Nibras" date="26 Jan 2023" comment="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quo earum rerum et amet, aut" />
-              <Comment username="Nibras" date="26 Jan 2023" comment="Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quo earum rerum et amet, aut" />
-            </div>
+            <div className="flex flex-col gap-7 mt-7 pl-8 border-l-2">{SkeletonComments()}</div>
           </div>
-        </div> */}
+        </div>
       </div>
     </div>
   );
