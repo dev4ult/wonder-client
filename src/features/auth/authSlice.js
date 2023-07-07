@@ -1,10 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import authService from './authService';
 
-const user = JSON.parse(localStorage.getItem('user'));
-
 const initialState = {
-  user: user ? user : null,
+  user: null,
   isLoading: false,
   isSuccessfull: false,
   isError: false,
@@ -17,7 +15,7 @@ const login = createAsyncThunk('auth/login', async (userData, thunkApi) => {
 
     return await authService.login(email, password);
   } catch (err) {
-    return thunkApi.rejectWithValue(err.message);
+    return thunkApi.rejectWithValue('Email atau Password salah');
   }
 });
 
@@ -29,7 +27,15 @@ const logout = createAsyncThunk('auth/logout', async (_, thunkApi) => {
   }
 });
 
-export { login, logout };
+const setLoginSession = createAsyncThunk('auth/setlogin', async (_, thunkApi) => {
+  try {
+    return await authService.setLoginSession();
+  } catch (err) {
+    return thunkApi.rejectWithValue(err.message);
+  }
+});
+
+export { login, logout, setLoginSession };
 
 const authSlice = createSlice({
   name: 'auth',
@@ -57,17 +63,24 @@ const authSlice = createSlice({
         state.user = null;
         state.isError = true;
         state.message = action.payload;
-        console.log(action.payload);
       })
       .addCase(logout.fulfilled, (state) => {
-        reset(state);
-        localStorage.removeItem('user');
+        state.user = null;
       })
       .addCase(logout.rejected, (state, action) => {
         reset(state);
         state.user = null;
         state.isError = true;
         state.message = action.payload;
+      })
+      .addCase(setLoginSession.fulfilled, (state, action) => {
+        if (action.payload != null) {
+          state.isLoading = false;
+          state.user = action.payload;
+          state.isSuccessfull = true;
+        } else {
+          reset();
+        }
       });
   },
 });

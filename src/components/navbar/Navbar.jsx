@@ -1,9 +1,27 @@
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { logout, reset } from '../../features/auth/authSlice';
+
+import { useNavigate } from 'react-router-dom';
+
 import { CiSearch } from 'react-icons/ci';
+import { BiLogIn } from 'react-icons/bi';
 
 import DefaultUserPhoto from '../DefaultUserPhoto';
 
 function Navbar({ displaySearch = true }) {
+  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    dispatch(logout());
+
+    dispatch(reset());
+
+    navigate('/auth');
+  }
+
   const SearchInput = () => {
     return (
       <div className="relative">
@@ -29,21 +47,29 @@ function Navbar({ displaySearch = true }) {
         {displaySearch ? SearchInput() : ''}
         <div className="dropdown dropdown-end">
           <div tabIndex={0} className="p-2 px-4 bg-black/10 hover:bg-black/20 flex items-center gap-3 cursor-pointer rounded-full">
-            <span className="text-sm font-medium ">Guest</span>
+            <span className="text-sm font-medium ">{user != null ? user.w_username : 'Guest'}</span>
             <DefaultUserPhoto />
           </div>
           <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-44 mt-2">
-            <li className="">
-              <Link to={'/profile'}>Profile</Link>
-            </li>
-            <li className="bg-red-500 rounded-lg">
-              <a className="font-semibold text-white hover:text-white">Logout</a>
-            </li>
-            <li className="bg-accent rounded-lg">
-              <Link className="font-semibold text-white hover:text-white" to="/auth">
-                Login
-              </Link>
-            </li>
+            {user != null ? (
+              <>
+                <li className="">
+                  <Link to={'/profile'}>Profile</Link>
+                </li>
+                <li className="bg-red-500 rounded-lg">
+                  <button type="button" onClick={handleLogout} className="font-semibold text-white hover:text-white">
+                    Logout
+                  </button>
+                </li>
+              </>
+            ) : (
+              <li>
+                <Link className="flex gap-1 items-center justify-between" to="/auth">
+                  <span>Login</span>
+                  <BiLogIn size="1.3rem" />
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
       </div>

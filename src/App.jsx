@@ -1,29 +1,40 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Registration from "./pages/Registration";
-import Dashboard from "./pages/Dashboard";
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { setLoginSession } from './features/auth/authSlice';
 
-import Articles from "./pages/Articles";
-import ArticleDetail from "./pages/ArticleDetail";
-import PostNewArticle from "./pages/PostNewArticle";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Home from './pages/Home';
+import Login from './pages/Login';
+import Registration from './pages/Registration';
+import Dashboard from './pages/Dashboard';
 
-import TravelSpots from "./pages/TravelSpots";
-import TravelSpotDetail from "./pages/TravelSpotDetail";
-import PostNewTravelSpot from "./pages/PostNewTravelSpot";
+import Articles from './pages/Articles';
+import ArticleDetail from './pages/ArticleDetail';
+import PostNewArticle from './pages/PostNewArticle';
 
-import Profile from "./pages/Profile";
-import NotFound404 from "./pages/NotFound404";
+import TravelSpots from './pages/TravelSpots';
+import TravelSpotDetail from './pages/TravelSpotDetail';
+import PostNewTravelSpot from './pages/PostNewTravelSpot';
 
-import AsideNavbar from "./components/navbar/AsideNavbar";
+import Profile from './pages/Profile';
+import NotFound404 from './pages/NotFound404';
+
+import AsideNavbar from './components/navbar/AsideNavbar';
 
 function App() {
+  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setLoginSession());
+  }, []);
+
   return (
     <Router>
       <div className="container mx-auto font-poppins max-w-5xl px-4">
-        <AsideNavbar />
+        {user != null && user.role == 'admin' && <AsideNavbar />}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/auth" element={<Login />} />

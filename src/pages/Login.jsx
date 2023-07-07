@@ -1,8 +1,8 @@
 import { toast } from 'react-toastify';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { redirect } from 'react-router-dom';
-import { login, reset } from '../features/auth/authSlice';
+import { useNavigate } from 'react-router-dom';
+import { login } from '../features/auth/authSlice';
 import { Link } from 'react-router-dom';
 
 import Navbar from '../components/navbar/Navbar';
@@ -11,6 +11,7 @@ import InputGroup from '../components/InputGroup';
 function Login() {
   const { user, isSuccessfull, isError, message } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [form, setForm] = useState({
     email: '',
@@ -28,13 +29,15 @@ function Login() {
 
   useEffect(() => {
     if (isSuccessfull) {
-      redirect('/home');
+      navigate('/travelspots');
     }
+  }, [isSuccessfull]);
 
+  useEffect(() => {
     if (isError) {
       toast.error(message);
     }
-  }, [user]);
+  }, [isError]);
 
   const { email, password } = form;
 

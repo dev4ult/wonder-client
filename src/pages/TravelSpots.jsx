@@ -43,9 +43,11 @@ function TravelSpots() {
   }
 
   function travelSpotCards() {
+    let i = 0;
     return travelSpots.map((data) => {
       const { nama, like } = data.objek_wisata;
-      return <Card title={nama} src={BeachImage} linkTo="/travelspot_detail" description="Lorem ipsum dolor sit amet, consectetur adipisicing." likes={like} />;
+      return <Card key={`${i}-${nama}`} title={nama} src={BeachImage} linkTo="/travelspot_detail" description="Lorem ipsum dolor sit amet, consectetur adipisicing." likes={like} />;
+      i++;
     });
   }
 
@@ -54,7 +56,7 @@ function TravelSpots() {
 
     for (let i = 0; i < 3; i++) {
       const { nama, like } = travelSpots[i].objek_wisata;
-      list.push(<SmallCard title={nama} description="Lorem ipsum dolor sit amet, consectetur adipisicing elit..." date="26 Jan 2023" linkTo="/place_detail" />);
+      list.push(<SmallCard key={i} title={nama} description="Lorem ipsum dolor sit amet, consectetur adipisicing elit..." date="26 Jan 2023" linkTo="/place_detail" />);
     }
 
     return <>{list}</>;
