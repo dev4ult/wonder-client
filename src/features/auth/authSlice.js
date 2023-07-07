@@ -1,8 +1,15 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import authService from './authService';
+import { getCookie } from './cookieFunc';
+
+const user = {
+  w_token_id: getCookie('w_token_id'),
+  w_user_id: getCookie('w_user_id'),
+  w_username: getCookie('w_username'),
+};
 
 const initialState = {
-  user: null,
+  user: user.w_token_id ? user : null,
   isLoading: false,
   isSuccessfull: false,
   isError: false,
@@ -27,23 +34,17 @@ const logout = createAsyncThunk('auth/logout', async (_, thunkApi) => {
   }
 });
 
-const setLoginCookie = createAsyncThunk('auth/setlogin', async (_, thunkApi) => {
+const setUserDetail = createAsyncThunk('auth/profile', async (userData, thunkApi) => {
   try {
-    return await authService.setLoginCookie();
+    const { token_id, user_id } = userData;
+
+    return await authService.setUserDetail(token_id, user_id);
   } catch (err) {
     return thunkApi.rejectWithValue(err.message);
   }
 });
 
-const getUserDetail = createAsyncThunk('auth/profile', async (user_id, thunkApi) => {
-  try {
-    return await authService.getUserDetail(user_id);
-  } catch (err) {
-    return thunkApi.rejectWithValue(err.message);
-  }
-});
-
-export { login, logout, setLoginCookie };
+export { login, logout, setUserDetail };
 
 const authSlice = createSlice({
   name: 'auth',
@@ -74,6 +75,7 @@ const authSlice = createSlice({
       })
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
+        state.message = 'logget out';
       })
       .addCase(logout.rejected, (state, action) => {
         reset(state);
@@ -81,18 +83,17 @@ const authSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
-      .addCase(setLoginCookie.fulfilled, (state, action) => {
-        if (action.payload != null) {
-          state.isLoading = false;
-          state.user = action.payload;
-          state.isSuccessfull = true;
-        } else {
-          reset();
-        }
+      .addCase(setUserDetail.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload;
+        state.isSuccessfull = true;
       })
-      .addCase(getUserDetail.pending, (state) => {
-        state.isLoading = true;
-      }).addCase;
+      .addCase(setUserDetail.rejected, (state, action) => {
+        reset(state);
+        state.user = null;
+        state.isError = true;
+        state.message = action.payload;
+      });
   },
 });
 

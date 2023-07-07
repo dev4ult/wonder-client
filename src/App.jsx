@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setLoginCookie } from './features/auth/authSlice';
+import { setUserDetail } from './features/auth/authSlice';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
@@ -28,7 +28,10 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setLoginCookie());
+    if (user != null) {
+      const { w_token_id: token_id, w_user_id: user_id } = user;
+      setUserDetail({ token_id, user_id });
+    }
   }, []);
 
   return (

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout, reset } from '../../features/auth/authSlice';
@@ -10,7 +11,7 @@ import { BiLogIn } from 'react-icons/bi';
 import DefaultUserPhoto from '../DefaultUserPhoto';
 
 function Navbar({ displaySearch = true }) {
-  const { user } = useSelector((state) => state.auth);
+  const { user, message } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -18,9 +19,14 @@ function Navbar({ displaySearch = true }) {
     dispatch(logout());
 
     dispatch(reset());
-
-    navigate('/home');
   }
+
+  useEffect(() => {
+    if (message != '') {
+      navigate(0);
+      navigate('/travelspots');
+    }
+  }, [message]);
 
   const SearchInput = () => {
     return (

@@ -1,3 +1,5 @@
+import { useSelector } from 'react-redux';
+
 import Navbar from '../components/navbar/Navbar';
 import InputGroup from '../components/InputGroup';
 import HistoryBox from '../components/HistoryBox';
@@ -10,6 +12,8 @@ import { FaComment } from 'react-icons/fa';
 import { MdArticle } from 'react-icons/md';
 
 function Profile() {
+  const { user } = useSelector((state) => state.auth);
+
   return (
     <div>
       <Navbar />
