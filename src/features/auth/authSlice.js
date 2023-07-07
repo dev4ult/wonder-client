@@ -27,15 +27,23 @@ const logout = createAsyncThunk('auth/logout', async (_, thunkApi) => {
   }
 });
 
-const setLoginSession = createAsyncThunk('auth/setlogin', async (_, thunkApi) => {
+const setLoginCookie = createAsyncThunk('auth/setlogin', async (_, thunkApi) => {
   try {
-    return await authService.setLoginSession();
+    return await authService.setLoginCookie();
   } catch (err) {
     return thunkApi.rejectWithValue(err.message);
   }
 });
 
-export { login, logout, setLoginSession };
+const getUserDetail = createAsyncThunk('auth/profile', async (user_id, thunkApi) => {
+  try {
+    return await authService.getUserDetail(user_id);
+  } catch (err) {
+    return thunkApi.rejectWithValue(err.message);
+  }
+});
+
+export { login, logout, setLoginCookie };
 
 const authSlice = createSlice({
   name: 'auth',
@@ -73,7 +81,7 @@ const authSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
-      .addCase(setLoginSession.fulfilled, (state, action) => {
+      .addCase(setLoginCookie.fulfilled, (state, action) => {
         if (action.payload != null) {
           state.isLoading = false;
           state.user = action.payload;
@@ -81,7 +89,10 @@ const authSlice = createSlice({
         } else {
           reset();
         }
-      });
+      })
+      .addCase(getUserDetail.pending, (state) => {
+        state.isLoading = true;
+      }).addCase;
   },
 });
 

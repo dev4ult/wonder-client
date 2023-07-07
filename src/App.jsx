@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setLoginSession } from './features/auth/authSlice';
+import { setLoginCookie } from './features/auth/authSlice';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
@@ -28,7 +28,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(setLoginSession());
+    dispatch(setLoginCookie());
   }, []);
 
   return (
@@ -39,14 +39,18 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/auth" element={<Login />} />
           <Route path="/signup" element={<Registration />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          {user != null && user.role == 'admin' && (
+            <>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/new_travelspot" element={<PostNewTravelSpot />} />
+            </>
+          )}
           <Route path="/articles" element={<Articles />} />
           <Route path="/article_detail:id" element={<ArticleDetail />} />
           <Route path="/new_article" element={<PostNewArticle />} />
           <Route path="/travelspots" element={<TravelSpots />} />
           <Route path="/travelspot_detail/:id" element={<TravelSpotDetail />} />
-          <Route path="/new_travelspot" element={<PostNewTravelSpot />} />
-          <Route path="/profile" element={<Profile />} />
+          {user != null && <Route path="/profile" element={<Profile />} />}
           <Route path="*" element={<NotFound404 />} />
         </Routes>
         <ToastContainer />

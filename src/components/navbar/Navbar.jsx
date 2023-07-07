@@ -19,7 +19,7 @@ function Navbar({ displaySearch = true }) {
 
     dispatch(reset());
 
-    navigate('/auth');
+    navigate('/home');
   }
 
   const SearchInput = () => {
