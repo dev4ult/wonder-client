@@ -18,7 +18,7 @@ import TravelSpots from './pages/TravelSpots';
 import TravelSpotDetail from './pages/TravelSpotDetail';
 import PostNewTravelSpot from './pages/PostNewTravelSpot';
 
-import ManageUser from './pages/ManageUser';
+import ManageAdmin from './pages/ManageAdmin';
 
 import Profile from './pages/Profile';
 import NotFound404 from './pages/NotFound404';
@@ -28,9 +28,12 @@ import AsideNavbar from './components/navbar/AsideNavbar';
 function App() {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const logged = user != null;
+  const adminLogged = (logged && user.role == 'admin') || user.role == 'superadmin';
+  const superAdminLogged = logged && user.role == 'superadmin';
 
   useEffect(() => {
-    if (user != null) {
+    if (logged) {
       const { w_token_id: token_id, w_user_id: user_id } = user;
       dispatch(setUserDetail({ token_id, user_id }));
     }
@@ -39,24 +42,25 @@ function App() {
   return (
     <Router>
       <div className="container mx-auto font-poppins max-w-5xl px-4">
-        {user != null && user.role == 'admin' && <AsideNavbar />}
+        {adminLogged && <AsideNavbar />}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/auth" element={<Login />} />
           <Route path="/signup" element={<Registration />} />
-          {user != null && user.role == 'admin' && (
+          {adminLogged && (
             <>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/new_travelspot" element={<PostNewTravelSpot />} />
-              <Route path="/manage_user" element={<ManageUser />} />
             </>
           )}
+          {superAdminLogged && <Route path="/manage_admin" element={<ManageAdmin />} />}
+
           <Route path="/articles" element={<Articles />} />
           <Route path="/article_detail:id" element={<ArticleDetail />} />
           <Route path="/new_article" element={<PostNewArticle />} />
           <Route path="/travelspots" element={<TravelSpots />} />
           <Route path="/travelspot_detail/:id" element={<TravelSpotDetail />} />
-          {user != null && <Route path="/profile" element={<Profile />} />}
+          {logged && <Route path="/profile" element={<Profile />} />}
           <Route path="*" element={<NotFound404 />} />
         </Routes>
         <ToastContainer />

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const endpoint = import.meta.VITE_BASEURL;
+const endpoint = import.meta.env.VITE_BASEURL;
 
 const getAdmins = async (token_id) => {
   const response = await axios.get(`${endpoint}/admin`, {
