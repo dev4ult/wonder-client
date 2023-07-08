@@ -9,7 +9,7 @@ import Navbar from '../components/navbar/Navbar';
 import InputGroup from '../components/InputGroup';
 
 function Login() {
-  const { user, isSuccessfull, isError, message } = useSelector((state) => state.auth);
+  const { user, isError, message } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -28,10 +28,14 @@ function Login() {
   }
 
   useEffect(() => {
-    if (isSuccessfull) {
-      navigate('/travelspots');
+    if (user != null) {
+      if (user.role == 'admin') {
+        navigate('/dashboard');
+      } else {
+        navigate('/travelspots');
+      }
     }
-  }, [isSuccessfull]);
+  }, [user]);
 
   useEffect(() => {
     if (isError) {

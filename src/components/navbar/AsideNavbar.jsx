@@ -16,9 +16,9 @@ function AsideNavbar() {
   return (
     <div className="fixed top-10 left-10">
       <div className="border-2 rounded">
-        <div className={`${open ? 'bg-black/80' : 'bg-white'} p-3 cursor-pointer relative z-10`}>
-          <HiMenuAlt2 size="1.5rem" onClick={toggleOpen} className={`text-black ${open ? 'hidden' : ''}`} />
-          <IoMdClose size="1.5rem" onClick={toggleOpen} className={`text-white flex gap-2 ${open ? '' : 'hidden'}`} />
+        <div className={`${open ? 'bg-black/80' : 'bg-white'} p-3 cursor-pointer relative z-10`} onClick={toggleOpen}>
+          <HiMenuAlt2 size="1.5rem" className={`text-black ${open ? 'hidden' : ''}`} />
+          <IoMdClose size="1.5rem" className={`text-white flex gap-2 ${open ? '' : 'hidden'}`} />
         </div>
         <AsideNavList name="Dashboard" isOpen={open} linkTo="/dashboard">
           <BiSolidDashboard size="1.5rem" />

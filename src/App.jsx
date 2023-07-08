@@ -30,7 +30,7 @@ function App() {
   useEffect(() => {
     if (user != null) {
       const { w_token_id: token_id, w_user_id: user_id } = user;
-      setUserDetail({ token_id, user_id });
+      dispatch(setUserDetail({ token_id, user_id }));
     }
   }, []);
 

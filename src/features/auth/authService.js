@@ -12,7 +12,7 @@ const login = async (email, password) => {
 
   if (response.data) {
     const { token_id } = response.data;
-    const { username, id, role } = response.data.user;
+    const { username, id, email, role } = response.data.user;
 
     setCookie('w_user_id', id, 30);
     setCookie('w_username', username, 30);
@@ -22,9 +22,10 @@ const login = async (email, password) => {
       w_user_id: id,
       w_username: username,
       w_token_id: token_id,
+      password,
+      email,
+      role,
     };
-
-    user.role = role;
 
     return user;
   }
@@ -40,13 +41,15 @@ const setUserDetail = async (token_id, user_id) => {
     },
   });
 
-  const { username, role } = response.data.data;
+  const { username, email, role, bio } = response.data.data;
 
   const user = {
     w_user_id: user_id,
     w_username: username,
     w_token_id: token_id,
+    email,
     role,
+    bio,
   };
 
   return user;

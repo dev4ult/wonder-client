@@ -1,15 +1,12 @@
-function SelectGroup({ label, name, optionList }) {
+function SelectGroup({ label, name, optionList, onChange }) {
   const options = (optionList) => {
-    let elOptions = [];
-    for (let i = 0; i < optionList; i++) {
-      const { value, output } = optionList[0];
-      elOptions.push(
-        <option className="" value={value}>
-          {output}
+    return optionList.map((option) => {
+      return (
+        <option key={`${option.id}-${option.name}`} value={option.id}>
+          {option.name}
         </option>
       );
-    }
-    return <>elOptions</>;
+    });
   };
 
   return (
@@ -17,9 +14,17 @@ function SelectGroup({ label, name, optionList }) {
       <label htmlFor={name} className="text-sm text-black/30">
         {label}
       </label>
-      <select id={name} name={name} className="select border-gray-300">
-        <option disabled>Pilih</option>
-        {options(optionList)}
+      <select id={name} name={name} onChange={onChange} className="select border-gray-300">
+        <option disabled selected>
+          Pilih {label}
+        </option>
+        {optionList.length != 0 ? (
+          options(optionList)
+        ) : (
+          <option disabled value="0">
+            Fetching data...
+          </option>
+        )}
       </select>
     </div>
   );

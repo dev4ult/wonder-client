@@ -1,15 +1,15 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import travelSpotService from "./travelSpotService";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import travelSpotService from './travelSpotService';
 
 const initialState = {
   travelSpots: [],
   isLoading: false,
   isSuccessfull: false,
   isError: false,
-  message: "",
+  message: '',
 };
 
-const getTravelSpots = createAsyncThunk("travelspot/allspots", async (_, thunkApi) => {
+const getTravelSpots = createAsyncThunk('travelspot/allspots', async (_, thunkApi) => {
   try {
     return await travelSpotService.getTravelSpots();
   } catch (err) {
@@ -17,7 +17,7 @@ const getTravelSpots = createAsyncThunk("travelspot/allspots", async (_, thunkAp
   }
 });
 
-const getTravelSpotDetail = createAsyncThunk("travelspot/detail", async (travelSpotId, thunkApi) => {
+const getTravelSpotDetail = createAsyncThunk('travelspot/detail', async (travelSpotId, thunkApi) => {
   try {
     return await travelSpotService.getTravelSpotDetail(travelSpotId);
   } catch (err) {
@@ -27,8 +27,8 @@ const getTravelSpotDetail = createAsyncThunk("travelspot/detail", async (travelS
 
 export { getTravelSpots, getTravelSpotDetail };
 
-const travelSpot = createSlice({
-  name: "travelspot",
+const travelSpotSlice = createSlice({
+  name: 'travelspot',
   initialState,
   reducers: {
     reset: (state) => initialState,
@@ -66,6 +66,6 @@ const travelSpot = createSlice({
   },
 });
 
-export const { reset } = travelSpot.actions;
+export const { reset } = travelSpotSlice.actions;
 
-export default travelSpot.reducer;
+export default travelSpotSlice.reducer;

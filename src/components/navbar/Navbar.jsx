@@ -19,14 +19,9 @@ function Navbar({ displaySearch = true }) {
     dispatch(logout());
 
     dispatch(reset());
-  }
 
-  useEffect(() => {
-    if (message != '') {
-      navigate(0);
-      navigate('/travelspots');
-    }
-  }, [message]);
+    navigate('/travelspots');
+  }
 
   const SearchInput = () => {
     return (
