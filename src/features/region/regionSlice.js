@@ -18,9 +18,9 @@ const getProvinces = createAsyncThunk('region/province', async (_, thunkApi) => 
   }
 });
 
-const getCities = createAsyncThunk('region/cities', async (provinceId, thunkApi) => {
+const getCities = createAsyncThunk('region/cities', async (province_id, thunkApi) => {
   try {
-    return await regionService.getCities(provinceId);
+    return await regionService.getCities(province_id);
   } catch (err) {
     return thunkApi.rejectWithValue(err.message);
   }

@@ -13,6 +13,17 @@ const getAdmins = async (token_id) => {
   return response.data.data;
 };
 
-const userService = { getAdmins };
+const getAdminDetail = async (admin_id, token_id) => {
+  const response = await axios.get(`${endpoint}/admin/${admin_id}`, {
+    headers: {
+      'content-type': 'application/json',
+      Authorization: `Bearer ${token_id}`,
+    },
+  });
+
+  return response.data.credentials;
+};
+
+const userService = { getAdmins, getAdminDetail };
 
 export default userService;

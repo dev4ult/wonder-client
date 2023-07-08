@@ -8,8 +8,8 @@ const getProvinces = async () => {
   return response.data;
 };
 
-const getCities = async (provinceId) => {
-  const response = await axios.get(`${endpoint}/regencies/${provinceId}.json`);
+const getCities = async (province_id) => {
+  const response = await axios.get(`${endpoint}/regencies/${province_id}.json`);
 
   return response.data;
 };
