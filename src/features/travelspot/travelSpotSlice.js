@@ -25,7 +25,16 @@ const getTravelSpotDetail = createAsyncThunk('travelspot/detail', async (travelS
   }
 });
 
-export { getTravelSpots, getTravelSpotDetail };
+const newTravelSpot = createAsyncThunk('travelspot/newspot', async (data, thunkApi) => {
+  try {
+    const { form, token_id } = data;
+    return await travelSpotService.newTravelSpot(form, token_id);
+  } catch (err) {
+    return thunkApi.rejectWithValue(err.message);
+  }
+});
+
+export { getTravelSpots, getTravelSpotDetail, newTravelSpot };
 
 const travelSpotSlice = createSlice({
   name: 'travelspot',

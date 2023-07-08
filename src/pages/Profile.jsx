@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-import Navbar from '../components/navbar/Navbar';
+import NavbarStick from '../components/navbar/NavbarStick';
 import InputGroup from '../components/InputGroup';
 import HistoryBox from '../components/HistoryBox';
 import DefaultUserPhoto from '../components/DefaultUserPhoto';
@@ -41,7 +41,7 @@ function Profile() {
 
   return (
     <div>
-      <Navbar />
+      <NavbarStick />
       <div className="mt-7 flex gap-8">
         <form onSubmit={handleSubmit} className="flex px-8 flex-col gap-5 border-r-2">
           <h2 className="font-semibold text-lg">Edit Profil</h2>

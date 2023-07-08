@@ -1,9 +1,8 @@
-import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout, reset } from '../../features/auth/authSlice';
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import { CiSearch } from 'react-icons/ci';
 import { BiLogIn } from 'react-icons/bi';
@@ -11,9 +10,10 @@ import { BiLogIn } from 'react-icons/bi';
 import DefaultUserPhoto from '../DefaultUserPhoto';
 
 function Navbar({ displaySearch = true }) {
-  const { user, message } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   function handleLogout() {
     dispatch(logout());
@@ -39,10 +39,10 @@ function Navbar({ displaySearch = true }) {
         <div className="w-3 h-3 rounded-full absolute top-0 -right-4 bg-accent"></div>
       </Link>
       <div className="flex gap-7 items-center text-lg font-medium">
-        <Link to="/travelspots" className="text-black/30 hover:text-black">
+        <Link to="/travelspots" className={location.pathname != '/travelspots' && 'text-black/30 hover:text-black'}>
           Wisata
         </Link>
-        <Link to="/articles" className="text-black/30 hover:text-black">
+        <Link to="/articles" className={location.pathname != '/articles' && 'text-black/30 hover:text-black'}>
           Artikel
         </Link>
         {displaySearch ? SearchInput() : ''}

@@ -18,6 +18,8 @@ import TravelSpots from './pages/TravelSpots';
 import TravelSpotDetail from './pages/TravelSpotDetail';
 import PostNewTravelSpot from './pages/PostNewTravelSpot';
 
+import ManageUser from './pages/ManageUser';
+
 import Profile from './pages/Profile';
 import NotFound404 from './pages/NotFound404';
 
@@ -46,6 +48,7 @@ function App() {
             <>
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/new_travelspot" element={<PostNewTravelSpot />} />
+              <Route path="/manage_user" element={<ManageUser />} />
             </>
           )}
           <Route path="/articles" element={<Articles />} />

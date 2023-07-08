@@ -1,18 +1,13 @@
-function DragNDropFIle({ label, name }) {
+import { FileUploader } from 'react-drag-drop-files';
+
+function DragNDropFIle({ label, name, onChange }) {
   return (
     <>
       <label htmlFor={name} className="text-sm text-black/30">
         {label}
       </label>
-      <div className="rounded border-2 border-gray-300 border-dashed p-10 flex flex-col gap-3 items-center">
-        <label htmlFor={name} className="text-xl font-medium">
-          Drag and Drop file here
-        </label>
-        <span className="text-xl font-medium text-black/30">or</span>
-        <label htmlFor={name} className="btn btn-neutral">
-          browse file
-        </label>
-        <input type="file" id={name} name={name} multiple className="hidden" />
+      <div className="p-12 border-2 rounded flex justify-center">
+        <FileUploader name={name} handleChange={onChange} classes="drop_area drop_zone" multiple types={['JPG', 'PNG']} required />
       </div>
     </>
   );

@@ -22,7 +22,6 @@ const login = async (email, password) => {
       w_user_id: id,
       w_username: username,
       w_token_id: token_id,
-      password,
       email,
       role,
     };

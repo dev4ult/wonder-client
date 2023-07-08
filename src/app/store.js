@@ -3,6 +3,7 @@ import authReducer from '../features/auth/authSlice';
 import travelSpotReducer from '../features/travelspot/travelSpotSlice';
 import articleReducer from '../features/article/articleSlise';
 import regionReducer from '../features/region/regionSlice';
+import userReducer from '../features/user/userSlice';
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     travelspot: travelSpotReducer,
     article: articleReducer,
     region: regionReducer,
+    user: userReducer,
   },
 });
 
