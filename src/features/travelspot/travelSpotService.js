@@ -14,14 +14,14 @@ const getTravelSpotsAdmin = async () => {
   return response.data;
 };
 
-const getTravelSpotDetail = async (travelSpotId) => {
-  const response = await axios.get(`${endpoint}/discover/${travelSpotId}`);
+const getTravelSpotDetail = async (travelspot_id) => {
+  const response = await axios.get(`${endpoint}/discover/${travelspot_id}`);
 
   return response.data;
 };
 
-const newTravelSpot = async (travelSpotDetail, token_id) => {
-  const { photos: foto, name: nama, description: deskripsi, address: alamat_lengkap, city: kab_kota, province: provinsi, fasilities: fasilitas } = travelSpotDetail;
+const newTravelSpot = async (travelspot_detail, token_id) => {
+  const { photos: foto, name: nama, description: deskripsi, address: alamat_lengkap, city: kab_kota, province: provinsi, fasilities: fasilitas } = travelspot_detail;
 
   const response = await axios.post(
     `${endpoint}/discover-admin`,
@@ -38,6 +38,6 @@ const newTravelSpot = async (travelSpotDetail, token_id) => {
   return response.data;
 };
 
-const travelSpotService = { getTravelSpots, getTravelSpotDetail, newTravelSpot };
+const travelSpotService = { getTravelSpots, getTravelSpotDetail, newTravelSpot, getTravelSpotsAdmin };
 
 export default travelSpotService;

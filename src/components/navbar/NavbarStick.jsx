@@ -2,9 +2,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logout, reset } from '../../features/auth/authSlice';
 import { useLocation, Link } from 'react-router-dom';
 
-import { CiSearch } from 'react-icons/ci';
-
 import DefaultUserPhoto from '../DefaultUserPhoto';
+import SearchInput from '../SearchInput';
 
 function NavbarStick({ displaySearch = true }) {
   const { user } = useSelector((state) => state.auth);
@@ -27,12 +26,7 @@ function NavbarStick({ displaySearch = true }) {
           Discover
           <div className="w-3 h-3 rounded-full absolute top-0 -right-4 bg-accent"></div>
         </Link>
-        {displaySearch && (
-          <div className="relative">
-            <input type="text" placeholder="Cari Wisata..." className="input input-sm border-gray-300 rounded-full peer" />
-            <CiSearch className="absolute right-3 top-1/2 -translate-y-1/2 text-black/30 peer-focus:text-black" size="1.3rem" />
-          </div>
-        )}
+        {displaySearch && <SearchInput placeholder="Cari Wisata..." size="sm" />}
       </div>
       <div className="flex gap-5 items-center">
         <Link to="/travelspots" className="font-medium text-black/30 hover:text-black">
