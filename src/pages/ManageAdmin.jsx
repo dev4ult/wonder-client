@@ -40,7 +40,7 @@ function ManageAdmin() {
     return (
       <dialog id="modal" className="modal">
         <form method="dialog" className="modal-box">
-          {isSuccessfull ? (
+          {admin != null && isSuccessfull ? (
             <>
               <h3 className="font-bold text-lg">{admin.nama_lengkap}</h3>
               <p className="py-4">Press ESC key or click the button below to close</p>
