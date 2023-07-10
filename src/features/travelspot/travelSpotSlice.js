@@ -17,6 +17,15 @@ const getTravelSpots = createAsyncThunk('travelspot/allspots', async (_, thunkAp
   }
 });
 
+const getTravelSpotsByUserLike = createAsyncThunk('travelspot/allspots', async (data, thunkApi) => {
+  try {
+    const { user_id, token_id } = data;
+    return await travelSpotService.getTravelSpotsByUserLike(user_id, token_id);
+  } catch (err) {
+    return thunkApi.rejectWithValue(err.message);
+  }
+});
+
 const getTravelSpotDetail = createAsyncThunk('travelspot/detail', async (travelSpotId, thunkApi) => {
   try {
     return await travelSpotService.getTravelSpotDetail(travelSpotId);
@@ -25,16 +34,34 @@ const getTravelSpotDetail = createAsyncThunk('travelspot/detail', async (travelS
   }
 });
 
-const newTravelSpot = createAsyncThunk('travelspot/newspot', async (data, thunkApi) => {
+const addTravelSpot = createAsyncThunk('travelspot/newspot', async (data, thunkApi) => {
   try {
     const { form, token_id } = data;
-    return await travelSpotService.newTravelSpot(form, token_id);
+    return await travelSpotService.addTravelSpot(form, token_id);
   } catch (err) {
     return thunkApi.rejectWithValue(err.message);
   }
 });
 
-export { getTravelSpots, getTravelSpotDetail, newTravelSpot };
+const updateTravelSpot = createAsyncThunk('travelspot/updatespot', async (data, thunkApi) => {
+  try {
+    const { form, travelspot_id, token_id } = data;
+    return await travelSpotService.addTravelSpot(form, travelspot_id, token_id);
+  } catch (err) {
+    return thunkApi.rejectWithValue(err.message);
+  }
+});
+
+const deleteTravelSpot = createAsyncThunk('travelspot/deletespot', async (data, thunkApi) => {
+  try {
+    const { travelspot_id, token_id } = data;
+    return await travelSpotService.deleteTravelSpot(travelspot_id, token_id);
+  } catch (err) {
+    return thunkApi.rejectWithValue(err.message);
+  }
+});
+
+export { getTravelSpots, getTravelSpotsByUserLike, getTravelSpotDetail, addTravelSpot, updateTravelSpot, deleteTravelSpot };
 
 const travelSpotSlice = createSlice({
   name: 'travelspot',

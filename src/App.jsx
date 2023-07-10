@@ -67,19 +67,18 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/auth" element={<Login />} />
           <Route path="/signup" element={<Registration />} />
-          {adminLogin && (
-            <>
-              <Route path="/dashboard" element={<Dashboard />} />
-            </>
-          )}
+          {adminLogin && <></>}
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/new_travelspot" element={<PostNewTravelSpot />} />
-          {superadminLogin && <Route path="/manage_admin" element={<ManageAdmin />} />}
+          {superadminLogin && ''}
+          <Route path="/manage_admin" element={<ManageAdmin />} />
           <Route path="/articles" element={<Articles />} />
           <Route path="/article_detail:id" element={<ArticleDetail />} />
           <Route path="/new_article" element={<PostNewArticle />} />
           <Route path="/travelspots" element={<TravelSpots />} />
           <Route path="/travelspot_detail/:id" element={<TravelSpotDetail />} />
-          {isLogin && <Route path="/profile" element={<Profile />} />}
+          {isLogin && ''}
+          <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound404 />} />
         </Routes>
         <ToastContainer />

@@ -9,7 +9,7 @@ const initialState = {
   message: '',
 };
 
-const getArticles = createAsyncThunk('/article/articles', async (_, thunkApi) => {
+const getArticles = createAsyncThunk('article/allarticle', async (_, thunkApi) => {
   try {
     return await articleService.getArticles();
   } catch (err) {
@@ -17,7 +17,16 @@ const getArticles = createAsyncThunk('/article/articles', async (_, thunkApi) =>
   }
 });
 
-export { getArticles };
+const getArticlesFromUser = createAsyncThunk('article/myarticle', async (data, thunkApi) => {
+  try {
+    const { user_id, token_id } = data;
+    return await articleService.getArticlesFromUser(user_id, token_id);
+  } catch (err) {
+    return thunkApi.rejectWithValue(err.message);
+  }
+});
+
+export { getArticles, getArticlesFromUser };
 
 const articleSlice = createSlice({
   name: 'article',

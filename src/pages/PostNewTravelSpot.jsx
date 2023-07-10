@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { getProvinces, getCities, reset } from '../features/region/regionSlice';
-import { newTravelSpot } from '../features/travelspot/travelSpotSlice';
+import { addTravelSpot } from '../features/travelspot/travelSpotSlice';
 
 import NavbarStick from '../components/navbar/NavbarStick';
 import InputGroup from '../components/InputGroup';
@@ -73,7 +73,7 @@ function PostNewTravelSpot() {
     e.preventDefault();
 
     const { w_token_id: token_id } = user;
-    dispatch(newTravelSpot({ form, token_id }));
+    dispatch(addTravelSpot({ form, token_id }));
   }
 
   function onFileChange(files) {

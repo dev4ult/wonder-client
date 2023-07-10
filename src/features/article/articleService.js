@@ -8,6 +8,17 @@ const getArticles = async () => {
   return response.data;
 };
 
-const articleService = { getArticles };
+const getArticlesFromUser = async (user_id, token_id) => {
+  const response = await axios.get(`${endpoint}/articles/${user_id}`, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token_id}`,
+    },
+  });
+
+  return response.data;
+};
+
+const articleService = { getArticles, getArticlesFromUser };
 
 export default articleService;

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import NavbarStick from '../components/navbar/NavbarStick';
@@ -15,9 +15,9 @@ import { MdArticle } from 'react-icons/md';
 function Profile() {
   const { user } = useSelector((state) => state.auth);
   const [profile, setProfile] = useState({
-    username: user.w_username,
-    email: user.email,
-    bio: user.bio ? user.bio : '',
+    username: '',
+    email: '',
+    bio: '',
     new_password: '',
     old_password: '',
   });
@@ -36,6 +36,18 @@ function Profile() {
 
     console.log(profile);
   }
+
+  useEffect(() => {
+    if (user != null) {
+      setProfile({
+        username: user.w_username,
+        email: user.w_email,
+        bio: user.bio ? user.bio : '',
+        new_password: '',
+        old_password: '',
+      });
+    }
+  }, [user]);
 
   const { username, email, bio, new_password, old_password } = profile;
 
