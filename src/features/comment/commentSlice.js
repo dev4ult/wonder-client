@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from 'react-redux';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import commentService from './commentService';
 
 const initialState = {

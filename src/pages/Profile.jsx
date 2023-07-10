@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { logout, reset } from '../features/auth/authSlice';
 
 import NavbarStick from '../components/navbar/NavbarStick';
 import InputGroup from '../components/InputGroup';
@@ -14,6 +16,8 @@ import { MdArticle } from 'react-icons/md';
 
 function Profile() {
   const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
   const [profile, setProfile] = useState({
     username: '',
     email: '',
@@ -29,6 +33,14 @@ function Profile() {
       ...prev,
       [name]: value,
     }));
+  }
+
+  function onLogout() {
+    dispatch(logout());
+
+    dispatch(reset());
+
+    navigate('/travelspots');
   }
 
   function handleSubmit(e) {
@@ -54,22 +66,30 @@ function Profile() {
   return (
     <div>
       <NavbarStick />
-      <div className="mt-7 flex gap-8">
+      <div className="mt-7 flex gap-8 border-2 py-7">
         <form onSubmit={handleSubmit} className="flex px-8 flex-col gap-5 border-r-2">
-          <h2 className="font-semibold text-lg">Edit Profil</h2>
+          <div className="flex items-center gap-2 justify-between">
+            <h2 className="font-semibold text-lg">Profil User</h2>
+            <button type="button" onClick={onLogout} className="btn btn-sm btn-error rounded-full capitalize">
+              logout
+            </button>
+          </div>
           <div className="grid grid-flow-row grid-cols-2 gap-5">
-            <div className="form-control col-span-2">
-              <label htmlFor="" className="label-text text-black/30">
-                Foto
-              </label>
-              <div className="relative w-fit">
-                <DefaultUserPhoto size="5rem" className="rounded-md" isRoundedFull={false} />
-                <div className="tooltip absolute -top-2 -right-2 text-neutral" data-tip="Upload Foto">
-                  <label htmlFor="profile-photo" className="cursor-pointer">
-                    <AiFillSetting size="1.5rem" />
-                  </label>
+            <div className="form-control col-span-2 ">
+              <div>
+                <label htmlFor="" className="label-text text-black/30">
+                  Foto
+                </label>
+                <div className="relative w-fit">
+                  <DefaultUserPhoto size="5rem" className="rounded-md" isRoundedFull={false} />
+
+                  <div className="tooltip absolute -top-2 -right-2 text-neutral" data-tip="Upload Foto">
+                    <label htmlFor="profile-photo" className="cursor-pointer">
+                      <AiFillSetting size="1.5rem" />
+                    </label>
+                  </div>
+                  <input type="file" name="profile-photo" id="profile-photo" className="hidden" />
                 </div>
-                <input type="file" name="profile-photo" id="profile-photo" className="hidden" />
               </div>
             </div>
             <InputGroup label="Username" name="username" onChange={handleForm} value={username} placeholder="usernammu" />

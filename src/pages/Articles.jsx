@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { getArticles, reset } from '../features/article/articleSlise';
+import { getArticles, reset } from '../features/article/articleSlice';
 
 import Navbar from '../components/navbar/Navbar';
 

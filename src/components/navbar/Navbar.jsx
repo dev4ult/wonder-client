@@ -15,7 +15,7 @@ function Navbar({ displaySearch = true }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  function handleLogout() {
+  function onLogout() {
     dispatch(logout());
 
     dispatch(reset());
@@ -49,7 +49,7 @@ function Navbar({ displaySearch = true }) {
                   <Link to={'/profile'}>Profile</Link>
                 </li>
                 <li className="bg-red-500 rounded-lg">
-                  <button type="button" onClick={handleLogout} className="font-semibold text-white hover:text-white">
+                  <button type="button" onClick={onLogout} className="font-semibold text-white hover:text-white">
                     Logout
                   </button>
                 </li>
