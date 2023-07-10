@@ -70,9 +70,9 @@ function App() {
           {adminLogin && (
             <>
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/new_travelspot" element={<PostNewTravelSpot />} />
             </>
           )}
+          <Route path="/new_travelspot" element={<PostNewTravelSpot />} />
           {superadminLogin && <Route path="/manage_admin" element={<ManageAdmin />} />}
           <Route path="/articles" element={<Articles />} />
           <Route path="/article_detail:id" element={<ArticleDetail />} />

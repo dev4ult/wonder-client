@@ -8,6 +8,7 @@ import NavbarStick from '../components/navbar/NavbarStick';
 import InputGroup from '../components/InputGroup';
 import SelectGroup from '../components/SelectGroup';
 import DragNDropFIle from '../components/DragNDropFile';
+import MarkdownEditor from '../components/MarkdownEditor';
 
 function PostNewTravelSpot() {
   const { provinces, cities } = useSelector((state) => state.region);
@@ -15,7 +16,7 @@ function PostNewTravelSpot() {
   const dispatch = useDispatch();
 
   const [form, setForm] = useState({
-    photos: null,
+    photo: null,
     name: '',
     address: '',
     province: '',
@@ -24,6 +25,7 @@ function PostNewTravelSpot() {
     facilities: '',
     provinceId: -1,
     citiesId: -1,
+    blog: '',
   });
 
   useEffect(() => {
@@ -77,29 +79,29 @@ function PostNewTravelSpot() {
   function onFileChange(files) {
     setForm((prev) => ({
       ...prev,
-      photos: files,
+      photo: URL.createObjectURL(files),
     }));
   }
 
-  // useEffect(() => {
-  //   if (form.photos) {
-  //     console.log(form.photos[0].name);
-  //   }
-  // }, [form]);
-
-  const { provinceId, cityId } = form;
+  const { photo, provinceId, cityId, blog } = form;
 
   return (
     <>
       <NavbarStick />
       <div className="my-7">
-        <form onSubmit={onSubmitForm} className="grid grid-flow-row grid-cols-2 gap-5 p-7 mx-7 border-2 hover:shadow">
+        <form onSubmit={onSubmitForm} className="grid grid-flow-row grid-cols-2 gap-5 p-7 border-2 ">
           <div className="col-span-2">
             <h2 className="font-bold text-2xl">Objek Wisata Baru</h2>
             <p className="col-span-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum, facilis?</p>
           </div>
           <div className="col-span-2">
-            <DragNDropFIle label="Foto / Gambar" name="photos" onChange={onFileChange} />
+            {photo != null && (
+              <>
+                <h3 className="text-center">Image Preview</h3>
+                <img src={photo} alt="test" className="mx-auto max-w-xs mt-2" />
+              </>
+            )}
+            <DragNDropFIle label="Foto / Gambar" name="photo" onChange={onFileChange} />
           </div>
           <InputGroup label="Nama Objek Wisata" name="name" placeholder="Hutan Durian Runtuh" onChange={onTextChange} />
           <SelectGroup label="Provinsi" name="province" optionList={provinces} onChange={onProvinceSelect} value={provinceId} />
@@ -107,6 +109,17 @@ function PostNewTravelSpot() {
           <InputGroup label="Alamat Lengkap" name="address" placeholder="Jalan Kampung Durian Runtuh..." isTextArea={true} onChange={onTextChange} />
           <SelectGroup label="Kabupaten / Kota" name="city" optionList={cities} onChange={onCitySelect} value={cityId} />
           <InputGroup label="Fasilitas" name="facilities" placeholder="Kamar mandi 4x, ..." onChange={onTextChange} />
+          <MarkdownEditor
+            className="col-span-2"
+            value={blog}
+            onChange={(e) => {
+              setForm((prev) => ({
+                ...prev,
+                blog: e,
+              }));
+            }}
+            name="blog"
+          />
           <button type="submit" className="btn btn-primary rounded-full capitalize text-base col-span-2">
             Submit
           </button>
