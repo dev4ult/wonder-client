@@ -50,6 +50,12 @@ function App() {
         adminLogin: user.role == 'admin' || user.role == 'superadmin',
         superadminLogin: user.role == 'superadmin',
       });
+    } else {
+      setLoginState({
+        isLogin: false,
+        adminLogin: false,
+        superadminLogin: false,
+      });
     }
   }, [user]);
 

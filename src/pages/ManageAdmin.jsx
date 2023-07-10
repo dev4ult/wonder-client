@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { getAdmins, getAdminDetail, reset } from '../features/user/userSlice';
+import { getAdmins, getAdminDetail, addAdmin, reset } from '../features/user/userSlice';
 
 import NavbarStick from '../components/navbar/NavbarStick';
 import DefaultUserPhoto from '../components/DefaultUserPhoto';
 import SkeletonTableData from '../components/SkeletonTableData';
 import SearchInput from '../components/SearchInput';
-import InputGroup from '../components/InputGroup';
-import SelectGroup from '../components/SelectGroup';
+import ModalAddAdmin from '../components/modal/ModalAddAdmin';
+import ModalUpdateAdmin from '../components/modal/ModalUpdateAdmin';
 
 function ManageAdmin() {
   const { users, isSuccessfull, admin } = useSelector((state) => state.user);
@@ -16,7 +16,6 @@ function ManageAdmin() {
   const dispatch = useDispatch();
 
   const [admins, setAdmins] = useState(users);
-  const [formOpen, setFormOpen] = useState(false);
 
   const [formUpdate, setFormUpdate] = useState({
     photo: null,
@@ -27,13 +26,26 @@ function ManageAdmin() {
     nik: '',
   });
 
+  const [formAdd, setFormAdd] = useState({
+    photo: null,
+    fullname: '',
+    gender: '-1',
+    address: '',
+    phone: '',
+    nik: '',
+    username: '',
+    email: '',
+    password: '',
+    role: '-1',
+  });
+
   function onClickGetId(e) {
     const admin_id = e.target.id;
     const token_id = user.w_token_id;
 
     dispatch(getAdminDetail({ admin_id, token_id }));
 
-    document.getElementById('modal').showModal();
+    document.getElementById('modal-detail').showModal();
 
     dispatch(reset());
   }
@@ -64,138 +76,27 @@ function ManageAdmin() {
     }
   }, [users]);
 
-  const { photo, fullname, gender, address, phone, nik } = formUpdate;
-
-  function onTextChange(e) {
-    const { name, value } = e.target;
-
-    setFormUpdate((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  }
-
-  function onGenderSelect(e) {
-    const { value } = e.target;
-
-    setFormUpdate((prev) => ({
-      ...prev,
-      gender: value,
-    }));
-  }
-
-  function onSubmitForm(e) {
-    e.preventDefault();
-  }
-
-  const OpenUpdateForm = () => {
-    return (
-      <form onSubmit={onSubmitForm}>
-        <h2 className="text-xl font-semibold mb-3">Form Edit Data Admin</h2>
-        <div className="grid grid-flow-row grid-cols-2 gap-5">
-          <InputGroup label="Nama Lengkap" name="fullname" placeholder="Isi Nama Lengkap" value={fullname} onChange={onTextChange} />
-          <InputGroup label="Nomor Telepon" name="phone" placeholder="Isi Nomor Telepon" value={phone} onChange={onTextChange} />
-          <InputGroup label="NIK" name="nik" type="number" placeholder="Isi NIK" value={nik} onChange={onTextChange} />
-          <SelectGroup
-            label="Jenis Kelamin"
-            name="gender"
-            optionList={[
-              { id: 'female', name: 'Perempuan' },
-              { id: 'male', name: 'Laki-laki' },
-            ]}
-            value={gender}
-            onChange={onGenderSelect}
-          />
-          <InputGroup label="Alamat" isTextArea={true} name="fullname" placeholder="Isi Alamat" value={address} onChange={onTextChange} />
-        </div>
-        <button type="button" onClick={setFormOpen.bind(null, false)} className="btn btn-sm btn-error mt-3 btn-outline">
-          cancel
-        </button>
-      </form>
-    );
-  };
-
-  const DialogModal = () => {
-    return (
-      <dialog id="modal" className="modal">
-        <form method="dialog" className={`modal-box ${formOpen ? 'max-w-2xl' : undefined}`}>
-          {admin != null && isSuccessfull ? (
-            formOpen ? (
-              OpenUpdateForm()
-            ) : (
-              <>
-                <div className="flex gap-3 items-center justify-between">
-                  <div>
-                    <h3 className="font-bold text-lg">{admin.nama_lengkap}</h3>
-                    <p className="text-sm text-black/30">
-                      <span className="badge badge-info">{admin.no_telepon}</span>
-                    </p>
-                  </div>
-                  <DefaultUserPhoto size="3rem" isRoundedFull={false} className="rounded" />
-                </div>
-                <hr className="my-3" />
-                <div className="grid grid-flow-row grid-cols-2 gap-2">
-                  <div>
-                    <label className="text-sm text-black/30">Username</label>
-                    <p className="font-medium">{admin.user.username}</p>
-                  </div>
-                  <div>
-                    <label className="text-sm text-black/30">Email</label>
-                    <p className="font-medium">{admin.user.email}</p>
-                  </div>
-                  <div>
-                    <label className="text-sm text-black/30">NIK</label>
-                    <p className="font-medium">{admin.nik}</p>
-                  </div>
-                  <div>
-                    <label className="text-sm text-black/30">Jenis Kelamin</label>
-                    <p className="font-medium">{admin.jenis_kelamin}</p>
-                  </div>
-                  <div>
-                    <label className="text-sm text-black/30">Bio</label>
-                    <p className="font-medium">{admin.user.bio ? admin.user.bio : '...'}</p>
-                  </div>
-                  <div>
-                    <label className="text-sm text-black/30">Alamat</label>
-                    <p className="font-medium">{admin.alamat}</p>
-                  </div>
-                </div>
-                <div className="modal-action">
-                  <button type="button" onClick={setFormOpen.bind(null, true)} className="btn btn-sm btn-warning">
-                    Edit
-                  </button>
-                  <button className="btn btn-sm btn-neutral btn-outline">Tutup</button>
-                </div>
-              </>
-            )
-          ) : (
-            <h2>FETCHING ADMIN DETAIL...</h2>
-          )}
-        </form>
-      </dialog>
-    );
-  };
-
   const TableDataAdmins = () => {
-    return admins.map((admin) => (
-      <tr key={admin.id}>
+    return admins.map((admin, index) => (
+      <tr key={index + 1}>
+        <td>{index + 1}</td>
         <td>
           <div className="flex items-center space-x-3">
             <div className="avatar">
-              <DefaultUserPhoto isRoundedFull={false} className="rounded" size="2rem" />
+              <DefaultUserPhoto isRoundedFull={false} className="rounded" size="2.5rem" />
             </div>
             <div>
-              <div className="font-bold">{admin.nama_lengkap}</div>
+              <div className="font-bold text-base">{admin.nama_lengkap}</div>
               <div className="text-sm opacity-50">{admin.no_telepon}</div>
             </div>
           </div>
         </td>
         <td>
-          <span className="badge badge-ghost">{admin.nik}</span>
+          <span className="badge badge-ghost badge-lg">{admin.nik}</span>
         </td>
-        <td>{admin.jenis_kelamin == 'male' ? 'Laki-laki' : 'Perempuan'}</td>
+        <td className="text-base">{admin.jenis_kelamin == 'male' ? 'Laki-laki' : 'Perempuan'}</td>
         <th>
-          <button type="button" onClick={onClickGetId} id={admin.id} className="btn btn-outline btn-xs">
+          <button type="button" onClick={onClickGetId} id={admin.id} className="btn btn-outline btn-sm capitalize rounded-full">
             details
           </button>
         </th>
@@ -211,23 +112,49 @@ function ManageAdmin() {
     return <>{list}</>;
   };
 
+  function onUpdateForm(e) {
+    e.preventDefault();
+  }
+
+  function onAddForm(e) {
+    e.preventDefault();
+
+    dispatch(
+      addAdmin({
+        admin_detail: formAdd,
+        token_id: user.w_token_id,
+      })
+    );
+
+    dispatch(reset());
+
+    // console.log(formAdd, user.w_token_id);
+  }
+
   return (
     <div>
       <NavbarStick displaySearch={false} />
       <div className="mt-7">
         <div className="mb-4 flex gap-4 justify-between items-center">
-          <button type="button" className="btn btn-sm rounded-full btn-primary">
+          <button
+            type="button"
+            onClick={() => {
+              document.getElementById('modal-add').showModal();
+            }}
+            className="btn capitalize btn-sm rounded-full btn-primary px-4"
+          >
             registrasi admin +
           </button>
-          <SearchInput placeholder="Cari Admin..." size="sm" />
+          <SearchInput placeholder="Cari Admin..." />
         </div>
         <div className="overflow-x-auto">
           <table className="table">
             <thead>
-              <tr>
-                <th>Nama </th>
-                <th>NIK</th>
-                <th>Jenis Kelamin</th>
+              <tr className="bg-base-300">
+                <th></th>
+                <th className="text-base font-medium">Nama </th>
+                <th className="text-base font-medium">NIK</th>
+                <th className="text-base font-medium">Jenis Kelamin</th>
                 <th></th>
               </tr>
             </thead>
@@ -235,7 +162,8 @@ function ManageAdmin() {
           </table>
         </div>
       </div>
-      {DialogModal()}
+      <ModalAddAdmin form={formAdd} setForm={setFormAdd} onSubmit={onAddForm} />
+      <ModalUpdateAdmin data={admin} isLoaded={isSuccessfull} form={formUpdate} setForm={setFormUpdate} onSubmit={onUpdateForm} />
     </div>
   );
 }

@@ -2,6 +2,9 @@ function SkeletonTableData() {
   return (
     <tr className="animate-pulse">
       <td>
+        <div className="bg-gray-300 h-4 w-4 rounded-full"></div>
+      </td>
+      <td>
         <div className="flex items-center space-x-3">
           <div className="bg-gray-300 rounded w-14 h-14"></div>
           <div>

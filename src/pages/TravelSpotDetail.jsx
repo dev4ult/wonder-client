@@ -1,17 +1,17 @@
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import { getTravelSpotDetail, reset } from "../features/travelspot/travelSpotSlice";
+import { getTravelSpotDetail, reset } from '../features/travelspot/travelSpotSlice';
 
-import NavbarStick from "../components/navbar/NavbarStick";
-import Comment from "../components/Comment";
-import SkeletonPost from "../components/SkeletonPost";
+import NavbarStick from '../components/navbar/NavbarStick';
+import Comment from '../components/Comment';
+import SkeletonPost from '../components/SkeletonPost';
 
-import { AiOutlineHeart, AiOutlineComment } from "react-icons/ai";
-import { BsFillPersonFill, BsSendFill } from "react-icons/bs";
-import NoImage from "../images/no-image.webp";
+import { AiOutlineHeart, AiOutlineComment } from 'react-icons/ai';
+import { BsFillPersonFill, BsSendFill } from 'react-icons/bs';
+import NoImage from '../images/no-image.webp';
 
 function TravelSpotDetail() {
   const { travelSpots, isLoading, isSuccessfull } = useSelector((state) => state.travelspot);
@@ -48,7 +48,7 @@ function TravelSpotDetail() {
                   <span className="text-lg">3</span>
                 </a>
               </div>
-              <Link to={"/profile"} className="flex gap-2 items-center hover:text-black cursor-pointer">
+              <Link to={'/profile'} className="flex gap-2 items-center hover:text-black cursor-pointer">
                 <div className="p-1 rounded-full bg-black/10 overflow-hidden">
                   <BsFillPersonFill size="1.3rem" />
                 </div>
