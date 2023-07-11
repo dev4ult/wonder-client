@@ -13,10 +13,12 @@ import Dashboard from './pages/Dashboard';
 import Articles from './pages/Articles';
 import ArticleDetail from './pages/ArticleDetail';
 import PostNewArticle from './pages/PostNewArticle';
+import AdminArticles from './pages/AdminArticles';
 
 import TravelSpots from './pages/TravelSpots';
 import TravelSpotDetail from './pages/TravelSpotDetail';
 import PostNewTravelSpot from './pages/PostNewTravelSpot';
+import AdminTravelSpots from './pages/AdminTravelSpots';
 
 import ManageAdmin from './pages/ManageAdmin';
 
@@ -72,6 +74,8 @@ function App() {
           <Route path="/new_travelspot" element={<PostNewTravelSpot />} />
           {superadminLogin && ''}
           <Route path="/manage_admin" element={<ManageAdmin />} />
+          <Route path="/manage_article" element={<AdminArticles />} />
+          <Route path="/manage_travelspot" element={<AdminTravelSpots />} />
           <Route path="/articles" element={<Articles />} />
           <Route path="/article_detail:id" element={<ArticleDetail />} />
           <Route path="/new_article" element={<PostNewArticle />} />

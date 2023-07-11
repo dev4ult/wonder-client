@@ -14,11 +14,11 @@ function ModalAddAdmin({ form, setForm, onSubmit }) {
     }));
   }
 
-  function onPhotoUpload(e) {
-    console.log(e.target.files);
+  function onPhotoUpload(file) {
+    console.log(file);
     setForm((prev) => ({
       ...prev,
-      photo: e.target.files[0],
+      photo: file,
     }));
   }
 
@@ -28,8 +28,8 @@ function ModalAddAdmin({ form, setForm, onSubmit }) {
         <h2 className="badge badge-neutral badge-md">Tambah Data Admin</h2>
         <div className="grid grid-flow-row grid-cols-2 gap-5 my-4">
           <div className="col-span-2">
-            {/* <DragNDropFIle label="Foto Profil" name="photo" onChange={onPhotoUpload} /> */}
-            <input type="file" name="photo" onChange={onPhotoUpload} />
+            <DragNDropFIle label="Foto Profil" name="photo" onChange={onPhotoUpload} />
+            {/* <input type="file" name="photo" onChange={onPhotoUpload} /> */}
           </div>
           <InputGroup label="Nama Lengkap" name="fullname" placeholder="Isi Nama Lengkap" value={fullname} onChange={onChangeGroup} />
           <InputGroup label="Nomor Telepon" name="phone" placeholder="Isi Nomor Telepon" value={phone} onChange={onChangeGroup} />
