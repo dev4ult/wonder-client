@@ -24,7 +24,7 @@ function Navbar({ displaySearch = true }) {
   }
 
   return (
-    <div className="flex justify-between py-7 border-y-2 gap-7 items-center ">
+    <div className="flex justify-between py-7 border-b-2 gap-7 items-center ">
       <Link to="/" className="text-lg font-bold uppercase relative font-spacemono">
         Discover
         <div className="w-3 h-3 rounded-full absolute top-0 -right-4 bg-accent"></div>

@@ -66,8 +66,10 @@ function ManageAdmin() {
   }, [admin]);
 
   useEffect(() => {
-    dispatch(getAdmins(user.w_token_id));
-    dispatch(reset());
+    if (user != null) {
+      dispatch(getAdmins(user.w_token_id));
+      dispatch(reset());
+    }
   }, []);
 
   useEffect(() => {

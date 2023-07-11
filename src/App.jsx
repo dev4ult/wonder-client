@@ -37,7 +37,7 @@ function App() {
   const { isLogin, adminLogin, superadminLogin } = loginState;
 
   useEffect(() => {
-    if (!isLogin) {
+    if (!isLogin && user != null) {
       const { w_token_id: token_id, w_user_id: user_id } = user;
       dispatch(setUserDetail({ token_id, user_id }));
     }
@@ -81,8 +81,8 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="*" element={<NotFound404 />} />
         </Routes>
-        <ToastContainer />
       </div>
+      <ToastContainer />
     </Router>
   );
 }

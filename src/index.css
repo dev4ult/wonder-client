@@ -7,3 +7,12 @@
 html {
   scroll-behavior: smooth;
 }
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: black;
+}
