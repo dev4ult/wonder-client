@@ -3,7 +3,7 @@ import SelectGroup from '../SelectGroup';
 import DragNDropFIle from '../DragNDropFile';
 
 function ModalAddAdmin({ form, setForm, onSubmit }) {
-  const { fullname, gender, address, phone, nik, username, email, password, role } = form;
+  const { fullname, gender, address, phone, nik, username, email, password, role, photo } = form;
 
   function onChangeGroup(e) {
     const { name, value } = e.target;
@@ -15,11 +15,14 @@ function ModalAddAdmin({ form, setForm, onSubmit }) {
   }
 
   function onPhotoUpload(file) {
-    console.log(file);
     setForm((prev) => ({
       ...prev,
       photo: file,
     }));
+  }
+
+  function previewPhoto(file) {
+    return URL.createObjectURL(file);
   }
 
   return (
@@ -27,13 +30,18 @@ function ModalAddAdmin({ form, setForm, onSubmit }) {
       <form onSubmit={onSubmit} encType="multipart/form-data" method="dialog" className="modal-box max-w-xl">
         <h2 className="badge badge-neutral badge-md">Tambah Data Admin</h2>
         <div className="grid grid-flow-row grid-cols-2 gap-5 my-4">
-          <div className="col-span-2">
+          <div className={`col-span-2 ${photo != null ? 'flex gap-3' : undefined}`}>
             <DragNDropFIle label="Foto Profil" name="photo" onChange={onPhotoUpload} />
-            {/* <input type="file" name="photo" onChange={onPhotoUpload} /> */}
+            {photo != null && (
+              <div className="text-center">
+                <span className=" text-black/30 text-sm">Preview</span>
+                <img src={previewPhoto(photo)} alt="profil" className="w-24 h-24 object-cover border-2 rounded mx-auto" />
+              </div>
+            )}
           </div>
-          <InputGroup label="Nama Lengkap" name="fullname" placeholder="Isi Nama Lengkap" value={fullname} onChange={onChangeGroup} />
-          <InputGroup label="Nomor Telepon" name="phone" placeholder="Isi Nomor Telepon" value={phone} onChange={onChangeGroup} />
-          <InputGroup label="NIK" name="nik" type="number" placeholder="Isi NIK" value={nik} onChange={onChangeGroup} />
+          <InputGroup label="Nama Lengkap" name="fullname" placeholder="Isi Nama Lengkap" value={fullname} onChange={onChangeGroup} required />
+          <InputGroup label="Nomor Telepon" name="phone" placeholder="Isi Nomor Telepon" value={phone} onChange={onChangeGroup} required />
+          <InputGroup label="NIK" name="nik" type="number" placeholder="Isi NIK" value={nik} onChange={onChangeGroup} required />
           <SelectGroup
             label="Jenis Kelamin"
             name="gender"
@@ -43,6 +51,7 @@ function ModalAddAdmin({ form, setForm, onSubmit }) {
             ]}
             value={gender}
             onChange={onChangeGroup}
+            required
           />
           <div className="col-span-2">
             <InputGroup label="Alamat" isTextArea={true} name="address" placeholder="Isi Alamat" value={address} onChange={onChangeGroup} />
@@ -60,6 +69,7 @@ function ModalAddAdmin({ form, setForm, onSubmit }) {
             ]}
             value={role}
             onChange={onChangeGroup}
+            required
           />
         </div>
         <div className="flex gap-2 justify-end">

@@ -1,4 +1,4 @@
-function SelectGroup({ label, name, optionList, onChange, value = -1 }) {
+function SelectGroup({ label, name, optionList, onChange, value, required = false }) {
   const options = (optionList) => {
     return optionList.map((option) => {
       return (
@@ -14,8 +14,8 @@ function SelectGroup({ label, name, optionList, onChange, value = -1 }) {
       <label htmlFor={name} className="text-sm text-black/30">
         {label}
       </label>
-      <select id={name} name={name} onChange={onChange} value={value} className="select border-gray-300">
-        <option disabled value="-1">
+      <select id={name} name={name} onChange={onChange} value={value} className="select border-gray-300" required={required}>
+        <option value="" disabled>
           Pilih {label}
         </option>
         {optionList.length != 0 ? (

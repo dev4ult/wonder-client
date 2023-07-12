@@ -64,25 +64,30 @@ function App() {
   return (
     <Router>
       <div className="container mx-auto font-poppins max-w-5xl px-4">
-        {adminLogin && <AsideNavbar />}
+        {superadminLogin && <AsideNavbar />}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/auth" element={<Login />} />
           <Route path="/signup" element={<Registration />} />
-          {adminLogin && <></>}
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/new_travelspot" element={<PostNewTravelSpot />} />
-          {superadminLogin && ''}
-          <Route path="/manage_admin" element={<ManageAdmin />} />
-          <Route path="/manage_article" element={<AdminArticles />} />
-          <Route path="/manage_travelspot" element={<AdminTravelSpots />} />
+          {adminLogin && (
+            <>
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/new_travelspot" element={<PostNewTravelSpot />} />
+            </>
+          )}
+          {superadminLogin && (
+            <>
+              <Route path="/manage_admin" element={<ManageAdmin />} />
+              <Route path="/manage_article" element={<AdminArticles />} />
+              <Route path="/manage_travelspot" element={<AdminTravelSpots />} />
+            </>
+          )}
           <Route path="/articles" element={<Articles />} />
           <Route path="/article_detail:id" element={<ArticleDetail />} />
           <Route path="/new_article" element={<PostNewArticle />} />
           <Route path="/travelspots" element={<TravelSpots />} />
           <Route path="/travelspot_detail/:id" element={<TravelSpotDetail />} />
-          {isLogin && ''}
-          <Route path="/profile" element={<Profile />} />
+          {isLogin && <Route path="/profile" element={<Profile />} />}
           <Route path="*" element={<NotFound404 />} />
         </Routes>
       </div>
