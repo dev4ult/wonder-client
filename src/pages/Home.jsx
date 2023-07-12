@@ -7,8 +7,8 @@ import Navbar from '../components/navbar/Navbar';
 
 import { PiArticleMediumDuotone } from 'react-icons/pi';
 import { MdTravelExplore } from 'react-icons/md';
-import SkeletonSmallCard from '../components/card/SkeletonSmallCard';
-import SkeletonArticleCard from '../components/card/SkeletonArticleCard';
+import SkeletonSmallCard from '../components/skeleton/SkeletonSmallCard';
+import SkeletonArticleCard from '../components/skeleton/SkeletonArticleCard';
 
 function Home() {
   function SkeletonCards() {

@@ -6,9 +6,9 @@ import { getTravelSpots, reset } from '../features/travelspot/travelSpotSlice';
 import Navbar from '../components/navbar/Navbar';
 
 import Card from '../components/card/Card';
-import SkeletonCard from '../components/card/SkeletonCard';
+import SkeletonCard from '../components/skeleton/SkeletonCard';
 import SmallCard from '../components/card/SmallCard';
-import SkeletonSmallCard from '../components/card/SkeletonSmallCard';
+import SkeletonSmallCard from '../components/skeleton/SkeletonSmallCard';
 
 import CategoryButton from '../components/CategoryButton';
 

@@ -1,10 +1,12 @@
 import { useState } from 'react';
 
+import { IoClose } from 'react-icons/io5';
+
 import InputGroup from '../InputGroup';
 import SelectGroup from '../SelectGroup';
 import DragNDropFIle from '../DragNDropFile';
 import DefaultUserPhoto from '../DefaultUserPhoto';
-import { IoClose } from 'react-icons/io5';
+import SkeletonAdminDetail from '../skeleton/SkeletonAdminDetail';
 
 const UserPhotoUrl = import.meta.env.VITE_USERPHOTOURL;
 
@@ -172,7 +174,6 @@ function ModalUpdateAdmin({ data, isLoaded, form, setForm, onSubmit, onConfirmDe
                 </div>
               </div>
               <hr className="my-3" />
-
               <div className="modal-action">
                 <button type="button" onClick={setFormOpen.bind(null, true)} className="btn btn-sm btn-warning rounded-full capitalize">
                   Edit
@@ -193,7 +194,7 @@ function ModalUpdateAdmin({ data, isLoaded, form, setForm, onSubmit, onConfirmDe
             </>
           )
         ) : (
-          <h2>FETCHING ADMIN DETAIL...</h2>
+          <SkeletonAdminDetail />
         )}
       </form>
     </dialog>

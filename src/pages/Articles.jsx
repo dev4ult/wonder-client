@@ -5,9 +5,9 @@ import { getArticles, reset } from '../features/article/articleSlice';
 import Navbar from '../components/navbar/Navbar';
 
 import ArticleCard from '../components/card/ArticleCard';
-import SkeletonArticleCard from '../components/card/SkeletonArticleCard';
+import SkeletonArticleCard from '../components/skeleton/SkeletonArticleCard';
 import SmallCard from '../components/card/SmallCard';
-import SkeletonSmallCard from '../components/card/SkeletonSmallCard';
+import SkeletonSmallCard from '../components/skeleton/SkeletonSmallCard';
 
 import CategoryButton from '../components/CategoryButton';
 

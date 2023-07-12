@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { getAdmins, getAdminDetail, addAdmin, deleteAdmin, updateAdmin, reset } from '../features/user/userSlice';
 
 import NavbarStick from '../components/navbar/NavbarStick';
-import SkeletonTableData from '../components/SkeletonTableData';
+import SkeletonTableData from '../components/skeleton/SkeletonTableData';
 import SearchInput from '../components/SearchInput';
 import ModalAddAdmin from '../components/modal/ModalAddAdmin';
 import ModalUpdateAdmin from '../components/modal/ModalUpdateAdmin';

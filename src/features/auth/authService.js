@@ -12,11 +12,12 @@ const login = async (email, password) => {
 
   if (response.data) {
     const { token_id } = response.data;
-    const { username, id, email, role } = response.data.user;
+    const { username, id, email, role, foto } = response.data.user;
 
     setCookie('w_user_id', id, 30);
     setCookie('w_username', username, 30);
     setCookie('w_token_id', token_id, 30);
+    setCookie('w_foto', foto, 30);
 
     const user = {
       w_user_id: id,
@@ -24,6 +25,7 @@ const login = async (email, password) => {
       w_token_id: token_id,
       email,
       role,
+      foto,
     };
 
     return user;
@@ -40,7 +42,7 @@ const setUserDetail = async (token_id, user_id) => {
     },
   });
 
-  const { username, email, role, bio } = response.data.data;
+  const { username, email, role, bio, foto } = response.data.data;
 
   const user = {
     w_user_id: user_id,
@@ -49,6 +51,7 @@ const setUserDetail = async (token_id, user_id) => {
     email,
     role,
     bio,
+    foto,
   };
 
   return user;
