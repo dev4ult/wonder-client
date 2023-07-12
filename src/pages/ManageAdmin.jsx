@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
-import { getAdmins, getAdminDetail, addAdmin, deleteAdmin, reset } from '../features/user/userSlice';
+import { getAdmins, getAdminDetail, addAdmin, deleteAdmin, updateAdmin, reset } from '../features/user/userSlice';
 
 import NavbarStick from '../components/navbar/NavbarStick';
 import SkeletonTableData from '../components/SkeletonTableData';
@@ -33,6 +33,10 @@ const initialFormUpdateState = {
   address: '',
   phone: '',
   nik: '',
+  username: '',
+  email: '',
+  role: '',
+  bio: '',
 };
 
 function ManageAdmin() {
@@ -57,16 +61,20 @@ function ManageAdmin() {
   useEffect(() => {
     if (admin != null) {
       const { id, nama_lengkap, no_telepon, alamat, jenis_kelamin, nik } = admin;
-      const { foto } = admin.user;
+      const { username, email, role, bio, foto } = admin.user;
 
       setFormUpdate({
         id,
-        photo: foto != null ? `${UserPhotoUrl}/${foto}` : null,
+        photo: foto != null ? foto : null,
         fullname: nama_lengkap,
         gender: jenis_kelamin,
         address: alamat,
         phone: no_telepon,
         nik,
+        username,
+        email,
+        role,
+        bio,
       });
     }
   }, [admin]);
@@ -86,6 +94,13 @@ function ManageAdmin() {
         setFormAdd(initialFormAddState);
       }
 
+      if (message == `${formUpdate.fullname} berhasil diubah datanya!`) {
+        const admin_id = formUpdate.id;
+        const token_id = user.w_token_id;
+
+        dispatch(getAdminDetail({ admin_id, token_id }));
+      }
+
       dispatch(getAdmins(user.w_token_id));
       dispatch(reset());
     }
@@ -97,13 +112,21 @@ function ManageAdmin() {
       errorMessages.forEach((message) => {
         toast.error(message);
       });
-
-      dispatch(reset());
     }
   }, [isError, errorMessages]);
 
   function onUpdateForm(e) {
     e.preventDefault();
+
+    dispatch(
+      updateAdmin({
+        admin_detail: formUpdate,
+        admin_id: formUpdate.id,
+        token_id: user.w_token_id,
+      })
+    );
+
+    dispatch(reset());
   }
 
   function onAddForm(e) {

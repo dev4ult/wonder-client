@@ -43,18 +43,34 @@ const addAdmin = async (admin_detail, token_id) => {
 };
 
 const updateAdmin = async (admin_detail, admin_id, token_id) => {
-  const { fullname: nama_lengkap, gender: jenis_kelamin, phone: no_telepon, address: alamat, nik, photo: foto } = admin_detail;
+  const { fullname: nama_lengkap, gender: jenis_kelamin, phone: no_telepon, address: alamat, nik, photo: foto, username, email, role, bio } = admin_detail;
 
-  const response = await axios.post(
-    `${endpoint}/admin/${admin_id}`,
-    { _method: 'PUT', nama_lengkap, jenis_kelamin, no_telepon, alamat, nik, foto },
-    {
-      headers: {
-        'content-type': 'application/json',
-        Authorization: `Bearer ${token_id}`,
-      },
-    }
-  );
+  const data = {
+    _method: 'PUT',
+    nama_lengkap,
+    jenis_kelamin,
+    no_telepon,
+    alamat,
+    nik,
+    username,
+    email,
+    role,
+    bio,
+  };
+
+  if (foto != null && typeof foto != 'string') {
+    data['foto'] = foto;
+  }
+
+  console.log(foto);
+
+  const response = await axios.post(`${endpoint}/admin/${admin_id}`, data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Accept: 'application/json',
+      Authorization: `Bearer ${token_id}`,
+    },
+  });
 
   return response.data.message;
 };

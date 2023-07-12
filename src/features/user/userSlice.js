@@ -19,7 +19,7 @@ const getAdmins = createAsyncThunk('user/admins', async (token_id, thunkApi) => 
   }
 });
 
-const getAdminDetail = createAsyncThunk('user/admindetail', async (data, thunkApi) => {
+const getAdminDetail = createAsyncThunk('user/admin-detail', async (data, thunkApi) => {
   try {
     const { token_id, admin_id } = data;
     return await userService.getAdminDetail(admin_id, token_id);
@@ -28,7 +28,7 @@ const getAdminDetail = createAsyncThunk('user/admindetail', async (data, thunkAp
   }
 });
 
-const addAdmin = createAsyncThunk('user/addadmin', async (data, thunkApi) => {
+const addAdmin = createAsyncThunk('user/add-admin', async (data, thunkApi) => {
   try {
     const { admin_detail, token_id } = data;
     return await userService.addAdmin(admin_detail, token_id);
@@ -37,7 +37,7 @@ const addAdmin = createAsyncThunk('user/addadmin', async (data, thunkApi) => {
   }
 });
 
-const deleteAdmin = createAsyncThunk('user/deleteadmin', async (data, thunkApi) => {
+const deleteAdmin = createAsyncThunk('user/delete-admin', async (data, thunkApi) => {
   try {
     const { admin_id, token_id } = data;
     return await userService.deleteAdmin(admin_id, token_id);
@@ -46,7 +46,16 @@ const deleteAdmin = createAsyncThunk('user/deleteadmin', async (data, thunkApi) 
   }
 });
 
-export { getAdmins, getAdminDetail, addAdmin, deleteAdmin };
+const updateAdmin = createAsyncThunk('user/update-admin', async (data, thunkApi) => {
+  try {
+    const { admin_detail, admin_id, token_id } = data;
+    return await userService.updateAdmin(admin_detail, admin_id, token_id);
+  } catch (err) {
+    return thunkApi.rejectWithValue(err.response.data.data);
+  }
+});
+
+export { getAdmins, getAdminDetail, addAdmin, deleteAdmin, updateAdmin };
 
 const userSlice = createSlice({
   name: 'user',
@@ -117,6 +126,22 @@ const userSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
+      })
+      .addCase(updateAdmin.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateAdmin.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccessfull = true;
+        state.message = action.payload;
+      })
+      .addCase(updateAdmin.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.errorMessages = [];
+        for (const key in action.payload) {
+          state.errorMessages.push(action.payload[key][0]);
+        }
       });
   },
 });
