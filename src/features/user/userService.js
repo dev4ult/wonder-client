@@ -86,21 +86,35 @@ const deleteAdmin = async (admin_id, token_id) => {
   return response.data.message;
 };
 
-const updateProfile = async (data, user_id, token_id) => {
-  const response = await axios.post(
-    `${endpoint}/profile/${user_id}`,
-    {},
-    {
-      headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${token_id}`,
-      },
-    }
-  );
+const updateProfile = async (profile_detail, user_id, token_id) => {
+  const { photo: foto, username, email, bio, new_password: password, old_password } = profile_detail;
 
-  return response.data;
+  const data = {
+    username,
+    email,
+    bio,
+  };
+
+  if (foto != null || typeof foto != 'string') {
+    data['foto'] = foto;
+  }
+
+  if (password != '' || old_password != '') {
+    data['password'] = password;
+    data['old_password'] = old_password;
+  }
+
+  const response = await axios.post(`${endpoint}/profile/${user_id}`, data, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'multipart/form-data',
+      Authorization: `Bearer ${token_id}`,
+    },
+  });
+
+  return response.data.message;
 };
 
-const userService = { getAdmins, getAdminDetail, addAdmin, updateAdmin, deleteAdmin };
+const userService = { getAdmins, getAdminDetail, addAdmin, updateAdmin, deleteAdmin, updateProfile };
 
 export default userService;

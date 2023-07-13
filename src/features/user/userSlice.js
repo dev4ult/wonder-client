@@ -55,7 +55,16 @@ const updateAdmin = createAsyncThunk('user/update-admin', async (data, thunkApi)
   }
 });
 
-export { getAdmins, getAdminDetail, addAdmin, deleteAdmin, updateAdmin };
+const updateProfile = createAsyncThunk('user/update-profile', async (data, thunkApi) => {
+  try {
+    const { profile_detail, user_id, token_id } = data;
+    return await userService.updateProfile(profile_detail, user_id, token_id);
+  } catch (err) {
+    return thunkApi.rejectWithValue(err.response.data.data);
+  }
+});
+
+export { getAdmins, getAdminDetail, addAdmin, deleteAdmin, updateAdmin, updateProfile };
 
 const userSlice = createSlice({
   name: 'user',
@@ -136,6 +145,22 @@ const userSlice = createSlice({
         state.message = action.payload;
       })
       .addCase(updateAdmin.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.errorMessages = [];
+        for (const key in action.payload) {
+          state.errorMessages.push(action.payload[key][0]);
+        }
+      })
+      .addCase(updateProfile.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccessfull = true;
+        state.message = action.payload;
+      })
+      .addCase(updateProfile.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.errorMessages = [];

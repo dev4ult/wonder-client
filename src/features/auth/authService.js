@@ -25,7 +25,7 @@ const login = async (email, password) => {
       w_token_id: token_id,
       email,
       role,
-      foto,
+      w_foto: foto,
     };
 
     return user;
@@ -51,7 +51,7 @@ const setUserDetail = async (token_id, user_id) => {
     email,
     role,
     bio,
-    foto,
+    w_foto: foto,
   };
 
   return user;

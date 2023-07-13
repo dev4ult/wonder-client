@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { logout, reset } from '../features/auth/authSlice';
+import { updateProfile } from '../features/user/userSlice';
 
 import NavbarStick from '../components/navbar/NavbarStick';
 import InputGroup from '../components/InputGroup';
@@ -14,11 +15,14 @@ import { AiFillHeart, AiFillSetting } from 'react-icons/ai';
 import { FaComment } from 'react-icons/fa';
 import { MdArticle } from 'react-icons/md';
 
+const UserPhotoUrl = import.meta.env.VITE_USERPHOTOURL;
+
 function Profile() {
-  const { user } = useSelector((state) => state.auth);
+  const { user, isSuccessfull } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const [profile, setProfile] = useState({
+    photo: null,
     username: '',
     email: '',
     bio: '',
@@ -26,7 +30,7 @@ function Profile() {
     old_password: '',
   });
 
-  function handleForm(e) {
+  function onTextChange(e) {
     const { name, value } = e.target;
 
     setProfile((prev) => ({
@@ -50,18 +54,26 @@ function Profile() {
   }
 
   useEffect(() => {
-    if (user != null) {
+    if (user != null && isSuccessfull) {
       setProfile({
+        photo: `${UserPhotoUrl}/${user.w_foto}`,
         username: user.w_username,
-        email: user.w_email,
-        bio: user.bio ? user.bio : '',
+        email: user.email,
+        bio: user.bio != null ? user.bio : '',
         new_password: '',
         old_password: '',
       });
     }
-  }, [user]);
+  }, [user, isSuccessfull]);
 
-  const { username, email, bio, new_password, old_password } = profile;
+  function onUploadPhoto(file) {
+    setProfile((prev) => ({
+      ...prev,
+      photo: URL.createObjectURL(file),
+    }));
+  }
+
+  const { username, email, bio, new_password, old_password, photo } = profile;
 
   return (
     <div>
@@ -81,22 +93,23 @@ function Profile() {
                   Foto
                 </label>
                 <div className="relative w-fit">
-                  <DefaultUserPhoto size="5rem" className="rounded-md" isRoundedFull={false} />
+                  {photo != null ? <img src={photo} alt="profil" className="w-[5.5rem] h-[5.5rem] rounded bg-cover" /> : <DefaultUserPhoto size="5rem" className="rounded-md" isRoundedFull={false} />}
+                  {console.log(photo)}
 
                   <div className="tooltip absolute -top-2 -right-2 text-neutral" data-tip="Upload Foto">
                     <label htmlFor="profile-photo" className="cursor-pointer">
                       <AiFillSetting size="1.5rem" />
                     </label>
                   </div>
-                  <input type="file" name="profile-photo" id="profile-photo" className="hidden" />
+                  <input type="file" name="photo" id="photo" onChange={onUploadPhoto} className="hidden" />
                 </div>
               </div>
             </div>
-            <InputGroup label="Username" name="username" onChange={handleForm} value={username} placeholder="usernammu" />
-            <InputGroup label="Password Baru" name="new_password" onChange={handleForm} type="password" value={new_password} placeholder="passwordBaru323" />
-            <InputGroup label="Email" name="email" onChange={handleForm} type="email" value={email} placeholder="emailmu@example.com" />
-            <InputGroup label="Konfirmasi Password Lama" name="old_password" onChange={handleForm} type="password" value={old_password} placeholder="passwordLama342" />
-            <InputGroup label="Bio" name="bio" onChange={handleForm} value={bio} isTextArea={true} placeholder="Petualang ..." />
+            <InputGroup label="Username" name="username" onChange={onTextChange} value={username} placeholder="usernammu" required />
+            <InputGroup label="Password Baru" name="new_password" onChange={onTextChange} type="password" value={new_password} placeholder="passwordBaru323" />
+            <InputGroup label="Email" name="email" onChange={onTextChange} type="email" value={email} placeholder="emailmu@example.com" required />
+            <InputGroup label="Konfirmasi Password Lama" name="old_password" onChange={onTextChange} type="password" value={old_password} placeholder="passwordLama342" />
+            <InputGroup label="Bio" name="bio" onChange={onTextChange} value={bio} isTextArea={true} placeholder="Petualang ..." />
           </div>
           <div className="flex gap-2">
             <button type="submit" className="btn btn-primary btn-outline px-5 btn-sm capitalize rounded-full w-fit">

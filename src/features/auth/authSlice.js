@@ -6,6 +6,7 @@ const user = {
   w_token_id: getCookie('w_token_id'),
   w_user_id: getCookie('w_user_id'),
   w_username: getCookie('w_username'),
+  w_foto: getCookie('w_foto'),
 };
 
 const initialState = {

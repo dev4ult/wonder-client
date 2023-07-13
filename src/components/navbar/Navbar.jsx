@@ -9,7 +9,7 @@ import { BiLogIn } from 'react-icons/bi';
 import DefaultUserPhoto from '../DefaultUserPhoto';
 import SearchInput from '../SearchInput';
 
-const UserPhotoUrl = import.meta.env.USERPHOTOURL;
+const UserPhotoUrl = import.meta.env.VITE_USERPHOTOURL;
 
 function Navbar({ displaySearch = true }) {
   const { user } = useSelector((state) => state.auth);
@@ -42,7 +42,7 @@ function Navbar({ displaySearch = true }) {
         <div className="dropdown dropdown-end">
           <div tabIndex={0} className="p-2 px-4 bg-black/10 hover:bg-black/20 flex items-center gap-3 cursor-pointer rounded-full">
             <span className="text-sm font-medium ">{user != null ? user.w_username : 'Guest'}</span>
-            {user != null && user.w_foto != null ? <img src={`${UserPhotoUrl}/${user.w_foto}`} alt="" /> : <DefaultUserPhoto />}
+            {user != null && user.foto != null ? <img src={`${UserPhotoUrl}/${user.foto}`} className="rounded-full w-6 h-6" alt="" /> : <DefaultUserPhoto />}
           </div>
           <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-44 mt-2">
             {user != null ? (
