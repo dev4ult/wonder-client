@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { logout, reset } from '../features/auth/authSlice';
-import { updateProfile } from '../features/user/userSlice';
+import { toast } from 'react-toastify';
+
+import { setUserDetail, logout, reset } from '../features/auth/authSlice';
+import { updateProfile, reset as resetUpdateStatus } from '../features/user/userSlice';
 
 import NavbarStick from '../components/navbar/NavbarStick';
 import InputGroup from '../components/InputGroup';
@@ -19,6 +21,8 @@ const UserPhotoUrl = import.meta.env.VITE_USERPHOTOURL;
 
 function Profile() {
   const { user, isSuccessfull } = useSelector((state) => state.auth);
+  const { message, isSuccessfull: userUpdateSuccess, isError, errorMessages } = useSelector((state) => state.user);
+
   const dispatch = useDispatch();
 
   const [profile, setProfile] = useState({
@@ -26,6 +30,7 @@ function Profile() {
     username: '',
     email: '',
     bio: '',
+    role: '',
     new_password: '',
     old_password: '',
   });
@@ -50,8 +55,31 @@ function Profile() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    console.log(profile);
+    const profile_detail = profile;
+    const user_id = user.w_user_id;
+    const token_id = user.w_token_id;
+
+    dispatch(updateProfile({ profile_detail, user_id, token_id }));
+
+    dispatch(resetUpdateStatus());
   }
+
+  useEffect(() => {
+    if (userUpdateSuccess && message != '') {
+      toast.success(message);
+
+      const { w_token_id: token_id, w_user_id: user_id } = user;
+      dispatch(setUserDetail({ token_id, user_id }));
+    }
+  }, [userUpdateSuccess, message]);
+
+  useEffect(() => {
+    if (isError && errorMessages.length != 0) {
+      errorMessages.forEach((message) => {
+        toast.error(message);
+      });
+    }
+  }, [isError, errorMessages]);
 
   useEffect(() => {
     if (user != null && isSuccessfull) {
@@ -59,6 +87,7 @@ function Profile() {
         photo: `${UserPhotoUrl}/${user.w_foto}`,
         username: user.w_username,
         email: user.email,
+        role: user.role,
         bio: user.bio != null ? user.bio : '',
         new_password: '',
         old_password: '',
@@ -66,10 +95,10 @@ function Profile() {
     }
   }, [user, isSuccessfull]);
 
-  function onUploadPhoto(file) {
+  function onUploadPhoto(e) {
     setProfile((prev) => ({
       ...prev,
-      photo: URL.createObjectURL(file),
+      photo: URL.createObjectURL(e.target.files[0]),
     }));
   }
 
@@ -89,19 +118,17 @@ function Profile() {
           <div className="grid grid-flow-row grid-cols-2 gap-5">
             <div className="form-control col-span-2 ">
               <div>
-                <label htmlFor="" className="label-text text-black/30">
+                <label htmlFor="photo" className="label-text text-black/30">
                   Foto
                 </label>
                 <div className="relative w-fit">
                   {photo != null ? <img src={photo} alt="profil" className="w-[5.5rem] h-[5.5rem] rounded bg-cover" /> : <DefaultUserPhoto size="5rem" className="rounded-md" isRoundedFull={false} />}
-                  {console.log(photo)}
-
                   <div className="tooltip absolute -top-2 -right-2 text-neutral" data-tip="Upload Foto">
-                    <label htmlFor="profile-photo" className="cursor-pointer">
-                      <AiFillSetting size="1.5rem" />
+                    <label htmlFor="photo" className="cursor-pointer">
+                      <AiFillSetting size="1.5rem" className="p-1 bg-accent text-white rounded-full" />
                     </label>
                   </div>
-                  <input type="file" name="photo" id="photo" onChange={onUploadPhoto} className="hidden" />
+                  <input type="file" accept=".png, .jpg" name="photo" id="photo" onChange={onUploadPhoto} className="hidden" />
                 </div>
               </div>
             </div>
@@ -113,7 +140,7 @@ function Profile() {
           </div>
           <div className="flex gap-2">
             <button type="submit" className="btn btn-primary btn-outline px-5 btn-sm capitalize rounded-full w-fit">
-              simpan
+              simpan perubahan
             </button>
           </div>
         </form>

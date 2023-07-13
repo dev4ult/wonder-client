@@ -87,15 +87,17 @@ const deleteAdmin = async (admin_id, token_id) => {
 };
 
 const updateProfile = async (profile_detail, user_id, token_id) => {
-  const { photo: foto, username, email, bio, new_password: password, old_password } = profile_detail;
+  const { photo: foto, username, email, role, bio, new_password: password, old_password } = profile_detail;
 
   const data = {
+    _method: 'PUT',
     username,
     email,
     bio,
+    role,
   };
 
-  if (foto != null || typeof foto != 'string') {
+  if (foto != null && typeof foto != 'string') {
     data['foto'] = foto;
   }
 
