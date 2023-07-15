@@ -8,6 +8,7 @@ import { getTravelSpotDetail, reset } from '../features/travelspot/travelSpotSli
 import NavbarStick from '../components/navbar/NavbarStick';
 import Comment from '../components/Comment';
 import SkeletonPost from '../components/skeleton/SkeletonPost';
+import BlogContent from '../components/BlogContent';
 
 import { AiOutlineHeart, AiOutlineComment } from 'react-icons/ai';
 import { BsFillPersonFill, BsSendFill } from 'react-icons/bs';
