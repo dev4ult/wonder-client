@@ -36,12 +36,23 @@ const getTravelSpotDetail = async (travelspot_id) => {
   return response.data;
 };
 
+const getTravelSpotDetailAdmin = async (travelspot_id, token_id) => {
+  const response = await axios.get(`${endpoint}/discover-admin/${travelspot_id}`, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token_id}`,
+    },
+  });
+
+  return response.data;
+};
+
 const addTravelSpot = async (travelspot_detail, token_id) => {
-  const { photos: foto, name: nama, description: deskripsi, address: alamat_lengkap, city: kab_kota, province: provinsi, fasilities: fasilitas } = travelspot_detail;
+  const { photos: foto, name: nama, description: deskripsi, address: alamat_lengkap, city: kab_kota, province: provinsi, country: negara, scope: lingkup, facilities: fasilitas } = travelspot_detail;
 
   const response = await axios.post(
     `${endpoint}/discover-admin`,
-    { nama, deskripsi, alamat_lengkap, kab_kota, provinsi, fasilitas, foto },
+    { nama, deskripsi, alamat_lengkap, kab_kota, provinsi, fasilitas, foto, negara, lingkup },
     {
       headers: {
         Accept: 'application/json',
@@ -51,7 +62,7 @@ const addTravelSpot = async (travelspot_detail, token_id) => {
     }
   );
 
-  return response.data;
+  return response.data.message;
 };
 
 const updateTravelSpot = async (travelspot_detail, travelspot_id, token_id) => {
@@ -80,13 +91,14 @@ const deleteTravelSpot = async (travelspot_id, token_id) => {
     },
   });
 
-  return response.data;
+  return response.data.message;
 };
 
 const travelSpotService = {
   getTravelSpots,
   getTravelSpotsByUserLike,
   getTravelSpotDetail,
+  getTravelSpotDetailAdmin,
   addTravelSpot,
   updateTravelSpot,
   deleteTravelSpot,

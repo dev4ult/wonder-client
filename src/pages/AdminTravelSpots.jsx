@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
-import { getTravelSpotsAdmin, reset } from '../features/travelspot/travelSpotSlice';
+import { getTravelSpotsAdmin, getTravelSpotDetailAdmin, reset } from '../features/travelspot/travelSpotSlice';
 
 import NavbarStick from '../components/navbar/NavbarStick';
 import SearchInput from '../components/SearchInput';
@@ -12,11 +13,11 @@ import SkeletonCard from '../components/skeleton/SkeletonCard';
 import ModalUpdateTravelspot from '../components/modal/ModalUpdateTravelspot';
 
 function AdminTravelSpots() {
-  const { travelSpots, isSuccessfull } = useSelector((state) => state.travelspot);
+  const { travelSpots, travelSpot, isSuccessfull, message } = useSelector((state) => state.travelspot);
   const { user, isSuccessfull: isUserSet } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const [travelSpotIndex, setTravelSpotIndex] = useState(0);
+  const [travelSpotsData, setTravelSpotsData] = useState([]);
 
   const TravelSpotCards = () => {
     return travelSpots.map((travelspot, index) => (
@@ -27,7 +28,9 @@ function AdminTravelSpots() {
         likes={travelspot.jumlah_like}
         onClick={() => {
           document.getElementById('modal-detail-travelspot').showModal();
-          setTravelSpotIndex(index);
+
+          dispatch(getTravelSpotDetailAdmin({ travelspot_id: travelspot.id, token_id: user.w_token_id }));
+          dispatch(reset());
         }}
       />
     ));
@@ -50,6 +53,22 @@ function AdminTravelSpots() {
     }
   }, []);
 
+  useEffect(() => {
+    if (isSuccessfull && travelSpots.length != 0) {
+      setTravelSpotsData(travelSpots);
+    }
+  }, [isSuccessfull, travelSpots]);
+
+  useEffect(() => {
+    if (isSuccessfull && message != '') {
+      toast.success(message);
+
+      dispatch(getTravelSpotsAdmin(user.w_token_id));
+
+      dispatch(reset());
+    }
+  }, [message, isSuccessfull]);
+
   return (
     <div>
       <NavbarStick displaySearch={false} />
@@ -63,9 +82,9 @@ function AdminTravelSpots() {
           </div>
           <SearchInput />
         </div>
-        <div className="grid grid-flow-row grid-cols-4 gap-5">{isSuccessfull ? TravelSpotCards() : SkeletonCards()}</div>
+        <div className="grid grid-flow-row grid-cols-4 gap-5">{travelSpotsData.length != null ? TravelSpotCards() : SkeletonCards()}</div>
       </div>
-      <ModalUpdateTravelspot data={travelSpots[travelSpotIndex]} />
+      <ModalUpdateTravelspot data={travelSpot} isLoaded={isSuccessfull} />
     </div>
   );
 }

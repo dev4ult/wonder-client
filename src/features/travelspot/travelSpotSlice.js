@@ -3,10 +3,12 @@ import travelSpotService from './travelSpotService';
 
 const initialState = {
   travelSpots: [],
+  travelSpot: null,
   isLoading: false,
   isSuccessfull: false,
   isError: false,
   message: '',
+  errorMessages: [],
 };
 
 const getTravelSpots = createAsyncThunk('travelspot/all-spots', async (_, thunkApi) => {
@@ -42,12 +44,21 @@ const getTravelSpotDetail = createAsyncThunk('travelspot/detail', async (travelS
   }
 });
 
+const getTravelSpotDetailAdmin = createAsyncThunk('travelspot/detail-admin', async (data, thunkApi) => {
+  try {
+    const { travelspot_id, token_id } = data;
+    return await travelSpotService.getTravelSpotDetailAdmin(travelspot_id, token_id);
+  } catch (err) {
+    return thunkApi.rejectWithValue(err.message);
+  }
+});
+
 const addTravelSpot = createAsyncThunk('travelspot/new-spot', async (data, thunkApi) => {
   try {
     const { form, token_id } = data;
     return await travelSpotService.addTravelSpot(form, token_id);
   } catch (err) {
-    return thunkApi.rejectWithValue(err.message);
+    return thunkApi.rejectWithValue(err.response.data.data || err.response.data.message);
   }
 });
 
@@ -69,7 +80,7 @@ const deleteTravelSpot = createAsyncThunk('travelspot/delete-spot', async (data,
   }
 });
 
-export { getTravelSpots, getTravelSpotsAdmin, getTravelSpotsByUserLike, getTravelSpotDetail, addTravelSpot, updateTravelSpot, deleteTravelSpot };
+export { getTravelSpots, getTravelSpotsAdmin, getTravelSpotsByUserLike, getTravelSpotDetail, getTravelSpotDetailAdmin, addTravelSpot, updateTravelSpot, deleteTravelSpot };
 
 const travelSpotSlice = createSlice({
   name: 'travelspot',
@@ -80,6 +91,7 @@ const travelSpotSlice = createSlice({
       state.isSuccessfull = false;
       state.isError = false;
       state.message = '';
+      state.errorMessages = [];
     },
   },
   extraReducers: (builder) => {
@@ -117,12 +129,55 @@ const travelSpotSlice = createSlice({
       })
       .addCase(getTravelSpotDetail.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.travelSpots = action.payload.data;
+        state.travelSpot = action.payload.data;
         state.isSuccessfull = true;
       })
       .addCase(getTravelSpotDetail.rejected, (state, action) => {
         state.isLoading = false;
-        state.travelSpots = [];
+        state.travelSpot = null;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(addTravelSpot.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(addTravelSpot.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.message = action.payload;
+        state.isSuccessfull = true;
+      })
+      .addCase(addTravelSpot.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.errorMessages = [];
+        for (const key in action.payload) {
+          state.errorMessages.push(action.payload[key][0]);
+        }
+      })
+      .addCase(deleteTravelSpot.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteTravelSpot.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.message = action.payload;
+        state.isSuccessfull = true;
+      })
+      .addCase(deleteTravelSpot.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(getTravelSpotDetailAdmin.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getTravelSpotDetailAdmin.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.travelSpot = action.payload.data;
+        state.isSuccessfull = true;
+      })
+      .addCase(getTravelSpotDetailAdmin.rejected, (state, action) => {
+        state.isLoading = false;
+        state.travelSpot = null;
         state.isError = true;
         state.message = action.payload;
       });
