@@ -8,10 +8,10 @@ const getTravelSpots = async () => {
   return response.data;
 };
 
-const getTravelSpotsByUserLike = async (user_id, token_id) => {
-  const response = await axios.get(`${endpoint}/discover/liked/${user_id}}`, {
+const getTravelSpotsAdmin = async (token_id) => {
+  const response = await axios.get(`${endpoint}/discover-admin`, {
     headers: {
-      Accept: 'application/json',
+      'content-type': 'application/json',
       Authorization: `Bearer ${token_id}`,
     },
   });
@@ -19,8 +19,13 @@ const getTravelSpotsByUserLike = async (user_id, token_id) => {
   return response.data;
 };
 
-const getTravelSpotsAdmin = async () => {
-  const response = await axios.get(`${endpoint}/discover-admin`);
+const getTravelSpotsByUserLike = async (user_id, token_id) => {
+  const response = await axios.get(`${endpoint}/discover/liked/${user_id}}`, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token_id}`,
+    },
+  });
 
   return response.data;
 };

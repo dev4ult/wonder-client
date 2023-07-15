@@ -3,6 +3,7 @@ import { BiSolidDashboard, BiSolidUser } from 'react-icons/bi';
 import { HiMenuAlt2 } from 'react-icons/hi';
 import { IoMdClose } from 'react-icons/io';
 import { MdArticle } from 'react-icons/md';
+import { AiFillHome } from 'react-icons/ai';
 
 import AsideNavList from './AsideNavList';
 
@@ -14,13 +15,13 @@ function AsideNavbar() {
   }
 
   return (
-    <div className="fixed bottom-10 right-10">
+    <div className="fixed bottom-10 z-10 right-10">
       <div className="rounded border-2">
         <AsideNavList name="Dashboard" isOpen={open} linkTo="/dashboard">
           <BiSolidDashboard size="1.5rem" />
         </AsideNavList>
-        <AsideNavList name="Kelola User" isOpen={open} linkTo="/manage_user">
-          <BiSolidUser size="1.5rem" />
+        <AsideNavList name="Beranda" isOpen={open} linkTo="/">
+          <AiFillHome size="1.5rem" />
         </AsideNavList>
         <AsideNavList name="Kelola Artikel" isOpen={open} linkTo="/manage_article">
           <MdArticle size="1.5rem" />

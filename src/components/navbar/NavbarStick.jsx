@@ -5,6 +5,8 @@ import { useLocation, Link } from 'react-router-dom';
 import DefaultUserPhoto from '../DefaultUserPhoto';
 import SearchInput from '../SearchInput';
 
+const UserPhotoUrl = import.meta.env.VITE_USERPHOTOURL;
+
 function NavbarStick({ displaySearch = true }) {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -39,7 +41,7 @@ function NavbarStick({ displaySearch = true }) {
           location.pathname != '/profile' && (
             <div className="dropdown dropdown-end">
               <div tabIndex={0} className="cursor-pointer">
-                <DefaultUserPhoto size="1.4rem" isRoundedFull={false} className="rounded" />
+                {user.w_foto != null ? <img src={`${UserPhotoUrl}/${user.w_foto}`} alt="profil" className="rounded-full w-8 h-8 bg-cover" /> : <DefaultUserPhoto size="1.4rem" />}
               </div>
               <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-44 mt-4">
                 <li className="">

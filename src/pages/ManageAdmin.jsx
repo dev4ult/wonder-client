@@ -2,8 +2,11 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
+import { BsArrowLeft } from 'react-icons/bs';
+
 import { getAdmins, getAdminDetail, addAdmin, deleteAdmin, updateAdmin, reset } from '../features/user/userSlice';
 
+import GoBackLink from '../components/GoBackLink';
 import NavbarStick from '../components/navbar/NavbarStick';
 import SkeletonTableData from '../components/skeleton/SkeletonTableData';
 import SearchInput from '../components/SearchInput';
@@ -199,16 +202,19 @@ function ManageAdmin() {
     <div>
       <NavbarStick displaySearch={false} />
       <div className="mt-7">
-        <div className="mb-4 flex gap-4 justify-between items-center">
-          <button
-            type="button"
-            onClick={() => {
-              document.getElementById('modal-add').showModal();
-            }}
-            className="btn capitalize btn-sm rounded-full btn-primary px-4"
-          >
-            registrasi admin +
-          </button>
+        <div className="mb-4 flex gap-3 justify-between items-center">
+          <div className="flex gap-3">
+            <GoBackLink to="/dashboard" />
+            <button
+              type="button"
+              onClick={() => {
+                document.getElementById('modal-add').showModal();
+              }}
+              className="btn capitalize btn-sm rounded-full btn-primary px-4"
+            >
+              registrasi admin +
+            </button>
+          </div>
           <SearchInput placeholder="Cari Admin..." />
         </div>
         <div className="overflow-x-auto">

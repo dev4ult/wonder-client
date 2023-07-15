@@ -9,6 +9,7 @@ import InputGroup from '../components/InputGroup';
 import SelectGroup from '../components/SelectGroup';
 import DragNDropFIle from '../components/DragNDropFile';
 import MarkdownEditor from '../components/MarkdownEditor';
+import GoBackLink from '../components/GoBackLink';
 
 function PostNewTravelSpot() {
   const { provinces, cities } = useSelector((state) => state.region);
@@ -23,8 +24,8 @@ function PostNewTravelSpot() {
     city: '',
     description: '',
     facilities: '',
-    provinceId: -1,
-    citiesId: -1,
+    provinceId: '',
+    citiesId: '',
     blog: '',
   });
 
@@ -89,7 +90,8 @@ function PostNewTravelSpot() {
     <>
       <NavbarStick />
       <div className="my-7">
-        <form onSubmit={onSubmitForm} className="grid grid-flow-row grid-cols-2 gap-5 p-7 border-2 ">
+        <GoBackLink to="/manage_travelspot" />
+        <form onSubmit={onSubmitForm} className="grid grid-flow-row grid-cols-2 gap-5 p-7 border-2 mt-3">
           <div className="col-span-2">
             <h2 className="font-bold text-2xl">Objek Wisata Baru</h2>
             <p className="col-span-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum, facilis?</p>
