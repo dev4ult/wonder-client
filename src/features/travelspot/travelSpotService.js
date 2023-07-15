@@ -48,11 +48,11 @@ const getTravelSpotDetailAdmin = async (travelspot_id, token_id) => {
 };
 
 const addTravelSpot = async (travelspot_detail, token_id) => {
-  const { photos: foto, name: nama, description: deskripsi, address: alamat_lengkap, city: kab_kota, province: provinsi, country: negara, scope: lingkup, facilities: fasilitas } = travelspot_detail;
+  const { photos: foto, name: nama, description: deskripsi, address: alamat_lengkap, city: kab_kota, province: provinsi, country: negara, scope: lingkup, facilities: fasilitas, content: konten_blog } = travelspot_detail;
 
   const response = await axios.post(
     `${endpoint}/discover-admin`,
-    { nama, deskripsi, alamat_lengkap, kab_kota, provinsi, fasilitas, foto, negara, lingkup },
+    { nama, deskripsi, alamat_lengkap, kab_kota, provinsi, fasilitas, foto, negara, lingkup, konten_blog },
     {
       headers: {
         Accept: 'application/json',

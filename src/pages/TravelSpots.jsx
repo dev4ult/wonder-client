@@ -54,7 +54,9 @@ function TravelSpots() {
   function topRangkedTravelSpotCards() {
     let list = [];
 
-    for (let i = 0; i < 3; i++) {
+    console.log(travelSpots[0].objek_wisata);
+
+    for (let i = 0; i < 1; i++) {
       const { nama, like } = travelSpots[i].objek_wisata;
       list.push(<SmallCard key={i} title={nama} description="Lorem ipsum dolor sit amet, consectetur adipisicing elit..." date="26 Jan 2023" linkTo="/place_detail" />);
     }
