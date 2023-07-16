@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { getProvinces, getCities, reset } from '../features/region/regionSlice';
-import { updateTravelSpot, getTravelSpotDetailAdmin, reset as resetTravelspot } from '../features/travelspot/travelSpotSlice';
+import { getProvinces, getCities, reset as resetRegionState } from '../features/region/regionSlice';
+import { updateTravelSpot, getTravelSpotDetailAdmin, reset as resetTravelspotState } from '../features/travelspot/travelSpotSlice';
 
 import NavbarStick from '../components/navbar/NavbarStick';
 import InputGroup from '../components/InputGroup';
@@ -43,7 +43,8 @@ function PostNewTravelSpot() {
     dispatch(getProvinces());
     dispatch(getTravelSpotDetailAdmin({ travelspot_id, token_id }));
 
-    dispatch(reset());
+    dispatch(resetRegionState());
+    // dispatch(resetTravelspotState());
   }, []);
 
   useEffect(() => {
@@ -62,14 +63,8 @@ function PostNewTravelSpot() {
         facilities += fasilitas[i] + (i == fasilitas.length ? ',' : '');
       }
 
-      const indexOfProvince = provinces.findIndex((item) => item.name == provinsi);
-      const provinceId = provinces[indexOfProvince].id;
-
-      dispatch(getCities(provinceId));
-
-      dispatch(reset());
-
-      setForm({
+      setForm((prev) => ({
+        ...prev,
         photos,
         name: nama,
         address: alamat_lengkap,
@@ -77,14 +72,29 @@ function PostNewTravelSpot() {
         city: kab_kota,
         description: deskripsi,
         facilities,
-        provinceId,
-        cityId: '',
         country: negara,
         scope: lingkup,
         content: konten_blog,
-      });
+      }));
     }
   }, [travelSpot, isSuccessfull]);
+
+  useEffect(() => {
+    if (provinces.length != 0 && getRegionSuccess && travelSpot != null) {
+      const { provinsi } = travelSpot;
+      const indexOfProvince = provinces.findIndex((item) => item.name == provinsi.toUpperCase());
+      const provinceId = provinces[indexOfProvince].id;
+
+      setForm((prev) => ({
+        ...prev,
+        provinceId,
+      }));
+
+      dispatch(getCities(provinceId));
+
+      dispatch(resetRegionState());
+    }
+  }, [provinces, getRegionSuccess, travelSpot]);
 
   useEffect(() => {
     if (cities.length != 0 && travelSpot != null && getRegionSuccess) {
@@ -98,7 +108,7 @@ function PostNewTravelSpot() {
         }));
       }
     }
-  }, [cities, travelSpot]);
+  }, [cities, travelSpot, getRegionSuccess]);
 
   useEffect(() => {
     if (isError) {
@@ -119,7 +129,7 @@ function PostNewTravelSpot() {
       const token_id = user.w_token_id;
 
       dispatch(getTravelSpotDetailAdmin({ travelspot_id, token_id }));
-      dispatch(resetTravelspot());
+      dispatch(resetTravelspotState());
     }
   }, [isSuccessfull, message]);
 
@@ -135,7 +145,7 @@ function PostNewTravelSpot() {
 
     dispatch(getCities(provinceId));
 
-    dispatch(reset());
+    dispatch(resetRegionState());
   }
 
   function onCitySelect(e) {
@@ -172,8 +182,6 @@ function PostNewTravelSpot() {
     e.preventDefault();
 
     dispatch(updateTravelSpot({ form, travelspot_id, token_id: user.w_token_id }));
-
-    dispatch(resetTravelspot());
   }
 
   function onFileChange(files) {

@@ -87,6 +87,7 @@ const travelSpotSlice = createSlice({
   initialState,
   reducers: {
     reset: (state) => {
+      state.travelSpot = null;
       state.isLoading = false;
       state.isSuccessfull = false;
       state.isError = false;

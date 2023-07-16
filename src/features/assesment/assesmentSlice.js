@@ -2,16 +2,18 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import assesmentService from './assesmentService';
 
 const initialState = {
+  allAssesments: [],
   assesment: null,
   isLoading: false,
   isSuccessfull: false,
   isError: false,
   message: '',
+  errorMessages: [],
 };
 
-const createAssesment = createAsyncThunk('assesment/create', async (token_id, thunkApi) => {
+const getAllAssesments = createAsyncThunk('assesment/all', async (token_id, thunkApi) => {
   try {
-    return await assesmentService.createAssesment(token_id);
+    return await assesmentService.getAllAssesments(token_id);
   } catch (err) {
     return thunkApi.rejectWithValue(err.message);
   }
@@ -31,7 +33,7 @@ const addAssesment = createAsyncThunk('assesment/add', async (data, thunkApi) =>
     const { assesment_detail, travelspot_id, token_id } = data;
     return await assesmentService.addAssesment(assesment_detail, travelspot_id, token_id);
   } catch (err) {
-    return thunkApi.rejectWithValue(err.message);
+    return thunkApi.rejectWithValue(err.response.data.data || err.response.data.message);
   }
 });
 
@@ -54,33 +56,35 @@ const updateAssesment = createAsyncThunk('assesment/update', async (data, thunkA
   }
 });
 
-export { createAssesment, getAssesmentDetail, addAssesment, updateAssesment, deleteAssesment };
+export { getAllAssesments, getAssesmentDetail, addAssesment, updateAssesment, deleteAssesment };
 
 const assesmentSlice = createSlice({
   name: 'assesment',
   initialState,
   reducers: {
     reset: (state) => {
+      state.assesment = null;
       state.isLoading = false;
       state.isSuccessfull = false;
       state.isError = false;
       state.message = '';
+      state.errorMessages = [];
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(createAssesment.pending, (state) => {
+      .addCase(getAllAssesments.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createAssesment.fulfilled, (state, action) => {
+      .addCase(getAllAssesments.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccessfull = true;
-        state.message = action.payload;
+        state.allAssesments = action.payload.data;
       })
-      .addCase(createAssesment.rejected, (state, action) => {
+      .addCase(getAllAssesments.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-        state.assesment = null;
+        state.allAssesments = [];
         state.message = action.payload;
       })
       .addCase(addAssesment.pending, (state) => {
@@ -95,7 +99,10 @@ const assesmentSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.assesment = null;
-        state.message = action.payload;
+        state.errorMessages = [];
+        for (const key in action.payload) {
+          state.errorMessages.push(action.payload[key][0]);
+        }
       })
       .addCase(deleteAssesment.pending, (state) => {
         state.isLoading = true;
@@ -123,7 +130,10 @@ const assesmentSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.assesment = null;
-        state.message = action.payload;
+        state.errorMessages = [];
+        for (const key in action.payload) {
+          state.errorMessages.push(action.payload[key][0]);
+        }
       })
       .addCase(getAssesmentDetail.pending, (state) => {
         state.isLoading = true;

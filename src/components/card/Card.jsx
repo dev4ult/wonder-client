@@ -5,7 +5,7 @@ function Card({ title, description, src = NoImage, likes = 0, onClick }) {
   return (
     <div>
       <div onClick={onClick} className="cursor-pointer">
-        <img src={src} alt="Objek Wisata" className="h-52 w-full object-cover" />
+        <img src={src == '' ? NoImage : src} alt="Objek Wisata" className="h-52 w-full object-cover" />
       </div>
       <div className="py-4">
         <div onClick={onClick} className="group cursor-pointer">

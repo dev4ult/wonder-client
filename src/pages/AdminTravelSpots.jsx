@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { getTravelSpotsAdmin, getTravelSpotDetailAdmin, reset } from '../features/travelspot/travelSpotSlice';
+import { getTravelSpotsAdmin, getTravelSpotDetailAdmin, reset as resetTravelspotState } from '../features/travelspot/travelSpotSlice';
+import { getAllAssesments, getAssesmentDetail, reset as resetAssesmentState } from '../features/assesment/assesmentSlice';
 
 import NavbarStick from '../components/navbar/NavbarStick';
 import SearchInput from '../components/SearchInput';
@@ -12,25 +13,39 @@ import Card from '../components/card/Card';
 import SkeletonCard from '../components/skeleton/SkeletonCard';
 import ModalDetailTravelspot from '../components/modal/ModalDetailTravelspot';
 
+const PostPictureUrl = import.meta.env.VITE_POSTPICTUREURL;
+
 function AdminTravelSpots() {
-  const { travelSpots, travelSpot, isSuccessfull, message } = useSelector((state) => state.travelspot);
+  const { travelSpots, travelSpot, isSuccessfull: isTravelspotSet, message } = useSelector((state) => state.travelspot);
+  const { assesment, allAssesments } = useSelector((state) => state.assesment);
   const { user, isSuccessfull: isUserSet } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const [travelSpotsData, setTravelSpotsData] = useState([]);
 
   const TravelSpotCards = () => {
-    return travelSpots.map((travelspot, index) => (
+    return travelSpots.map((travelspot) => (
       <Card
         key={travelspot.id}
         title={travelspot.nama}
         description={travelspot.deskripsi}
         likes={travelspot.jumlah_like}
+        src={travelspot.foto != '' ? `${PostPictureUrl}/${travelspot.foto}` : ''}
         onClick={() => {
           document.getElementById('modal-detail-travelspot').showModal();
 
-          dispatch(getTravelSpotDetailAdmin({ travelspot_id: travelspot.id, token_id: user.w_token_id }));
-          dispatch(reset());
+          const travelspot_id = travelspot.id;
+          const token_id = user.w_token_id;
+
+          dispatch(getTravelSpotDetailAdmin({ travelspot_id, token_id }));
+
+          if (allAssesments.findIndex((item) => item.id_objek_wisata == travelspot.id) >= 0) {
+            dispatch(getAssesmentDetail({ travelspot_id, token_id }));
+          }
+
+          // reset state
+          dispatch(resetAssesmentState());
+          dispatch(resetTravelspotState());
         }}
       />
     ));
@@ -49,25 +64,28 @@ function AdminTravelSpots() {
   useEffect(() => {
     if (user != null && isUserSet) {
       dispatch(getTravelSpotsAdmin(user.w_token_id));
-      dispatch(reset());
+      dispatch(getAllAssesments(user.w_token_id));
+
+      // reset state
+      dispatch(resetTravelspotState());
+      dispatch(resetAssesmentState());
     }
   }, []);
 
   useEffect(() => {
-    if (isSuccessfull && travelSpots.length != 0) {
+    if (isTravelspotSet && travelSpots.length != 0) {
       setTravelSpotsData(travelSpots);
     }
-  }, [isSuccessfull, travelSpots]);
+  }, [isTravelspotSet, travelSpots]);
 
   useEffect(() => {
-    if (isSuccessfull && message != '') {
+    if (isTravelspotSet && message != '') {
       toast.success(message);
 
       dispatch(getTravelSpotsAdmin(user.w_token_id));
-
-      dispatch(reset());
+      dispatch(resetTravelspotState());
     }
-  }, [message, isSuccessfull]);
+  }, [message, isTravelspotSet]);
 
   return (
     <div>
@@ -82,9 +100,9 @@ function AdminTravelSpots() {
           </div>
           <SearchInput />
         </div>
-        <div className="grid grid-flow-row grid-cols-4 gap-5">{travelSpotsData.length != null ? TravelSpotCards() : SkeletonCards()}</div>
+        <div className="grid grid-flow-row grid-cols-4 gap-5">{travelSpotsData.length != 0 ? TravelSpotCards() : SkeletonCards()}</div>
       </div>
-      <ModalDetailTravelspot data={travelSpot} isLoaded={isSuccessfull} />
+      <ModalDetailTravelspot travelspot={travelSpot} assesment={assesment} isLoaded={isTravelspotSet} />
     </div>
   );
 }
