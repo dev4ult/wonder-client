@@ -15,7 +15,7 @@ import { BsFillPersonFill, BsSendFill } from 'react-icons/bs';
 import NoImage from '../images/no-image.webp';
 
 function TravelSpotDetail() {
-  const { travelSpots, isLoading, isSuccessfull } = useSelector((state) => state.travelspot);
+  const { travelSpot, isLoading, isSuccessfull } = useSelector((state) => state.travelspot);
   const dispatch = useDispatch();
 
   const { id } = useParams();
@@ -56,32 +56,8 @@ function TravelSpotDetail() {
                 <span className="font-medium  text-lg ">NibrasAlyassar</span>
               </Link>
             </div>
-            <div id="article-content" className="mt-4 text-lg">
-              <div>
-                <p className="leading-8">
-                  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Corrupti atque nostrum nam magnam, non harum perspiciatis optio ea dignissimos velit in distinctio soluta architecto molestiae pariatur quas nihil sunt suscipit
-                  consequatur nesciunt excepturi dolor? Vero et alias ratione molestias? Maxime vitae laborum fugiat numquam est eius harum hic voluptatem quo.
-                </p>
-              </div>
-              <div>
-                <h2 className="font-bold text-2xl mt-10 mb-3">Lorem, ipsum dolor sit amet consectetur adipisicing.</h2>
-                <p className="leading-8">
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quo earum rerum et amet, aut, autem aliquid asperiores excepturi incidunt doloremque sunt quasi. A velit ut voluptatem labore quam amet aspernatur numquam ullam
-                  facilis vel rerum corrupti fugiat, deserunt atque deleniti explicabo placeat cumque nostrum iure distinctio similique magni ratione suscipit. At rem qui soluta repudiandae quaerat esse asperiores aspernatur cupiditate!
-                  Iusto architecto ullam voluptatum nemo nobis blanditiis a, harum totam aperiam nulla ipsum non vel. Reiciendis deserunt qui possimus voluptas reprehenderit nisi, magnam, quo quam deleniti sapiente, ducimus expedita iste
-                  porro accusamus consequatur nihil explicabo fuga numquam enim! Non, in!
-                </p>
-              </div>
-              <div className="bg-gray-200 my-5">
-                <img src={NoImage} alt="no" className="mx-auto h-[30rem]" />
-              </div>
-              <div>
-                <h2 className="font-bold text-2xl mt-10 mb-3">Lorem, ipsum dolor sit amet consectetur adipisicing.</h2>
-                <p className="leading-8">
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quo earum rerum et amet, aut, autem aliquid asperiores excepturi incidunt doloremque sunt quasi. A velit ut voluptatem labore quam amet aspernatur numquam ullam
-                  facilis vel rerum corrupti fugiat, deserunt atque deleniti explicabo placeat cumque nostrum iure distinctio similique magni ratione suscipit. At rem qui soluta repudiandae quaerat esse asperiores aspernatur cupiditate!
-                </p>
-              </div>
+            <div id="article-content" className="mt-4">
+              <BlogContent>{travelSpot.konten_blog}</BlogContent>
             </div>
             <div id="comment-section" className="mt-8 py-8 border-t-2 border-neutral">
               <div className="flex gap-3">
