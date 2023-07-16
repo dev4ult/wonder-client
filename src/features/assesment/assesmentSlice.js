@@ -35,7 +35,7 @@ const addAssesment = createAsyncThunk('assesment/add', async (data, thunkApi) =>
   }
 });
 
-const deleteAssesment = createAsyncThunk('assesment/', async (_, thunkApi) => {
+const deleteAssesment = createAsyncThunk('assesment/delete', async (_, thunkApi) => {
   try {
     const { travelspot_id, token_id } = data;
 
@@ -45,7 +45,7 @@ const deleteAssesment = createAsyncThunk('assesment/', async (_, thunkApi) => {
   }
 });
 
-const updateAssesment = createAsyncThunk('assesment/', async (data, thunkApi) => {
+const updateAssesment = createAsyncThunk('assesment/update', async (data, thunkApi) => {
   try {
     const { assesment_detail, travelspot_id, token_id } = data;
     return await assesmentService.updateAssesment(assesment_detail, travelspot_id, token_id);
