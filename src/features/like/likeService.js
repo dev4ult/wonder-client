@@ -2,11 +2,11 @@ import axios from 'axios';
 
 const endpoint = import.meta.env.VITE_BASEURL;
 
-const likeAPost = async (user_id, post_type, post_id, token_id) => {
+const likeAPost = async (like, post_type, post_id, token_id) => {
   const response = await axios.post(
-    `${endpoint}/${post_type}/${post_id}/like`,
+    `${endpoint}/${post_type}/${post_id}`,
     {
-      id_user: user_id,
+      like_user: like,
     },
     {
       headers: {

@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { getTravelSpots, reset } from '../features/travelspot/travelSpotSlice';
 
@@ -9,14 +10,16 @@ import Card from '../components/card/Card';
 import SkeletonCard from '../components/skeleton/SkeletonCard';
 import SmallCard from '../components/card/SmallCard';
 import SkeletonSmallCard from '../components/skeleton/SkeletonSmallCard';
-
 import CategoryButton from '../components/CategoryButton';
+
+import { AiOutlineHeart, AiFillHeart } from 'react-icons/ai';
 
 import BeachImage from '../images/beach.webp';
 
 function TravelSpots() {
   const { travelSpots, isLoading, isSuccessfull } = useSelector((state) => state.travelspot);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(reset());
@@ -43,20 +46,30 @@ function TravelSpots() {
   }
 
   function travelSpotCards() {
-    let i = 0;
-    return travelSpots.map((data) => {
-      const { nama, like } = data.objek_wisata;
-      return <Card key={`${i}-${nama}`} title={nama} src={BeachImage} linkTo="/travelspot_detail" description="Lorem ipsum dolor sit amet, consectetur adipisicing." likes={like} />;
-      i++;
+    return travelSpots.map((data, index) => {
+      console.log(data);
+      const { nama, like, id } = data.objek_wisata;
+      return (
+        <Card
+          key={index}
+          title={nama}
+          src={BeachImage}
+          onClick={navigate.bind(null, `/travelspot_detail/${id}`)}
+          description="Lorem ipsum dolor sit amet, consectetur adipisicing."
+          action={
+            <div>
+              <AiOutlineHeart />
+            </div>
+          }
+        />
+      );
     });
   }
 
   function topRangkedTravelSpotCards() {
     let list = [];
 
-    console.log(travelSpots[0].objek_wisata);
-
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < 3; i++) {
       const { nama, like } = travelSpots[i].objek_wisata;
       list.push(<SmallCard key={i} title={nama} description="Lorem ipsum dolor sit amet, consectetur adipisicing elit..." date="26 Jan 2023" linkTo="/place_detail" />);
     }

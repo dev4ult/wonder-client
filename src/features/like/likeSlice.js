@@ -10,9 +10,9 @@ const initialState = {
 
 const likeAPost = createAsyncThunk('like/post', async (data, thunkApi) => {
   try {
-    const { user_id, post_type, post_id, token_id } = data;
+    const { like, post_type, post_id, token_id } = data;
 
-    return await likeService.likeAPost(user_id, post_type, post_id, token_id);
+    return await likeService.likeAPost(like, post_type, post_id, token_id);
   } catch (err) {
     return thunkApi.rejectWithValue(err.message);
   }
