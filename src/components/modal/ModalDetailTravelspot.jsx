@@ -1,17 +1,16 @@
-import { useEffect } from 'react';
-
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { toast } from 'react-toastify';
 
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { deleteTravelSpot, reset } from '../../features/travelspot/travelSpotSlice';
 
 import { IoClose } from 'react-icons/io5';
+import SkeletonTravelspotDetail from '../skeleton/SkeletonTravelspotDetail';
 
-function ModalUpdateTravelspot({ data, isLoaded }) {
-  const { message, isSuccessfull } = useSelector((state) => state.travelspot);
+const PostPictureUrl = import.meta.env.VITE_POSTPICTUREURL;
+
+function ModalDetailTravelspot({ data, isLoaded }) {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -50,23 +49,58 @@ function ModalUpdateTravelspot({ data, isLoaded }) {
   };
 
   return (
-    <dialog id="modal-detail-travelspot" className="modal modal-bottom sm:modal-middle">
-      <form method="dialog" className="modal-box relative">
+    <dialog id="modal-detail-travelspot" className="modal">
+      <form method="dialog" className={`modal-box ${openDeleteConfirm ? 'max-w-sm' : 'max-w-xl'} relative`}>
         {data != null && isLoaded ? (
           openDeleteConfirm ? (
             DeleteConfirmation()
           ) : (
             <>
-              <h3 className="font-bold text-lg">{data.nama}</h3>
-              <p className="py-4">Press ESC key or click the button below to close</p>
+              <div className="">
+                <h2 className="font-bold text-xl">{data.nama}</h2>
+                <h4>
+                  {data.provinsi} - {data.kab_kota}
+                </h4>
+              </div>
+              <hr className="my-3" />
+              <div className="grid grid-flow-row grid-cols-2 gap-3">
+                <div>
+                  <label className="text-black/30 text-sm">Alamat</label>
+                  <p className="font-medium">{data.alamat_lengkap}</p>
+                </div>
+                <div>
+                  <label className="text-black/30 text-sm">Deskripsi</label>
+                  <p className="font-medium">{data.deskripsi}</p>
+                </div>
+                <div>
+                  <label className="text-black/30 text-sm">Fasilitas</label>
+                  <ul className="font-medium list-disc ml-5">
+                    {data.fasilitas.map((item, index) => (
+                      <li key={index}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <hr className="my-3" />
+              <div>
+                <label className="text-black/30 text-sm">Gambar / Foto</label>
+                <div className="flex gap-3 flex-wrap mt-1">
+                  {data.foto[0] != '' ? (
+                    data.foto.map((item, index) => <img key={index} src={`${PostPictureUrl}/${item}`} className="w-52 bg-cover" alt="gambar" />)
+                  ) : (
+                    <p className="text-black/40 font-medium">Tidak ada Gambar atau Foto yang tersedia...</p>
+                  )}
+                </div>
+              </div>
+              <hr className="my-3" />
               <div className="modal-action justify-between">
                 <Link to={`/travelspot_detail/${data.id}`} className="btn btn-sm btn-primary capitalize rounded-full">
                   postingan
                 </Link>
-                <div className="flex gap-3">
-                  <button type="button" className="btn btn-sm btn-warning capitalize rounded-full">
+                <div className="flex gap-2">
+                  <Link to={`/update_travelspot/${data.id}`} type="button" className="btn btn-sm btn-warning capitalize rounded-full">
                     edit
-                  </button>
+                  </Link>
                   <button type="button" onClick={setOpenDeleteConfirm.bind(null, true)} className="btn btn-sm btn-error capitalize btn-outline rounded-full">
                     hapus
                   </button>
@@ -84,11 +118,11 @@ function ModalUpdateTravelspot({ data, isLoaded }) {
             </>
           )
         ) : (
-          ''
+          <SkeletonTravelspotDetail />
         )}
       </form>
     </dialog>
   );
 }
 
-export default ModalUpdateTravelspot;
+export default ModalDetailTravelspot;

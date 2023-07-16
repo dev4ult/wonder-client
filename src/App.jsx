@@ -18,6 +18,7 @@ import AdminArticles from './pages/AdminArticles';
 import TravelSpots from './pages/TravelSpots';
 import TravelSpotDetail from './pages/TravelSpotDetail';
 import PostNewTravelSpot from './pages/PostNewTravelSpot';
+import UpdateTravelSpot from './pages/UpdateTravelspot';
 import AdminTravelSpots from './pages/AdminTravelSpots';
 
 import ManageAdmin from './pages/ManageAdmin';
@@ -80,6 +81,7 @@ function App() {
               <Route path="/manage_admin" element={<ManageAdmin />} />
               <Route path="/manage_article" element={<AdminArticles />} />
               <Route path="/manage_travelspot" element={<AdminTravelSpots />} />
+              <Route path="/update_travelspot/:id" element={<UpdateTravelSpot />} />
             </>
           )}
           <Route path="/articles" element={<Articles />} />

@@ -66,21 +66,34 @@ const addTravelSpot = async (travelspot_detail, token_id) => {
 };
 
 const updateTravelSpot = async (travelspot_detail, travelspot_id, token_id) => {
-  const { photos: foto, name: nama, description: deskripsi, address: alamat_lengkap, city: kab_kota, province: provinsi, fasilities: fasilitas } = travelspot_detail;
+  const { photos: foto, name: nama, description: deskripsi, address: alamat_lengkap, city: kab_kota, province: provinsi, country: negara, scope: lingkup, content: konten_blog, facilities: fasilitas } = travelspot_detail;
 
-  const response = await axios.post(
-    `${endpoint}/discover-admin/${travelspot_id}`,
-    { _method: 'PUT', nama, deskripsi, alamat_lengkap, kab_kota, provinsi, fasilitas, foto },
-    {
-      headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${token_id}`,
-        'Content-Type': 'multipart/form-data',
-      },
-    }
-  );
+  const data = {
+    _method: 'PUT',
+    nama,
+    deskripsi,
+    alamat_lengkap,
+    kab_kota,
+    provinsi,
+    fasilitas,
+    negara,
+    lingkup,
+    konten_blog,
+  };
 
-  return response.data;
+  if (foto.length != 0 && typeof foto[0] != 'string') {
+    data['foto'] = foto;
+  }
+
+  const response = await axios.post(`${endpoint}/discover-admin/${travelspot_id}`, data, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${token_id}`,
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
+  return response.data.message;
 };
 
 const deleteTravelSpot = async (travelspot_id, token_id) => {

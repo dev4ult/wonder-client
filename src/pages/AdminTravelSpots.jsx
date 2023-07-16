@@ -10,7 +10,7 @@ import SearchInput from '../components/SearchInput';
 import GoBackLink from '../components/GoBackLink';
 import Card from '../components/card/Card';
 import SkeletonCard from '../components/skeleton/SkeletonCard';
-import ModalUpdateTravelspot from '../components/modal/ModalUpdateTravelspot';
+import ModalDetailTravelspot from '../components/modal/ModalDetailTravelspot';
 
 function AdminTravelSpots() {
   const { travelSpots, travelSpot, isSuccessfull, message } = useSelector((state) => state.travelspot);
@@ -84,7 +84,7 @@ function AdminTravelSpots() {
         </div>
         <div className="grid grid-flow-row grid-cols-4 gap-5">{travelSpotsData.length != null ? TravelSpotCards() : SkeletonCards()}</div>
       </div>
-      <ModalUpdateTravelspot data={travelSpot} isLoaded={isSuccessfull} />
+      <ModalDetailTravelspot data={travelSpot} isLoaded={isSuccessfull} />
     </div>
   );
 }

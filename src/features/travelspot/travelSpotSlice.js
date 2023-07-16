@@ -65,9 +65,9 @@ const addTravelSpot = createAsyncThunk('travelspot/new-spot', async (data, thunk
 const updateTravelSpot = createAsyncThunk('travelspot/update-spot', async (data, thunkApi) => {
   try {
     const { form, travelspot_id, token_id } = data;
-    return await travelSpotService.addTravelSpot(form, travelspot_id, token_id);
+    return await travelSpotService.updateTravelSpot(form, travelspot_id, token_id);
   } catch (err) {
-    return thunkApi.rejectWithValue(err.message);
+    return thunkApi.rejectWithValue(err.response.data.data || err.response.data.message);
   }
 });
 
@@ -149,9 +149,33 @@ const travelSpotSlice = createSlice({
       .addCase(addTravelSpot.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
-        state.errorMessages = [];
-        for (const key in action.payload) {
-          state.errorMessages.push(action.payload[key][0]);
+        if (typeof action.payload == 'string') {
+          state.message = action.payload;
+        } else {
+          state.errorMessages = [];
+          for (const key in action.payload) {
+            state.errorMessages.push(action.payload[key][0]);
+          }
+        }
+      })
+      .addCase(updateTravelSpot.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateTravelSpot.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.message = action.payload;
+        state.isSuccessfull = true;
+      })
+      .addCase(updateTravelSpot.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        if (typeof action.payload == 'string') {
+          state.message = action.payload;
+        } else {
+          state.errorMessages = [];
+          for (const key in action.payload) {
+            state.errorMessages.push(action.payload[key][0]);
+          }
         }
       })
       .addCase(deleteTravelSpot.pending, (state) => {

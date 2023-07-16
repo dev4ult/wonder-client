@@ -6,6 +6,7 @@ import regionReducer from '../features/region/regionSlice';
 import userReducer from '../features/user/userSlice';
 import commentReducer from '../features/comment/commentSlice';
 import likeReducer from '../features/like/likeSlice';
+import assesmentReducer from '../features/assesment/assesmentSlice';
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
     user: userReducer,
     comment: commentReducer,
     like: likeReducer,
+    assesmentReducer: assesmentReducer,
   },
 });
 
