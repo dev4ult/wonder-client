@@ -11,7 +11,7 @@ function Card({ title, description, src = NoImage, action, onClick }) {
           <h2 className="text-xl font-bold group-hover:text-blue-700">{title}</h2>
           <h3 className="text-sm group-hover:text-blue-700">{description}. Read more...</h3>
         </div>
-        <div className="flex justify-between items-center gap-1 mt-3 text-black/30">{action}</div>
+        <div className="flex justify-between items-center gap-1 mt-3">{action}</div>
       </div>
     </div>
   );

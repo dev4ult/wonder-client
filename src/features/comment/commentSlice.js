@@ -9,18 +9,6 @@ const initialState = {
   message: '',
 };
 
-const getCommentsByPost = createAsyncThunk('comment/comments', async (data, thunkApi) => {
-  try {
-    const { post_type, post_id } = data;
-
-    return await commentService.getCommentsByPost(post_type, post_id);
-  } catch (err) {
-    return thunkApi.rejectWithValue(err.message);
-  }
-});
-
-export { getCommentsByPost };
-
 const commentSlice = createSlice({
   name: 'comment',
   initialState,

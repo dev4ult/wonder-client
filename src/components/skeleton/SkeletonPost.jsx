@@ -5,7 +5,7 @@ function SkeletonPost() {
   function LoopParagraphLine(lines) {
     const paragraphs = [];
     for (let i = 0; i < lines; i++) {
-      paragraphs.push(<div className="animate-pulse bg-gray-300 rounded-full w-full h-3 my-5"></div>);
+      paragraphs.push(<div key={i} className="animate-pulse bg-gray-300 rounded-full w-full h-3 my-5"></div>);
     }
 
     return <>{paragraphs}</>;
@@ -14,7 +14,7 @@ function SkeletonPost() {
   function SkeletonComments() {
     const comments = [];
     for (let i = 0; i < 3; i++) {
-      comments.push(<SkeletonComment />);
+      comments.push(<SkeletonComment key={i} />);
     }
 
     return <>{comments}</>;
