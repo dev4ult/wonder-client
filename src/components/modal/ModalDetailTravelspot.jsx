@@ -5,18 +5,19 @@ import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 
 import { deleteTravelSpot, reset as resetTravelspotState } from '../../features/travelspot/travelSpotSlice';
-import { addAssesment, getAllAssesments, reset as resetAssesmentState } from '../../features/assesment/assesmentSlice';
+import { addAssesment, getAssesmentDetail, getAllAssesments, reset as resetAssesmentState } from '../../features/assesment/assesmentSlice';
 
 import { IoClose } from 'react-icons/io5';
 
 import InputGroup from '../InputGroup';
 import SelectGroup from '../SelectGroup';
 import SkeletonTravelspotDetail from '../skeleton/SkeletonTravelspotDetail';
+import SkeletonAssesmentDetail from '../skeleton/SkeletonAssesmentDetail';
 
 const PostPictureUrl = import.meta.env.VITE_POSTPICTUREURL;
 
-function ModalDetailTravelspot({ travelspot, assesment, isLoaded }) {
-  const { isSuccessfull: isAssesmentSuccess, isError: isAssesmentFailed, message, errorMessages } = useSelector((state) => state.assesment);
+function ModalDetailTravelspot({ travelspot, isLoaded }) {
+  const { assesment, allAssesments, isSuccessfull: isAssesmentSuccess, isError: isAssesmentFailed, message, errorMessages, isLoading: loadAssesment } = useSelector((state) => state.assesment);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -27,6 +28,27 @@ function ModalDetailTravelspot({ travelspot, assesment, isLoaded }) {
     facilities: '',
   });
 
+  const [assesmentData, setAssesmentData] = useState(null);
+
+  useEffect(() => {
+    if (allAssesments.length != 0 && isAssesmentSuccess && travelspot != null) {
+      const token_id = user.w_token_id;
+
+      const travelspot_id = travelspot.id;
+
+      if (allAssesments.findIndex((item) => item.id_objek_wisata == travelspot.id) >= 0) {
+        dispatch(getAssesmentDetail({ travelspot_id, token_id }));
+      }
+    }
+  }, [allAssesments, isAssesmentSuccess]);
+
+  useEffect(() => {
+    if (assesment != null && isAssesmentSuccess) {
+      setAssesmentData(assesment);
+    }
+  }, [assesment, isAssesmentSuccess]);
+
+  // success submit
   useEffect(() => {
     if (isAssesmentSuccess && message != '') {
       toast.success(message);
@@ -36,6 +58,7 @@ function ModalDetailTravelspot({ travelspot, assesment, isLoaded }) {
     }
   }, [isAssesmentSuccess, message]);
 
+  // failed submit
   useEffect(() => {
     if (isAssesmentFailed && errorMessages.length != 0) {
       errorMessages.forEach((message) => {
@@ -79,6 +102,88 @@ function ModalDetailTravelspot({ travelspot, assesment, isLoaded }) {
         </div>
       </>
     );
+  };
+
+  const AssesmentForm = () => {
+    return (
+      <>
+        <p className="text-black/40 font-medium my-1">Penilaian Kosong... Silahkan tambah Penilaian</p>
+        <div id={travelspot.id} className="mt-2 grid grid-flow-row grid-cols-2 gap-3">
+          <InputGroup type="number" label="Daya Tarik" name="attractiveness" placeholder="20-100" required onChange={onInputChange} value={attractiveness} />
+          <InputGroup type="number" label="Kebersihan" name="cleanliness" placeholder="1-10" required onChange={onInputChange} value={cleanliness} />
+          <SelectGroup
+            label="Harga"
+            name="cost"
+            optionList={[
+              { id: 20, name: 20 },
+              { id: 40, name: 40 },
+              { id: 60, name: 60 },
+              { id: 80, name: 80 },
+              { id: 100, name: 100 },
+            ]}
+            onChange={onInputChange}
+            value={cost}
+            required
+          />
+          <SelectGroup
+            label="Sarana Prasarana"
+            name="facilities"
+            optionList={[
+              { id: 0, name: 0 },
+              { id: 50, name: 50 },
+              { id: 100, name: 100 },
+            ]}
+            onChange={onInputChange}
+            value={facilities}
+            required
+          />
+          <button type="button" onClick={onSubmitAddAssesment.bind(null, travelspot.id)} className="col-span-2 w-full rounded btn btn-success btn-outline capitalize">
+            tambah Penilaian
+          </button>
+        </div>
+      </>
+    );
+  };
+
+  const AssesmentDetail = (assesment) => {
+    return (
+      <>
+        <label className="text-black/30 text-sm">Penilaian Objek Wisata</label>
+        <div className="overflow-x-auto mt-2">
+          <table className="table table-zebra border-2">
+            <thead>
+              <tr className="bg-gray-300">
+                <th>Kriteria</th>
+                <th>Nilai / Bobot</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Daya Tarik</td>
+                <td>{assesment.daya_tarik}</td>
+              </tr>
+              <tr>
+                <td>Biaya</td>
+                <td>{assesment.biaya}</td>
+              </tr>
+              <tr>
+                <td>Kebersihan</td>
+                <td>{assesment.kebersihan}</td>
+              </tr>
+              <tr>
+                <td>Sarana dan Prasarana</td>
+                <td>{assesment.sarana_dan_prasarana}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </>
+    );
+  };
+
+  const LoadDetail = () => {
+    // setAssesmentData(null);
+    return assesmentData != null ? AssesmentDetail(assesmentData) : AssesmentForm();
   };
 
   function onInputChange(e) {
@@ -145,78 +250,8 @@ function ModalDetailTravelspot({ travelspot, assesment, isLoaded }) {
                 </div>
               </div>
               <hr className="my-3" />
-              <div>
-                {assesment != null ? (
-                  <>
-                    <label className="text-black/30 text-sm">Penilaian Objek Wisata</label>
-                    <div className="overflow-x-auto mt-2">
-                      <table className="table table-zebra border-2">
-                        <thead>
-                          <tr className="bg-gray-300">
-                            <th>Kriteria</th>
-                            <th>Nilai / Bobot</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>Daya Tarik</td>
-                            <td>{assesment.daya_tarik}</td>
-                          </tr>
-                          <tr>
-                            <td>Biaya</td>
-                            <td>{assesment.biaya}</td>
-                          </tr>
-                          <tr>
-                            <td>Kebersihan</td>
-                            <td>{assesment.kebersihan}</td>
-                          </tr>
-                          <tr>
-                            <td>Sarana dan Prasarana</td>
-                            <td>{assesment.sarana_dan_prasarana}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <p className="text-black/40 font-medium my-1">Penilaian Kosong... Silahkan tambah Penilaian</p>
-                    <div id={travelspot.id} className="mt-2 grid grid-flow-row grid-cols-2 gap-3">
-                      <InputGroup type="number" label="Daya Tarik" name="attractiveness" placeholder="20-100" required onChange={onInputChange} value={attractiveness} />
-                      <InputGroup type="number" label="Kebersihan" name="cleanliness" placeholder="1-10" required onChange={onInputChange} value={cleanliness} />
-                      <SelectGroup
-                        label="Harga"
-                        name="cost"
-                        optionList={[
-                          { id: 20, name: 20 },
-                          { id: 40, name: 40 },
-                          { id: 60, name: 60 },
-                          { id: 80, name: 80 },
-                          { id: 100, name: 100 },
-                        ]}
-                        onChange={onInputChange}
-                        value={cost}
-                        required
-                      />
-                      <SelectGroup
-                        label="Sarana Prasarana"
-                        name="facilities"
-                        optionList={[
-                          { id: 0, name: 0 },
-                          { id: 50, name: 50 },
-                          { id: 100, name: 100 },
-                        ]}
-                        onChange={onInputChange}
-                        value={facilities}
-                        required
-                      />
-                      <button type="button" onClick={onSubmitAddAssesment.bind(null, travelspot.id)} className="col-span-2 w-full rounded btn btn-success btn-outline capitalize">
-                        tambah Penilaian
-                      </button>
-                    </div>
-                  </>
-                )}
-              </div>
+              <div>{allAssesments.length != 0 ? LoadDetail() : <SkeletonAssesmentDetail />}</div>
+
               <hr className="my-3" />
               <div className="modal-action justify-between">
                 <Link to={`/travelspot_detail/${travelspot.id}`} className="btn btn-sm btn-primary capitalize rounded-full">
@@ -233,6 +268,7 @@ function ModalDetailTravelspot({ travelspot, assesment, isLoaded }) {
                     type="button"
                     onClick={() => {
                       document.getElementById('modal-detail-travelspot').close();
+                      dispatch(resetAssesmentState());
                     }}
                     className="btn btn-sm btn-square btn-neutral btn-outline rounded-full capitalize absolute top-5 right-5"
                   >

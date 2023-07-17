@@ -63,7 +63,7 @@ const assesmentSlice = createSlice({
   initialState,
   reducers: {
     reset: (state) => {
-      state.assesment = null;
+      state.allAssesments = [];
       state.isLoading = false;
       state.isSuccessfull = false;
       state.isError = false;

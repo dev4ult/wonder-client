@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { AiOutlineHeart, AiOutlineComment } from 'react-icons/ai';
 
 import { getTravelSpotsAdmin, getTravelSpotDetailAdmin, reset as resetTravelspotState } from '../features/travelspot/travelSpotSlice';
 import { getAllAssesments, getAssesmentDetail, reset as resetAssesmentState } from '../features/assesment/assesmentSlice';
@@ -17,20 +18,33 @@ const PostPictureUrl = import.meta.env.VITE_POSTPICTUREURL;
 
 function AdminTravelSpots() {
   const { travelSpots, travelSpot, isSuccessfull: isTravelspotSet, message } = useSelector((state) => state.travelspot);
-  const { assesment, allAssesments } = useSelector((state) => state.assesment);
+  const { allAssesments } = useSelector((state) => state.assesment);
   const { user, isSuccessfull: isUserSet } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const [travelSpotsData, setTravelSpotsData] = useState([]);
 
   const TravelSpotCards = () => {
-    return travelSpots.map((travelspot) => (
+    return travelSpots.map((travelspot, index) => (
       <Card
-        key={travelspot.id}
+        key={index}
         title={travelspot.nama}
         description={travelspot.deskripsi}
         likes={travelspot.jumlah_like}
         src={travelspot.foto != '' ? `${PostPictureUrl}/${travelspot.foto}` : ''}
+        action={
+          <>
+            <div className="flex items-center gap-2 text-black/50">
+              <div className="flex gap-1 items-center">
+                <AiOutlineHeart /> <span className="text-sm">{travelspot.jumlah_like}</span>
+              </div>
+              <div className="flex gap-1 items-center">
+                <AiOutlineComment /> <span className="text-sm">{travelspot.jumlah_komen}</span>
+              </div>
+            </div>
+            <p className="text-sm text-black/50 uppercase">{travelspot.provinsi}</p>
+          </>
+        }
         onClick={() => {
           document.getElementById('modal-detail-travelspot').showModal();
 
@@ -39,12 +53,6 @@ function AdminTravelSpots() {
 
           dispatch(getTravelSpotDetailAdmin({ travelspot_id, token_id }));
 
-          if (allAssesments.findIndex((item) => item.id_objek_wisata == travelspot.id) >= 0) {
-            dispatch(getAssesmentDetail({ travelspot_id, token_id }));
-          }
-
-          // reset state
-          dispatch(resetAssesmentState());
           dispatch(resetTravelspotState());
         }}
       />
@@ -64,7 +72,6 @@ function AdminTravelSpots() {
   useEffect(() => {
     if (user != null && isUserSet) {
       dispatch(getTravelSpotsAdmin(user.w_token_id));
-      dispatch(getAllAssesments(user.w_token_id));
 
       // reset state
       dispatch(resetTravelspotState());
@@ -87,6 +94,12 @@ function AdminTravelSpots() {
     }
   }, [message, isTravelspotSet]);
 
+  useEffect(() => {
+    if (travelSpot != null && isTravelspotSet) {
+      dispatch(getAllAssesments(user.w_token_id));
+    }
+  }, [travelSpot, isTravelspotSet]);
+
   return (
     <div>
       <NavbarStick displaySearch={false} />
@@ -102,7 +115,7 @@ function AdminTravelSpots() {
         </div>
         <div className="grid grid-flow-row grid-cols-4 gap-5">{travelSpotsData.length != 0 ? TravelSpotCards() : SkeletonCards()}</div>
       </div>
-      <ModalDetailTravelspot travelspot={travelSpot} assesment={assesment} isLoaded={isTravelspotSet} />
+      <ModalDetailTravelspot travelspot={travelSpot} assesments={allAssesments} isLoaded={isTravelspotSet} />
     </div>
   );
 }
