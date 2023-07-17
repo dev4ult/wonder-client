@@ -52,7 +52,7 @@ const updateAssesment = createAsyncThunk('assesment/update', async (data, thunkA
     const { assesment_detail, travelspot_id, token_id } = data;
     return await assesmentService.updateAssesment(assesment_detail, travelspot_id, token_id);
   } catch (err) {
-    return thunkApi.rejectWithValue(err.message);
+    return thunkApi.rejectWithValue(err.response.data.data || err.response.data.message);
   }
 });
 
@@ -63,7 +63,7 @@ const assesmentSlice = createSlice({
   initialState,
   reducers: {
     reset: (state) => {
-      state.allAssesments = [];
+      state.assesment = null;
       state.isLoading = false;
       state.isSuccessfull = false;
       state.isError = false;

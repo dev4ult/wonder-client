@@ -5,48 +5,33 @@ import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 
 import { deleteTravelSpot, reset as resetTravelspotState } from '../../features/travelspot/travelSpotSlice';
-import { addAssesment, getAssesmentDetail, getAllAssesments, reset as resetAssesmentState } from '../../features/assesment/assesmentSlice';
+import { addAssesment, updateAssesment, getAllAssesments, reset as resetAssesmentState } from '../../features/assesment/assesmentSlice';
 
 import { IoClose } from 'react-icons/io5';
 
 import InputGroup from '../InputGroup';
 import SelectGroup from '../SelectGroup';
 import SkeletonTravelspotDetail from '../skeleton/SkeletonTravelspotDetail';
-import SkeletonAssesmentDetail from '../skeleton/SkeletonAssesmentDetail';
 
 const PostPictureUrl = import.meta.env.VITE_POSTPICTUREURL;
 
+const initialFormState = {
+  attractiveness: '',
+  cost: '',
+  cleanliness: '',
+  facilities: '',
+};
+
 function ModalDetailTravelspot({ travelspot, isLoaded }) {
-  const { assesment, allAssesments, isSuccessfull: isAssesmentSuccess, isError: isAssesmentFailed, message, errorMessages, isLoading: loadAssesment } = useSelector((state) => state.assesment);
+  const { assesment, isSuccessfull: isAssesmentSuccess, isError: isAssesmentFailed, message, errorMessages } = useSelector((state) => state.assesment);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const [formAsessment, setFormAsessment] = useState({
-    attractiveness: '',
-    cost: '',
-    cleanliness: '',
-    facilities: '',
-  });
+  const [formAsessment, setFormAsessment] = useState(initialFormState);
+  const [formUpdateAsessment, setFormUpdateAsessment] = useState(initialFormState);
 
-  const [assesmentData, setAssesmentData] = useState(null);
-
-  useEffect(() => {
-    if (allAssesments.length != 0 && isAssesmentSuccess && travelspot != null) {
-      const token_id = user.w_token_id;
-
-      const travelspot_id = travelspot.id;
-
-      if (allAssesments.findIndex((item) => item.id_objek_wisata == travelspot.id) >= 0) {
-        dispatch(getAssesmentDetail({ travelspot_id, token_id }));
-      }
-    }
-  }, [allAssesments, isAssesmentSuccess]);
-
-  useEffect(() => {
-    if (assesment != null && isAssesmentSuccess) {
-      setAssesmentData(assesment);
-    }
-  }, [assesment, isAssesmentSuccess]);
+  const [isFAOpen, setIsFAOpen] = useState(false);
+  const [isFAUpdateOpen, setIsFAUpdateOpen] = useState(false);
 
   // success submit
   useEffect(() => {
@@ -54,6 +39,8 @@ function ModalDetailTravelspot({ travelspot, isLoaded }) {
       toast.success(message);
 
       document.getElementById('modal-detail-travelspot').close();
+      setIsFAOpen(false);
+      setIsFAUpdateOpen(false);
       dispatch(getAllAssesments(user.w_token_id));
     }
   }, [isAssesmentSuccess, message]);
@@ -77,6 +64,19 @@ function ModalDetailTravelspot({ travelspot, isLoaded }) {
 
     dispatch(resetTravelspotState());
   }
+
+  useEffect(() => {
+    if (assesment != null && isAssesmentSuccess) {
+      const { daya_tarik, biaya, kebersihan, sarana_dan_prasarana } = assesment;
+
+      setFormUpdateAsessment({
+        attractiveness: daya_tarik,
+        cost: biaya,
+        cleanliness: kebersihan,
+        facilities: sarana_dan_prasarana,
+      });
+    }
+  }, [assesment, isAssesmentSuccess]);
 
   const [openDeleteConfirm, setOpenDeleteConfirm] = useState(false);
 
@@ -104,51 +104,130 @@ function ModalDetailTravelspot({ travelspot, isLoaded }) {
     );
   };
 
+  function onInputChange(e) {
+    const { name, value } = e.target;
+
+    setFormAsessment((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  }
+
+  function onSubmitAddAssesment(travelspot_id) {
+    const token_id = user.w_token_id;
+    const assesment_detail = formAsessment;
+
+    dispatch(addAssesment({ assesment_detail, travelspot_id, token_id }));
+    dispatch(resetAssesmentState());
+  }
+
   const AssesmentForm = () => {
-    return (
-      <>
-        <p className="text-black/40 font-medium my-1">Penilaian Kosong... Silahkan tambah Penilaian</p>
-        <div id={travelspot.id} className="mt-2 grid grid-flow-row grid-cols-2 gap-3">
-          <InputGroup type="number" label="Daya Tarik" name="attractiveness" placeholder="20-100" required onChange={onInputChange} value={attractiveness} />
-          <InputGroup type="number" label="Kebersihan" name="cleanliness" placeholder="1-10" required onChange={onInputChange} value={cleanliness} />
-          <SelectGroup
-            label="Harga"
-            name="cost"
-            optionList={[
-              { id: 20, name: 20 },
-              { id: 40, name: 40 },
-              { id: 60, name: 60 },
-              { id: 80, name: 80 },
-              { id: 100, name: 100 },
-            ]}
-            onChange={onInputChange}
-            value={cost}
-            required
-          />
-          <SelectGroup
-            label="Sarana Prasarana"
-            name="facilities"
-            optionList={[
-              { id: 0, name: 0 },
-              { id: 50, name: 50 },
-              { id: 100, name: 100 },
-            ]}
-            onChange={onInputChange}
-            value={facilities}
-            required
-          />
-          <button type="button" onClick={onSubmitAddAssesment.bind(null, travelspot.id)} className="col-span-2 w-full rounded btn btn-success btn-outline capitalize">
-            tambah Penilaian
-          </button>
-        </div>
-      </>
+    return isFAOpen ? (
+      <div className="mt-2 grid grid-flow-row grid-cols-2 gap-3">
+        <InputGroup type="number" label="Daya Tarik" name="attractiveness" placeholder="20-100" required onChange={onInputChange} value={attractiveness} />
+        <InputGroup type="number" label="Kebersihan" name="cleanliness" placeholder="1-10" required onChange={onInputChange} value={cleanliness} />
+        <SelectGroup
+          label="Harga"
+          name="cost"
+          optionList={[
+            { id: 20, name: 20 },
+            { id: 40, name: 40 },
+            { id: 60, name: 60 },
+            { id: 80, name: 80 },
+            { id: 100, name: 100 },
+          ]}
+          onChange={onInputChange}
+          value={cost}
+          required
+        />
+        <SelectGroup
+          label="Sarana Prasarana"
+          name="facilities"
+          optionList={[
+            { id: 0, name: 0 },
+            { id: 50, name: 50 },
+            { id: 100, name: 100 },
+          ]}
+          onChange={onInputChange}
+          value={facilities}
+          required
+        />
+        <button type="button" onClick={onSubmitAddAssesment.bind(null, travelspot.id)} className="col-span-2 w-full rounded btn btn-success btn-outline capitalize">
+          tambah Penilaian
+        </button>
+      </div>
+    ) : (
+      <div>
+        <span className="text-black/40 font-medium my-1">Penilaian Kosong</span>
+        <button type="button" onClick={setIsFAOpen.bind(null, true)} className="btn btn-sm btn-outline rounded btn-success capitalize ml-3">
+          tambah Penilaian
+        </button>
+      </div>
     );
   };
 
+  function onInputUpdateChange(e) {
+    const { name, value } = e.target;
+
+    setFormUpdateAsessment((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  }
+
+  function onSubmitUpdateAssesment(travelspot_id) {
+    const token_id = user.w_token_id;
+    const assesment_detail = formUpdateAsessment;
+
+    dispatch(updateAssesment({ assesment_detail, travelspot_id, token_id }));
+    dispatch(resetAssesmentState());
+  }
+
+  const { attractiveness: u_attractiveness, cost: u_cost, cleanliness: u_cleanliness, facilities: u_facilities } = formUpdateAsessment;
+
   const AssesmentDetail = (assesment) => {
-    return (
+    return isFAUpdateOpen ? (
+      <div className="mt-2 grid grid-flow-row grid-cols-2 gap-3">
+        <InputGroup type="number" label="Daya Tarik" name="attractiveness" placeholder="20-100" required onChange={onInputUpdateChange} value={u_attractiveness} />
+        <InputGroup type="number" label="Kebersihan" name="cleanliness" placeholder="1-10" required onChange={onInputUpdateChange} value={u_cleanliness} />
+        <SelectGroup
+          label="Harga"
+          name="cost"
+          optionList={[
+            { id: 20, name: 20 },
+            { id: 40, name: 40 },
+            { id: 60, name: 60 },
+            { id: 80, name: 80 },
+            { id: 100, name: 100 },
+          ]}
+          onChange={onInputUpdateChange}
+          value={u_cost}
+          required
+        />
+        <SelectGroup
+          label="Sarana Prasarana"
+          name="facilities"
+          optionList={[
+            { id: 0, name: 0 },
+            { id: 50, name: 50 },
+            { id: 100, name: 100 },
+          ]}
+          onChange={onInputUpdateChange}
+          value={u_facilities}
+          required
+        />
+        <button type="button" onClick={onSubmitUpdateAssesment.bind(null, travelspot.id)} className="col-span-2 w-full rounded btn btn-warning btn-outline capitalize">
+          ubah Penilaian
+        </button>
+      </div>
+    ) : (
       <>
-        <label className="text-black/30 text-sm">Penilaian Objek Wisata</label>
+        <div className="flex gap-3 justify-between items-center">
+          <label className="text-black/30 text-sm">Penilaian Objek Wisata</label>
+          <button type="button" onClick={setIsFAUpdateOpen.bind(null, true)} className="btn btn-xs rounded-full capitalize btn-warning btn-outline">
+            ubah penilaian
+          </button>
+        </div>
         <div className="overflow-x-auto mt-2">
           <table className="table table-zebra border-2">
             <thead>
@@ -180,28 +259,6 @@ function ModalDetailTravelspot({ travelspot, isLoaded }) {
       </>
     );
   };
-
-  const LoadDetail = () => {
-    // setAssesmentData(null);
-    return assesmentData != null ? AssesmentDetail(assesmentData) : AssesmentForm();
-  };
-
-  function onInputChange(e) {
-    const { name, value } = e.target;
-
-    setFormAsessment((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  }
-
-  function onSubmitAddAssesment(travelspot_id) {
-    const token_id = user.w_token_id;
-    const assesment_detail = formAsessment;
-
-    dispatch(addAssesment({ assesment_detail, travelspot_id, token_id }));
-    dispatch(resetAssesmentState());
-  }
 
   const { attractiveness, cost, cleanliness, facilities } = formAsessment;
 
@@ -250,7 +307,7 @@ function ModalDetailTravelspot({ travelspot, isLoaded }) {
                 </div>
               </div>
               <hr className="my-3" />
-              <div>{allAssesments.length != 0 ? LoadDetail() : <SkeletonAssesmentDetail />}</div>
+              <div>{assesment != null ? AssesmentDetail(assesment) : AssesmentForm()}</div>
 
               <hr className="my-3" />
               <div className="modal-action justify-between">
@@ -268,7 +325,7 @@ function ModalDetailTravelspot({ travelspot, isLoaded }) {
                     type="button"
                     onClick={() => {
                       document.getElementById('modal-detail-travelspot').close();
-                      dispatch(resetAssesmentState());
+                      setIsFAOpen(false);
                     }}
                     className="btn btn-sm btn-square btn-neutral btn-outline rounded-full capitalize absolute top-5 right-5"
                   >

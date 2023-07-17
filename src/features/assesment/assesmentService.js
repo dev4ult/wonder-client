@@ -57,11 +57,11 @@ const deleteAssesment = async (travelspot_id, token_id) => {
 };
 
 const updateAssesment = async (assesment_detail, travelspot_id, token_id) => {
-  const { attractiveness: daya_tarik, cost: biaya, cleanliness: kebersihan, facilities: sarpras } = assesment_detail;
+  const { attractiveness: daya_tarik, cost: biaya, cleanliness: kebersihan, facilities: sarana_dan_prasarana } = assesment_detail;
 
   const response = await axios.put(
     `${endpoint}/assesment/${travelspot_id}`,
-    { daya_tarik, biaya, kebersihan, sarpras },
+    { daya_tarik, biaya, kebersihan, sarana_dan_prasarana },
     {
       headers: {
         'content-type': 'application/json',

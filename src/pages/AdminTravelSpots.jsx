@@ -53,7 +53,12 @@ function AdminTravelSpots() {
 
           dispatch(getTravelSpotDetailAdmin({ travelspot_id, token_id }));
 
+          if (allAssesments.findIndex((item) => item.id_objek_wisata == travelspot.id) >= 0) {
+            dispatch(getAssesmentDetail({ travelspot_id, token_id }));
+          }
+
           dispatch(resetTravelspotState());
+          dispatch(resetAssesmentState());
         }}
       />
     ));
@@ -72,6 +77,7 @@ function AdminTravelSpots() {
   useEffect(() => {
     if (user != null && isUserSet) {
       dispatch(getTravelSpotsAdmin(user.w_token_id));
+      dispatch(getAllAssesments(user.w_token_id));
 
       // reset state
       dispatch(resetTravelspotState());
@@ -93,12 +99,6 @@ function AdminTravelSpots() {
       dispatch(resetTravelspotState());
     }
   }, [message, isTravelspotSet]);
-
-  useEffect(() => {
-    if (travelSpot != null && isTravelspotSet) {
-      dispatch(getAllAssesments(user.w_token_id));
-    }
-  }, [travelSpot, isTravelspotSet]);
 
   return (
     <div>
