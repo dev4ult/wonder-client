@@ -2,37 +2,42 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import commentService from './commentService';
 
 const initialState = {
-  comments: [],
   isLoading: false,
   isSuccessfull: false,
   isError: false,
   message: '',
 };
 
+const commentAPost = createAsyncThunk('comment/post', async (data, thunkApi) => {
+  try {
+    const { comment, post_type, post_id, token_id } = data;
+
+    return await commentService.commentAPost(comment, post_type, post_id, token_id);
+  } catch (err) {
+    return thunkApi.rejectWithValue(err.message);
+  }
+});
+
+export { commentAPost };
+
 const commentSlice = createSlice({
   name: 'comment',
   initialState,
-  reducer: {
-    reset: (state) => {
-      state.isLoading = false;
-      state.isSuccessfull = false;
-      state.isError = false;
-      state.message = '';
-    },
+  reducers: {
+    reset: (state) => initialState,
   },
-  extraReducer: (builder) => {
+  extraReducers: (builder) => {
     builder
-      .addCase(getCommentsByPost.pending, (state) => {
+      .addCase(commentAPost.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getCommentsByPost.fulfilled, (state, action) => {
+      .addCase(commentAPost.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.comments = action.payload;
         state.isSuccessfull = true;
+        state.message = action.payload;
       })
-      .addCase(getCommentsByPost.rejected, (state, action) => {
+      .addCase(commentAPost.rejected, (state, action) => {
         state.isLoading = false;
-        state.comments = [];
         state.isError = true;
         state.message = action.payload;
       });

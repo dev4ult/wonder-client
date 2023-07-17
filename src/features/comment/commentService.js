@@ -2,12 +2,11 @@ import axios from 'axios';
 
 const endpoint = import.meta.env.VITE_BASEURL;
 
-const postACommentFromUser = async (user_id, comment, post_type, post_id, token_id) => {
-  const response = await axios.post(
+const commentAPost = async (comment, post_type, post_id, token_id) => {
+  const response = await axios.put(
     `${endpoint}/${post_type}/${post_id}`,
     {
-      id_user: user_id,
-      komentar: comment,
+      comment_user: comment,
     },
     {
       headers: {
@@ -17,9 +16,9 @@ const postACommentFromUser = async (user_id, comment, post_type, post_id, token_
     }
   );
 
-  return response.data;
+  return response.data.message;
 };
 
-const commentService = { postACommentFromUser };
+const commentService = { commentAPost };
 
 export default commentService;

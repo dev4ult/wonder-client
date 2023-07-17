@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 
 import { getTravelSpotDetail, reset as resetTravelspotState } from '../features/travelspot/travelSpotSlice';
 import { likeAPost, reset as resetLikeState } from '../features/like/likeSlice';
+import { commentAPost, reset as resetCommentState } from '../features/comment/commentSlice';
 
 import NavbarStick from '../components/navbar/NavbarStick';
 import Comment from '../components/Comment';
@@ -16,10 +17,12 @@ import { BsFillPersonFill, BsSendFill } from 'react-icons/bs';
 import NoImage from '../images/no-image.webp';
 
 const PostPictureUrl = import.meta.env.VITE_POSTPICTUREURL;
+const UserPhotoUrl = import.meta.env.VITE_USERPHOTOURL;
 
 function TravelSpotDetail() {
   const { travelSpot, isSuccessfull: successGetTravelspot } = useSelector((state) => state.travelspot);
   const { isSuccessfull: successLike, message: likeMessage } = useSelector((state) => state.like);
+  const { isSuccessfull: successComment, message: commentMessage } = useSelector((state) => state.comment);
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
@@ -46,6 +49,16 @@ function TravelSpotDetail() {
     return travelSpotData.is_like_user != undefined && travelSpotData.is_like_user;
   }
 
+  function timestampToDate(timestamp) {
+    const date = new Date(timestamp);
+
+    const day = date.getDate();
+    const month = date.toLocaleString('default', { month: 'short' });
+    const year = date.getFullYear();
+
+    return `${day} ${month} ${year}`;
+  }
+
   useEffect(() => {
     if (successLike && likeMessage != '') {
       const token_id = user.w_token_id;
@@ -56,12 +69,38 @@ function TravelSpotDetail() {
   }, [likeMessage, successLike]);
 
   useEffect(() => {
+    if (successComment && commentMessage != '') {
+      const token_id = user.w_token_id;
+
+      dispatch(getTravelSpotDetail({ travelspot_id, token_id }));
+      dispatch(resetTravelspotState());
+    }
+  }, [commentMessage, successComment]);
+
+  useEffect(() => {
     if (travelSpot != null && successGetTravelspot) {
       setTravelSpotData(travelSpot);
       setLiked(travelSpot.is_like_user != undefined && travelSpot.is_like_user);
       setTotalLiked(travelSpot.jumlah_like);
     }
   }, [travelSpot, successGetTravelspot]);
+
+  function submitComment(e) {
+    e.preventDefault();
+
+    if (comment == '') {
+      toast.warning('Komentar tidak bisa kosong!');
+    } else if (user == null) {
+      toast.warning('Harus login terlebih dahulu sebelum berkomentar');
+    } else {
+      const token_id = user.w_token_id;
+
+      dispatch(commentAPost({ comment, post_type: 'discover', post_id: travelspot_id, token_id }));
+      dispatch(resetCommentState());
+
+      setComment('');
+    }
+  }
 
   return (
     <>
@@ -115,26 +154,52 @@ function TravelSpotDetail() {
               <BlogContent>{travelSpotData.konten_blog}</BlogContent>
             </div>
             <div id="comment-section" className="mt-8 py-8 border-t-2 border-neutral">
-              <div className="flex gap-3">
+              <form onSubmit={submitComment} className="flex gap-3">
                 <input
                   type="text"
                   onChange={(e) => {
                     const { value } = e.target;
                     setComment(value);
+
+                    if (e.key == 'Enter') {
+                      if (value == '') {
+                        toast.warning('Komentar tidak bisa kosong!');
+                      } else if (user == null) {
+                        toast.warning('Harus login terlebih dahulu sebelum berkomentar');
+                      } else {
+                        const token_id = user.w_token_id;
+                        dispatch(commentAPost({ comment, post_type: 'discover', post_id: travelspot_id, token_id }));
+                        dispatch(resetCommentState());
+                      }
+                    }
                   }}
                   value={comment}
                   className="input border-neutral input-md rounded-full w-full text-lg"
                   placeholder="Beri komentar..."
                 />
-                <button className="btn btn-neutral btn-md rounded-full text-lg capitalize">
+                <button type="submit" className="btn btn-neutral btn-md rounded-full text-lg capitalize">
                   <BsSendFill size="1.2rem" />
                 </button>
-              </div>
+              </form>
               <div className="mt-8 py-8">
                 <h2 className="text-xl font-bold mb-3">Komentar</h2>
                 <div className="flex flex-col gap-7 mt-7 pl-8 border-l-2">
                   {travelSpotData.comments.map((comment, index) => (
-                    <Comment key={index} username="Nibras" date="26 Jan 2023" comment={comment.komentar} />
+                    <Comment
+                      key={index}
+                      profileImage={
+                        comment.foto != '' ? (
+                          <div className="h-fit rounded-full overflow-hidden">
+                            <img src={`${UserPhotoUrl}/${comment.foto}`} className="w-12 bg-cover" alt="profil" />
+                          </div>
+                        ) : (
+                          ''
+                        )
+                      }
+                      username={comment.username}
+                      date={timestampToDate(comment.created_at)}
+                      comment={comment.komentar}
+                    />
                   ))}
                 </div>
               </div>
