@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { getTravelSpots, reset as resetTravelspotState } from '../features/travelspot/travelSpotSlice';
 
@@ -11,6 +11,7 @@ import SkeletonCard from '../components/skeleton/SkeletonCard';
 import SmallCard from '../components/card/SmallCard';
 import SkeletonSmallCard from '../components/skeleton/SkeletonSmallCard';
 import CategoryButton from '../components/CategoryButton';
+import SearchInput from '../components/SearchInput';
 
 import { AiOutlineHeart, AiOutlineComment } from 'react-icons/ai';
 
@@ -24,7 +25,12 @@ function TravelSpots() {
 
   const [travelSpotsData, setTravelSpotsData] = useState([]);
 
+  const { search_key } = useParams();
+
+  const [searchKey, setSearchKey] = useState(search_key != undefined ? search_key : '');
+
   useEffect(() => {
+    console.log(search_key);
     if (user != null) {
       const token_id = user.w_token_id;
       dispatch(getTravelSpots(token_id));
@@ -62,26 +68,28 @@ function TravelSpots() {
     return travelSpotsData.map((data, index) => {
       const { id, deskripsi, nama, provinsi, foto, like, komen } = data.objek_wisata;
       return (
-        <Card
-          key={index}
-          title={nama}
-          src={foto && `${PostPictureUrl}/${foto}`}
-          onClick={navigate.bind(null, `/travelspot_detail/${id}`)}
-          description={deskripsi}
-          action={
-            <>
-              <div className="flex items-center gap-2 text-black/50">
-                <div className="flex gap-1 items-center">
-                  <AiOutlineHeart /> <span className="text-sm">{like}</span>
+        nama.toLowerCase().match(searchKey.toLowerCase() + '.*') && (
+          <Card
+            key={index}
+            title={nama}
+            src={foto && `${PostPictureUrl}/${foto}`}
+            onClick={navigate.bind(null, `/travelspot_detail/${id}`)}
+            description={deskripsi}
+            action={
+              <>
+                <div className="flex items-center gap-2 text-black/50">
+                  <div className="flex gap-1 items-center">
+                    <AiOutlineHeart /> <span className="text-sm">{like}</span>
+                  </div>
+                  <div className="flex gap-1 items-center">
+                    <AiOutlineComment /> <span className="text-sm">{komen}</span>
+                  </div>
                 </div>
-                <div className="flex gap-1 items-center">
-                  <AiOutlineComment /> <span className="text-sm">{komen}</span>
-                </div>
-              </div>
-              <p className="text-sm text-black/50 uppercase">{provinsi}</p>
-            </>
-          }
-        />
+                <p className="text-sm text-black/50 uppercase">{provinsi}</p>
+              </>
+            }
+          />
+        )
       );
     });
   };
@@ -90,27 +98,31 @@ function TravelSpots() {
     let list = [];
 
     for (let i = 0; i < 3; i++) {
-      const { nama, like } = travelSpotsData[i].objek_wisata;
-      list.push(<SmallCard key={i} title={nama} description="Lorem ipsum dolor sit amet, consectetur adipisicing elit..." date="26 Jan 2023" linkTo="/place_detail" />);
+      const { nama, like, deskripsi } = travelSpotsData[i].objek_wisata;
+      list.push(<SmallCard key={i} title={nama} description={deskripsi} date="26 Jan 2023" linkTo="/place_detail" />);
     }
 
     return <>{list}</>;
   };
 
+  function onInputChange(e) {
+    const { value } = e.target;
+
+    setSearchKey(value);
+  }
+
   return (
     <>
-      <Navbar />
+      <Navbar displaySearch={false} />
       <div className="mt-7 flex items-start gap-10 justify-between">
         <div className="grid grid-flow-row grid-cols-2 gap-5 max-w-xl w-full">{travelSpotsData.length != 0 ? TravelSpotCards() : SkeletonCards()}</div>
         <aside className="sticky top-7">
-          <input type="text" placeholder="Cari Wisata..." className="input input-sm border-gray-300 rounded-full" />
+          <SearchInput placeholder="Cari Wisata..." size="sm" value={searchKey} onChange={onInputChange} />
           <div className="py-7 border-b-2 ">
             <h3 className="text-black/30 font-medium mb-2 text-sm">Filter</h3>
             <div className="flex flex-wrap gap-2">
-              <CategoryButton>Indonesia</CategoryButton>
+              <CategoryButton>Lokal</CategoryButton>
               <CategoryButton>Internasional</CategoryButton>
-              <CategoryButton>Jalan jalan</CategoryButton>
-              <CategoryButton>Solo Travel</CategoryButton>
             </div>
           </div>
           <div className="py-7">

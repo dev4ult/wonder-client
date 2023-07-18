@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout, reset } from '../../features/auth/authSlice';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 
 import DefaultUserPhoto from '../DefaultUserPhoto';
 import SearchInput from '../SearchInput';
@@ -12,6 +13,15 @@ function NavbarStick({ displaySearch = true }) {
   const dispatch = useDispatch();
 
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const [searchKey, setSearchKey] = useState('');
+
+  function onInputChange(e) {
+    const { value } = e.target;
+
+    setSearchKey(value);
+  }
 
   function handleLogout() {
     dispatch(logout());
@@ -28,7 +38,22 @@ function NavbarStick({ displaySearch = true }) {
           Discover
           <div className="w-3 h-3 rounded-full absolute top-0 -right-4 bg-accent"></div>
         </Link>
-        {displaySearch && <SearchInput placeholder="Cari Wisata..." size="sm" />}
+        {displaySearch && (
+          <SearchInput
+            placeholder="Cari Wisata..."
+            size="sm"
+            onChange={onInputChange}
+            value={searchKey}
+            onClick={() => {
+              navigate(`/travelspots/${searchKey}`);
+            }}
+            onKeyDown={(e) => {
+              if (e.key == 'Enter') {
+                navigate(`/travelspots/${searchKey}`);
+              }
+            }}
+          />
+        )}
       </div>
       <div className="flex gap-5 items-center">
         <Link to="/travelspots" className="font-medium text-black/30 hover:text-black">

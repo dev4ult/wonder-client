@@ -79,15 +79,16 @@ function App() {
           {superadminLogin && (
             <>
               <Route path="/manage_admin" element={<ManageAdmin />} />
-              <Route path="/manage_article" element={<AdminArticles />} />
+              {/* <Route path="/manage_article" element={<AdminArticles />} /> */}
               <Route path="/manage_travelspot" element={<AdminTravelSpots />} />
               <Route path="/update_travelspot/:id" element={<UpdateTravelSpot />} />
             </>
           )}
-          <Route path="/articles" element={<Articles />} />
+          {/* <Route path="/articles" element={<Articles />} />
           <Route path="/article_detail:id" element={<ArticleDetail />} />
-          <Route path="/new_article" element={<PostNewArticle />} />
+          <Route path="/new_article" element={<PostNewArticle />} /> */}
           <Route path="/travelspots" element={<TravelSpots />} />
+          <Route path="/travelspots/:search_key" element={<TravelSpots />} />
           <Route path="/travelspot_detail/:id" element={<TravelSpotDetail />} />
           {isLogin && <Route path="/profile" element={<Profile />} />}
           <Route path="*" element={<NotFound404 />} />

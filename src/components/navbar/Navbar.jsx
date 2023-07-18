@@ -1,9 +1,8 @@
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { logout, reset } from '../../features/auth/authSlice';
 import { reset as resetTravelspotState } from '../../features/travelspot/travelSpotSlice';
-
-import { useNavigate, useLocation } from 'react-router-dom';
 
 import { BiLogIn } from 'react-icons/bi';
 
@@ -15,8 +14,17 @@ const UserPhotoUrl = import.meta.env.VITE_USERPHOTOURL;
 function Navbar({ displaySearch = true }) {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [searchKey, setSearchKey] = useState('');
+
+  function onInputChange(e) {
+    const { value } = e.target;
+
+    setSearchKey(value);
+  }
 
   function onLogout() {
     dispatch(logout());
@@ -39,7 +47,21 @@ function Navbar({ displaySearch = true }) {
         {/* <Link to="/articles" className={location.pathname != '/articles' ? 'text-black/30 hover:text-black' : undefined}>
           Artikel
         </Link> */}
-        {displaySearch && <SearchInput placeholder="Cari Wisata..." />}
+        {displaySearch && (
+          <SearchInput
+            placeholder="Cari Wisata..."
+            onChange={onInputChange}
+            value={searchKey}
+            onClick={() => {
+              navigate(`/travelspots/${searchKey}`);
+            }}
+            onKeyDown={(e) => {
+              if (e.key == 'Enter') {
+                navigate(`/travelspots/${searchKey}`);
+              }
+            }}
+          />
+        )}
         <div className="dropdown dropdown-end">
           <div tabIndex={0} className="p-2 px-4 bg-black/10 hover:bg-black/20 flex items-center gap-3 cursor-pointer rounded-full">
             <span className="text-sm font-medium ">{user != null ? user.w_username : 'Guest'}</span>
