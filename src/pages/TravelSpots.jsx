@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { getTravelSpots, reset as resetTravelspotState } from '../features/travelspot/travelSpotSlice';
+import { getTravelSpots, reset as resetNormalSpot, resetSpots } from '../features/travelspot/travelSpotSlice';
 
 import Navbar from '../components/navbar/Navbar';
 
@@ -30,14 +30,15 @@ function TravelSpots() {
   const [searchKey, setSearchKey] = useState(search_key != undefined ? search_key : '');
 
   useEffect(() => {
-    console.log(search_key);
+    dispatch(resetSpots());
     if (user != null) {
       const token_id = user.w_token_id;
       dispatch(getTravelSpots(token_id));
     } else {
       dispatch(getTravelSpots());
     }
-    dispatch(resetTravelspotState());
+
+    dispatch(resetNormalSpot());
   }, []);
 
   useEffect(() => {

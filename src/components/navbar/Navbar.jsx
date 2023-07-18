@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { logout, reset } from '../../features/auth/authSlice';
-import { reset as resetTravelspotState } from '../../features/travelspot/travelSpotSlice';
+import { resetSpots } from '../../features/travelspot/travelSpotSlice';
 
 import { BiLogIn } from 'react-icons/bi';
 
@@ -41,7 +41,7 @@ function Navbar({ displaySearch = true }) {
         <div className="w-3 h-3 rounded-full absolute top-0 -right-4 bg-accent"></div>
       </Link>
       <div className="flex gap-7 items-center text-lg font-medium">
-        <Link to="/travelspots" onClick={dispatch.bind(null, resetTravelspotState())} className={location.pathname != '/travelspots' ? 'text-black/30 hover:text-black' : undefined}>
+        <Link to="/travelspots" onClick={dispatch.bind(null, resetSpots())} className={location.pathname != '/travelspots' ? 'text-black/30 hover:text-black' : undefined}>
           Wisata
         </Link>
         {/* <Link to="/articles" className={location.pathname != '/articles' ? 'text-black/30 hover:text-black' : undefined}>
