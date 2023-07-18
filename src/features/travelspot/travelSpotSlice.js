@@ -98,16 +98,30 @@ const travelSpotSlice = createSlice({
   name: 'travelspot',
   initialState,
   reducers: {
-    reset: (state) => initialState,
-    // {
-    //   state.travelSpots = [];
-    //   state.travelSpot = null;
-    //   state.isLoading = false;
-    //   state.isSuccessfull = false;
-    //   state.isError = false;
-    //   state.message = '';
-    //   state.errorMessages = [];
-    // },
+    reset: (state) => {
+      state.isLoading = false;
+      state.isSuccessfull = false;
+      state.isError = false;
+      state.message = '';
+      state.errorMessages = [];
+    },
+    resetInitial: (state) => initialState,
+    resetSpot: (state) => {
+      state.travelSpot = null;
+      state.isLoading = false;
+      state.isSuccessfull = false;
+      state.isError = false;
+      state.message = '';
+      state.errorMessages = [];
+    },
+    resetSpots: (state) => {
+      state.travelSpots = [];
+      state.isLoading = false;
+      state.isSuccessfull = false;
+      state.isError = false;
+      state.message = '';
+      state.errorMessages = [];
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -223,6 +237,6 @@ const travelSpotSlice = createSlice({
   },
 });
 
-export const { reset } = travelSpotSlice.actions;
+export const { reset, resetInitial, resetSpot, resetSpots } = travelSpotSlice.actions;
 
 export default travelSpotSlice.reducer;

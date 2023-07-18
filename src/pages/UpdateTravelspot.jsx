@@ -256,8 +256,8 @@ function PostNewTravelSpot() {
             }}
             name="blog"
           />
-          <button type="submit" className="btn btn-primary rounded-full capitalize text-base col-span-2">
-            Submit
+          <button type="submit" className="btn btn-warning btn-outline rounded-full capitalize text-base col-span-2">
+            Simpan Perubahan
           </button>
         </form>
       </div>

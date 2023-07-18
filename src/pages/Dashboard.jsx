@@ -7,7 +7,7 @@ function Dashboard() {
   const { user } = useSelector((state) => state.auth);
   return (
     <div className="relative">
-      <NavbarStick displaySearch={false} />
+      <NavbarStick />
       <div className="mt-7">
         <div>
           <div className="my-5 grid grid-flow-row grid-cols-3 gap-5">

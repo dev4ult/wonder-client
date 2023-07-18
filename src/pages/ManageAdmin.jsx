@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 
-import { BsArrowLeft } from 'react-icons/bs';
-
 import { getAdmins, getAdminDetail, addAdmin, deleteAdmin, updateAdmin, reset } from '../features/user/userSlice';
 
 import GoBackLink from '../components/GoBackLink';
@@ -12,8 +10,6 @@ import SkeletonTableData from '../components/skeleton/SkeletonTableData';
 import SearchInput from '../components/SearchInput';
 import ModalAddAdmin from '../components/modal/ModalAddAdmin';
 import ModalUpdateAdmin from '../components/modal/ModalUpdateAdmin';
-
-const UserPhotoUrl = import.meta.env.VITE_USERPHOTOURL;
 
 const initialFormAddState = {
   photo: null,
@@ -56,6 +52,7 @@ function ManageAdmin() {
   useEffect(() => {
     if (user != null) {
       dispatch(getAdmins(user.w_token_id));
+
       dispatch(reset());
     }
   }, []);
@@ -158,7 +155,7 @@ function ManageAdmin() {
 
   const TableDataAdmins = () => {
     return admins.map((admin, index) => (
-      <tr key={index + 1}>
+      <tr key={index}>
         <td>{index + 1}</td>
         <td>
           <div>

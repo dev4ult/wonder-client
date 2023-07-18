@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 
 import { Link } from 'react-router-dom';
 
-import { deleteTravelSpot, reset as resetTravelspotState } from '../../features/travelspot/travelSpotSlice';
+import { deleteTravelSpot, resetSpot } from '../../features/travelspot/travelSpotSlice';
 import { addAssesment, updateAssesment, getAllAssesments, reset as resetAssesmentState } from '../../features/assesment/assesmentSlice';
 
 import { IoClose } from 'react-icons/io5';
@@ -63,7 +63,7 @@ function ModalDetailTravelspot({ travelspot, isLoaded }) {
     const token_id = user.w_token_id;
     dispatch(deleteTravelSpot({ travelspot_id, token_id }));
 
-    dispatch(resetTravelspotState());
+    // dispatch(resetTravelspotStat());
   }
 
   useEffect(() => {
@@ -287,7 +287,7 @@ function ModalDetailTravelspot({ travelspot, isLoaded }) {
             DeleteConfirmation()
           ) : (
             <>
-              <div className="">
+              <div>
                 <h2 className="font-bold text-xl">{travelspot.nama}</h2>
                 <h4>
                   {travelspot.provinsi} - {travelspot.kab_kota}
@@ -328,7 +328,7 @@ function ModalDetailTravelspot({ travelspot, isLoaded }) {
 
               <hr className="my-3" />
               <div className="modal-action justify-between">
-                <Link to={`/travelspot_detail/${travelspot.id}`} onClick={dispatch.bind(null, resetTravelspotState())} className="btn btn-sm btn-primary capitalize rounded-full">
+                <Link to={`/travelspot_detail/${travelspot.id}`} onClick={dispatch.bind(null, resetSpot())} className="btn btn-sm btn-primary capitalize rounded-full">
                   postingan
                 </Link>
                 <div className="flex gap-2">
@@ -342,7 +342,6 @@ function ModalDetailTravelspot({ travelspot, isLoaded }) {
                     type="button"
                     onClick={() => {
                       document.getElementById('modal-detail-travelspot').close();
-                      setIsFAOpen(false);
                     }}
                     className="btn btn-sm btn-square btn-neutral btn-outline rounded-full capitalize absolute top-5 right-5"
                   >

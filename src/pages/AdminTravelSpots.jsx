@@ -4,11 +4,10 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { AiOutlineHeart, AiOutlineComment } from 'react-icons/ai';
 
-import { getTravelSpotsAdmin, getTravelSpotDetailAdmin, reset as resetTravelspotState } from '../features/travelspot/travelSpotSlice';
+import { getTravelSpotsAdmin, getTravelSpotDetailAdmin, resetSpots, resetSpot, reset as resetNormalSpot } from '../features/travelspot/travelSpotSlice';
 import { getAllAssesments, getAssesmentDetail, reset as resetAssesmentState } from '../features/assesment/assesmentSlice';
 
 import NavbarStick from '../components/navbar/NavbarStick';
-import SearchInput from '../components/SearchInput';
 import GoBackLink from '../components/GoBackLink';
 import Card from '../components/card/Card';
 import SkeletonCard from '../components/skeleton/SkeletonCard';
@@ -19,10 +18,10 @@ const PostPictureUrl = import.meta.env.VITE_POSTPICTUREURL;
 function AdminTravelSpots() {
   const { travelSpots, travelSpot, isSuccessfull: isTravelspotSet, message } = useSelector((state) => state.travelspot);
   const { allAssesments } = useSelector((state) => state.assesment);
-  const { user, isSuccessfull: isUserSet } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
-  const [travelSpotsData, setTravelSpotsData] = useState([]);
+  const [travelSpotsData, setTravelSpotsData] = useState(travelSpots);
 
   const TravelSpotCards = () => {
     return travelSpots.map((travelspot, index) => (
@@ -53,11 +52,11 @@ function AdminTravelSpots() {
 
           dispatch(getTravelSpotDetailAdmin({ travelspot_id, token_id }));
 
-          dispatch(resetTravelspotState());
-
           if (allAssesments.findIndex((item) => item.id_objek_wisata == travelspot.id) >= 0) {
             dispatch(getAssesmentDetail({ travelspot_id, token_id }));
           }
+
+          dispatch(resetSpot());
 
           dispatch(resetAssesmentState());
         }}
@@ -76,28 +75,28 @@ function AdminTravelSpots() {
   };
 
   useEffect(() => {
-    if (user != null && isUserSet) {
+    if (user != null) {
       dispatch(getTravelSpotsAdmin(user.w_token_id));
       dispatch(getAllAssesments(user.w_token_id));
 
       // reset state
-      dispatch(resetTravelspotState());
+      dispatch(resetNormalSpot());
       dispatch(resetAssesmentState());
     }
   }, []);
 
   useEffect(() => {
-    if (isTravelspotSet && travelSpots.length != 0) {
+    if (travelSpots.length != 0) {
       setTravelSpotsData(travelSpots);
     }
-  }, [isTravelspotSet, travelSpots]);
+  }, [travelSpots]);
 
   useEffect(() => {
     if (isTravelspotSet && message != '') {
       toast.success(message);
 
       dispatch(getTravelSpotsAdmin(user.w_token_id));
-      dispatch(resetTravelspotState());
+      dispatch(resetSpots());
     }
   }, [message, isTravelspotSet]);
 

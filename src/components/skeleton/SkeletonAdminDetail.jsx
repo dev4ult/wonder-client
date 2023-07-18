@@ -19,7 +19,7 @@ function SkeletonAdminDetail() {
   const Datas = () => {
     let list = [];
     for (let i = 0; i < 6; i++) {
-      list.push(DivDefaultData());
+      list.push(<DivDefaultData key={i} />);
     }
     return <>{list}</>;
   };
