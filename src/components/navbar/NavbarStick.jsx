@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 
 import { logout, reset } from '../../features/auth/authSlice';
-import { resetSpots } from '../../features/travelspot/travelSpotSlice';
 
 import DefaultUserPhoto from '../DefaultUserPhoto';
 import SearchInput from '../SearchInput';
@@ -58,7 +57,7 @@ function NavbarStick({ displaySearch = true }) {
         )}
       </div>
       <div className="flex gap-5 items-center">
-        <Link to="/travelspots" onClick={dispatch.bind(null, resetSpots())} className="font-medium text-black/30 hover:text-black">
+        <Link to="/travelspots" className="font-medium text-black/30 hover:text-black">
           Wisata
         </Link>
         {/* <Link to="/articles" className="font-medium text-black/30 hover:text-black">

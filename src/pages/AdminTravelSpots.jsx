@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { AiOutlineHeart, AiOutlineComment } from 'react-icons/ai';
 
-import { getTravelSpotsAdmin, getTravelSpotDetailAdmin, resetSpots, resetSpot, reset as resetNormalSpot } from '../features/travelspot/travelSpotSlice';
+import { getTravelSpotsAdmin, getTravelSpotDetailAdmin, resetSpots, resetSpot } from '../features/travelspot/travelSpotSlice';
 import { getAllAssesments, getAssesmentDetail, reset as resetAssesmentState } from '../features/assesment/assesmentSlice';
 
 import NavbarStick from '../components/navbar/NavbarStick';
@@ -44,7 +44,7 @@ function AdminTravelSpots() {
 
   const TravelSpotCards = () => {
     const datas = [];
-    travelSpots.map((travelspot, index) => {
+    travelSpotsData.map((travelspot, index) => {
       const { nama, deskripsi, jumlah_like, jumlah_komen, foto, provinsi } = travelspot;
       nama.toLowerCase().match(searchKey.toLowerCase() + '.*') &&
         datas.push(
@@ -97,13 +97,10 @@ function AdminTravelSpots() {
 
   useEffect(() => {
     if (user != null) {
-      dispatch(resetSpots());
-
       dispatch(getTravelSpotsAdmin(user.w_token_id));
       dispatch(getAllAssesments(user.w_token_id));
 
       // reset state
-      dispatch(resetNormalSpot());
       dispatch(resetAssesmentState());
     }
   }, []);
@@ -111,6 +108,8 @@ function AdminTravelSpots() {
   useEffect(() => {
     if (travelSpots.length != 0) {
       setTravelSpotsData(travelSpots);
+
+      dispatch(resetSpots());
     }
   }, [travelSpots]);
 
