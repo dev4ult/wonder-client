@@ -19,7 +19,6 @@ const PostPictureUrl = import.meta.env.VITE_POSTPICTUREURL;
 
 function TravelSpots() {
   const { travelSpots, isSuccessfull } = useSelector((state) => state.travelspot);
-  const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -35,12 +34,7 @@ function TravelSpots() {
   const [searchKey, setSearchKey] = useState(search_key != undefined ? search_key : '');
 
   useEffect(() => {
-    if (user != null) {
-      const token_id = user.w_token_id;
-      dispatch(getTravelSpots(token_id));
-    } else {
-      dispatch(getTravelSpots());
-    }
+    dispatch(getTravelSpots());
   }, []);
 
   useEffect(() => {
