@@ -65,10 +65,11 @@ function TravelSpots() {
   };
 
   const TravelSpotCards = () => {
-    return travelSpotsData.map((data, index) => {
+    const datas = [];
+    travelSpotsData.map((data, index) => {
       const { id, deskripsi, nama, provinsi, foto, like, komen } = data.objek_wisata;
-      return (
-        nama.toLowerCase().match(searchKey.toLowerCase() + '.*') && (
+      nama.toLowerCase().match(searchKey.toLowerCase() + '.*') &&
+        datas.push(
           <Card
             key={index}
             title={nama}
@@ -89,9 +90,20 @@ function TravelSpots() {
               </>
             }
           />
-        )
-      );
+        );
     });
+
+    return (
+      <>
+        {datas.length != 0 ? (
+          datas
+        ) : (
+          <p className="col-span-2">
+            Objek Wisata <span className="font-bold text-2xl mx-2">{searchKey}</span> tidak ditemukan...
+          </p>
+        )}
+      </>
+    );
   };
 
   const TopRangkedTravelSpotCards = () => {
