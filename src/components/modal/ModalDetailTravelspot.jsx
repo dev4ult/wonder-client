@@ -328,7 +328,7 @@ function ModalDetailTravelspot({ travelspot, isLoaded }) {
 
               <hr className="my-3" />
               <div className="modal-action justify-between">
-                <Link to={`/travelspot_detail/${travelspot.id}`} className="btn btn-sm btn-primary capitalize rounded-full">
+                <Link to={`/travelspot_detail/${travelspot.id}`} onClick={dispatch.bind(null, resetTravelspotState())} className="btn btn-sm btn-primary capitalize rounded-full">
                   postingan
                 </Link>
                 <div className="flex gap-2">

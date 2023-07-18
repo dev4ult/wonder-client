@@ -53,11 +53,12 @@ function AdminTravelSpots() {
 
           dispatch(getTravelSpotDetailAdmin({ travelspot_id, token_id }));
 
+          dispatch(resetTravelspotState());
+
           if (allAssesments.findIndex((item) => item.id_objek_wisata == travelspot.id) >= 0) {
             dispatch(getAssesmentDetail({ travelspot_id, token_id }));
           }
 
-          dispatch(resetTravelspotState());
           dispatch(resetAssesmentState());
         }}
       />

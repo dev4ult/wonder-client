@@ -98,14 +98,16 @@ const travelSpotSlice = createSlice({
   name: 'travelspot',
   initialState,
   reducers: {
-    reset: (state) => {
-      state.travelSpot = null;
-      state.isLoading = false;
-      state.isSuccessfull = false;
-      state.isError = false;
-      state.message = '';
-      state.errorMessages = [];
-    },
+    reset: (state) => initialState,
+    // {
+    //   state.travelSpots = [];
+    //   state.travelSpot = null;
+    //   state.isLoading = false;
+    //   state.isSuccessfull = false;
+    //   state.isError = false;
+    //   state.message = '';
+    //   state.errorMessages = [];
+    // },
   },
   extraReducers: (builder) => {
     builder

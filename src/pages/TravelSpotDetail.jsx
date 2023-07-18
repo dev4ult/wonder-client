@@ -45,20 +45,6 @@ function TravelSpotDetail() {
     dispatch(resetTravelspotState());
   }, []);
 
-  function isLiked() {
-    return travelSpotData.is_like_user != undefined && travelSpotData.is_like_user;
-  }
-
-  function timestampToDate(timestamp) {
-    const date = new Date(timestamp);
-
-    const day = date.getDate();
-    const month = date.toLocaleString('default', { month: 'short' });
-    const year = date.getFullYear();
-
-    return `${day} ${month} ${year}`;
-  }
-
   useEffect(() => {
     if (successLike && likeMessage != '') {
       const token_id = user.w_token_id;
@@ -84,6 +70,20 @@ function TravelSpotDetail() {
       setTotalLiked(travelSpot.jumlah_like);
     }
   }, [travelSpot, successGetTravelspot]);
+
+  function isLiked() {
+    return travelSpotData.is_like_user != undefined && travelSpotData.is_like_user;
+  }
+
+  function timestampToDate(timestamp) {
+    const date = new Date(timestamp);
+
+    const day = date.getDate();
+    const month = date.toLocaleString('default', { month: 'short' });
+    const year = date.getFullYear();
+
+    return `${day} ${month} ${year}`;
+  }
 
   function submitComment(e) {
     e.preventDefault();
