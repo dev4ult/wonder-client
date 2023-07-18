@@ -23,7 +23,12 @@ function TravelSpots() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [travelSpotsData, setTravelSpotsData] = useState([]);
+  const [travelSpotsData, setTravelSpotsData] = useState(travelSpots);
+
+  const [category, setCategory] = useState({
+    local: false,
+    internasional: false,
+  });
 
   const { search_key } = useParams();
 
@@ -134,8 +139,24 @@ function TravelSpots() {
           <div className="py-7 border-b-2 ">
             <h3 className="text-black/30 font-medium mb-2 text-sm">Filter</h3>
             <div className="flex flex-wrap gap-2">
-              <CategoryButton>Lokal</CategoryButton>
-              <CategoryButton>Internasional</CategoryButton>
+              <CategoryButton
+                selected={category.local}
+                onClick={setCategory.bind(null, (prev) => ({
+                  ...prev,
+                  local: !prev.local,
+                }))}
+              >
+                Lokal
+              </CategoryButton>
+              <CategoryButton
+                selected={category.internasional}
+                onClick={setCategory.bind(null, (prev) => ({
+                  ...prev,
+                  internasional: !prev.internasional,
+                }))}
+              >
+                Internasional
+              </CategoryButton>
             </div>
           </div>
           <div className="py-7">

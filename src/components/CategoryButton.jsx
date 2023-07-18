@@ -1,5 +1,9 @@
-function CategoryButton({ children }) {
-  return <button className="btn btn-sm capitalize btn-neutral btn-outline rounded-full">{children}</button>;
+function CategoryButton({ children, selected, onClick }) {
+  return (
+    <button type="button" onClick={onClick} className={`btn btn-sm capitalize btn-neutral ${selected ? undefined : 'btn-outline'}  rounded-full`}>
+      {children}
+    </button>
+  );
 }
 
 export default CategoryButton;
