@@ -8,6 +8,7 @@ import { deleteTravelSpot, reset as resetTravelspotState } from '../../features/
 import { addAssesment, updateAssesment, getAllAssesments, reset as resetAssesmentState } from '../../features/assesment/assesmentSlice';
 
 import { IoClose } from 'react-icons/io5';
+import { BsArrowLeft } from 'react-icons/bs';
 
 import InputGroup from '../InputGroup';
 import SelectGroup from '../SelectGroup';
@@ -104,6 +105,16 @@ function ModalDetailTravelspot({ travelspot, isLoaded }) {
     );
   };
 
+  const BackBtn = ({ onClick }) => {
+    return (
+      <div className="text-right mt-4">
+        <button type="button" onClick={onClick} className="btn btn-xs rounded-full btn-outline">
+          <BsArrowLeft size="1.1rem" />
+        </button>
+      </div>
+    );
+  };
+
   function onInputChange(e) {
     const { name, value } = e.target;
 
@@ -123,39 +134,42 @@ function ModalDetailTravelspot({ travelspot, isLoaded }) {
 
   const AssesmentForm = () => {
     return isFAOpen ? (
-      <div className="mt-2 grid grid-flow-row grid-cols-2 gap-3">
-        <InputGroup type="number" label="Daya Tarik" name="attractiveness" placeholder="20-100" required onChange={onInputChange} value={attractiveness} />
-        <InputGroup type="number" label="Kebersihan" name="cleanliness" placeholder="1-10" required onChange={onInputChange} value={cleanliness} />
-        <SelectGroup
-          label="Harga"
-          name="cost"
-          optionList={[
-            { id: 20, name: 20 },
-            { id: 40, name: 40 },
-            { id: 60, name: 60 },
-            { id: 80, name: 80 },
-            { id: 100, name: 100 },
-          ]}
-          onChange={onInputChange}
-          value={cost}
-          required
-        />
-        <SelectGroup
-          label="Sarana Prasarana"
-          name="facilities"
-          optionList={[
-            { id: 0, name: 0 },
-            { id: 50, name: 50 },
-            { id: 100, name: 100 },
-          ]}
-          onChange={onInputChange}
-          value={facilities}
-          required
-        />
-        <button type="button" onClick={onSubmitAddAssesment.bind(null, travelspot.id)} className="col-span-2 w-full rounded btn btn-success btn-outline capitalize">
-          tambah Penilaian
-        </button>
-      </div>
+      <>
+        <BackBtn onClick={setIsFAOpen.bind(null, false)} />
+        <div className="mt-2 grid grid-flow-row grid-cols-2 gap-3">
+          <InputGroup type="number" label="Daya Tarik" name="attractiveness" placeholder="20-100" required onChange={onInputChange} value={attractiveness} />
+          <InputGroup type="number" label="Kebersihan" name="cleanliness" placeholder="1-10" required onChange={onInputChange} value={cleanliness} />
+          <SelectGroup
+            label="Harga"
+            name="cost"
+            optionList={[
+              { id: 20, name: 20 },
+              { id: 40, name: 40 },
+              { id: 60, name: 60 },
+              { id: 80, name: 80 },
+              { id: 100, name: 100 },
+            ]}
+            onChange={onInputChange}
+            value={cost}
+            required
+          />
+          <SelectGroup
+            label="Sarana Prasarana"
+            name="facilities"
+            optionList={[
+              { id: 0, name: 0 },
+              { id: 50, name: 50 },
+              { id: 100, name: 100 },
+            ]}
+            onChange={onInputChange}
+            value={facilities}
+            required
+          />
+          <button type="button" onClick={onSubmitAddAssesment.bind(null, travelspot.id)} className="col-span-2 w-full rounded btn btn-success btn-outline capitalize">
+            tambah Penilaian
+          </button>
+        </div>
+      </>
     ) : (
       <div>
         <span className="text-black/40 font-medium my-1">Penilaian Kosong</span>
@@ -187,39 +201,42 @@ function ModalDetailTravelspot({ travelspot, isLoaded }) {
 
   const AssesmentDetail = (assesment) => {
     return isFAUpdateOpen ? (
-      <div className="mt-2 grid grid-flow-row grid-cols-2 gap-3">
-        <InputGroup type="number" label="Daya Tarik" name="attractiveness" placeholder="20-100" required onChange={onInputUpdateChange} value={u_attractiveness} />
-        <InputGroup type="number" label="Kebersihan" name="cleanliness" placeholder="1-10" required onChange={onInputUpdateChange} value={u_cleanliness} />
-        <SelectGroup
-          label="Harga"
-          name="cost"
-          optionList={[
-            { id: 20, name: 20 },
-            { id: 40, name: 40 },
-            { id: 60, name: 60 },
-            { id: 80, name: 80 },
-            { id: 100, name: 100 },
-          ]}
-          onChange={onInputUpdateChange}
-          value={u_cost}
-          required
-        />
-        <SelectGroup
-          label="Sarana Prasarana"
-          name="facilities"
-          optionList={[
-            { id: 0, name: 0 },
-            { id: 50, name: 50 },
-            { id: 100, name: 100 },
-          ]}
-          onChange={onInputUpdateChange}
-          value={u_facilities}
-          required
-        />
-        <button type="button" onClick={onSubmitUpdateAssesment.bind(null, travelspot.id)} className="col-span-2 w-full rounded btn btn-warning btn-outline capitalize">
-          ubah Penilaian
-        </button>
-      </div>
+      <>
+        <BackBtn onClick={setIsFAUpdateOpen.bind(null, false)} />
+        <div className="mt-2 grid grid-flow-row grid-cols-2 gap-3">
+          <InputGroup type="number" label="Daya Tarik" name="attractiveness" placeholder="20-100" required onChange={onInputUpdateChange} value={u_attractiveness} />
+          <InputGroup type="number" label="Kebersihan" name="cleanliness" placeholder="1-10" required onChange={onInputUpdateChange} value={u_cleanliness} />
+          <SelectGroup
+            label="Harga"
+            name="cost"
+            optionList={[
+              { id: 20, name: 20 },
+              { id: 40, name: 40 },
+              { id: 60, name: 60 },
+              { id: 80, name: 80 },
+              { id: 100, name: 100 },
+            ]}
+            onChange={onInputUpdateChange}
+            value={u_cost}
+            required
+          />
+          <SelectGroup
+            label="Sarana Prasarana"
+            name="facilities"
+            optionList={[
+              { id: 0, name: 0 },
+              { id: 50, name: 50 },
+              { id: 100, name: 100 },
+            ]}
+            onChange={onInputUpdateChange}
+            value={u_facilities}
+            required
+          />
+          <button type="button" onClick={onSubmitUpdateAssesment.bind(null, travelspot.id)} className="col-span-2 w-full rounded btn btn-warning btn-outline capitalize">
+            ubah Penilaian
+          </button>
+        </div>
+      </>
     ) : (
       <>
         <div className="flex gap-3 justify-between items-center">
