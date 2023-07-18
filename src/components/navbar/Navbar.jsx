@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout, reset } from '../../features/auth/authSlice';
+import { reset as resetTravelspotState } from '../../features/travelspot/travelSpotSlice';
 
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -32,12 +33,12 @@ function Navbar({ displaySearch = true }) {
         <div className="w-3 h-3 rounded-full absolute top-0 -right-4 bg-accent"></div>
       </Link>
       <div className="flex gap-7 items-center text-lg font-medium">
-        <Link to="/travelspots" className={location.pathname != '/travelspots' ? 'text-black/30 hover:text-black' : undefined}>
+        <Link to="/travelspots" onClick={dispatch.bind(null, resetTravelspotState())} className={location.pathname != '/travelspots' ? 'text-black/30 hover:text-black' : undefined}>
           Wisata
         </Link>
-        <Link to="/articles" className={location.pathname != '/articles' ? 'text-black/30 hover:text-black' : undefined}>
+        {/* <Link to="/articles" className={location.pathname != '/articles' ? 'text-black/30 hover:text-black' : undefined}>
           Artikel
-        </Link>
+        </Link> */}
         {displaySearch && <SearchInput placeholder="Cari Wisata..." />}
         <div className="dropdown dropdown-end">
           <div tabIndex={0} className="p-2 px-4 bg-black/10 hover:bg-black/20 flex items-center gap-3 cursor-pointer rounded-full">

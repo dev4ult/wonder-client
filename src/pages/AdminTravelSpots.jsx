@@ -103,7 +103,7 @@ function AdminTravelSpots() {
 
   return (
     <div>
-      <NavbarStick displaySearch={false} />
+      <NavbarStick />
       <div className="my-7">
         <div className="flex gap-3 justify-between mb-5">
           <div className="flex gap-3 items-center">
@@ -112,7 +112,6 @@ function AdminTravelSpots() {
               objek wisata +
             </Link>
           </div>
-          <SearchInput />
         </div>
         <div className="grid grid-flow-row grid-cols-4 gap-5">{travelSpotsData.length != 0 ? TravelSpotCards() : SkeletonCards()}</div>
       </div>

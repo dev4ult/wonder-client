@@ -34,9 +34,9 @@ function NavbarStick({ displaySearch = true }) {
         <Link to="/travelspots" className="font-medium text-black/30 hover:text-black">
           Wisata
         </Link>
-        <Link to="/articles" className="font-medium text-black/30 hover:text-black">
+        {/* <Link to="/articles" className="font-medium text-black/30 hover:text-black">
           Artikel
-        </Link>
+        </Link> */}
         {user != null ? (
           location.pathname != '/profile' && (
             <div className="dropdown dropdown-end">
