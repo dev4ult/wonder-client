@@ -11,9 +11,14 @@ const initialState = {
   errorMessages: [],
 };
 
-const getTravelSpots = createAsyncThunk('travelspot/all-spots', async (_, thunkApi) => {
+const getTravelSpots = createAsyncThunk('travelspot/all-spots', async (token_id = '', thunkApi) => {
   try {
-    return await travelSpotService.getTravelSpots();
+    if (token_id != '') {
+      const token = token_id.split('|')[1];
+      return await travelSpotService.getTravelSpots(token);
+    } else {
+      return await travelSpotService.getTravelSpots();
+    }
   } catch (err) {
     return thunkApi.rejectWithValue(err.message);
   }

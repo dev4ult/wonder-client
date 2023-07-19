@@ -12,13 +12,18 @@ import SkeletonSmallCard from '../components/skeleton/SkeletonSmallCard';
 import SmallCard from '../components/card/SmallCard';
 
 function Home() {
+  const { user } = useSelector((state) => state.auth);
   const { travelSpots, isSuccessfull } = useSelector((state) => state.travelspot);
   const dispatch = useDispatch();
 
   const [travelSpotsData, setTravelSpotsData] = useState(travelSpots);
 
   useEffect(() => {
-    dispatch(getTravelSpots());
+    if (user != null) {
+      dispatch(getTravelSpots(user.w_token_id));
+    } else {
+      dispatch(getTravelSpots());
+    }
   }, []);
 
   useEffect(() => {
@@ -35,7 +40,13 @@ function Home() {
 
     for (let i = 0; i < length; i++) {
       const { id, nama, like, komen, deskripsi } = travelSpotsData[i].objek_wisata;
-      list.push(<SmallCard key={i} title={nama} description={deskripsi} to={`/travelspot_detail/${id}`} />);
+      let isLiked = false;
+
+      if (travelSpotsData[i].objek_wisata.hasOwnProperty('is_like_user')) {
+        isLiked = travelSpotsData[i].objek_wisata.is_like_user;
+      }
+
+      list.push(<SmallCard key={i} title={nama} description={deskripsi} totalLike={like} liked={isLiked} totalComment={komen} to={`/travelspot_detail/${id}`} />);
     }
 
     return <>{list}</>;

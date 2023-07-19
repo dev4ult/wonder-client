@@ -2,8 +2,8 @@ import axios from 'axios';
 
 const endpoint = import.meta.env.VITE_BASEURL;
 
-const getTravelSpots = async () => {
-  const response = await axios.get(`${endpoint}/discover`);
+const getTravelSpots = async (token = '') => {
+  const response = await axios.get(`${endpoint}/discover${token != '' ? `?token_id=${token}` : ''}`);
 
   return response.data;
 };

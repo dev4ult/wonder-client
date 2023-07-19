@@ -13,11 +13,10 @@ import SkeletonSmallCard from '../components/skeleton/SkeletonSmallCard';
 import CategoryButton from '../components/CategoryButton';
 import SearchInput from '../components/SearchInput';
 
-import { AiOutlineHeart, AiOutlineComment } from 'react-icons/ai';
-
 const PostPictureUrl = import.meta.env.VITE_POSTPICTUREURL;
 
 function TravelSpots() {
+  const { user } = useSelector((state) => state.auth);
   const { travelSpots, isSuccessfull } = useSelector((state) => state.travelspot);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -42,7 +41,11 @@ function TravelSpots() {
   const [searchKey, setSearchKey] = useState(search_key != undefined ? search_key : '');
 
   useEffect(() => {
-    dispatch(getTravelSpots());
+    if (user != null) {
+      dispatch(getTravelSpots(user.w_token_id));
+    } else {
+      dispatch(getTravelSpots());
+    }
   }, []);
 
   useEffect(() => {
@@ -76,6 +79,12 @@ function TravelSpots() {
 
     travelSpotsData.map((data, index) => {
       const { id, deskripsi, nama, lingkup, negara, provinsi, foto, like, komen } = data.objek_wisata;
+      let isLiked = false;
+
+      if (data.objek_wisata.hasOwnProperty('is_like_user')) {
+        isLiked = data.objek_wisata.is_like_user;
+      }
+
       (category.every((item) => item.selected == false) || category.some((item) => item.selected == true && item.value == lingkup)) &&
         nama.toLowerCase().match(searchKey.toLowerCase() + '.*') &&
         datas.push(
@@ -85,19 +94,12 @@ function TravelSpots() {
             src={foto && `${PostPictureUrl}/${foto}`}
             onClick={navigate.bind(null, `/travelspot_detail/${id}`)}
             description={deskripsi}
-            action={
-              <>
-                <div className="flex items-center gap-2 text-black/50">
-                  <div className="flex gap-1 items-center">
-                    <AiOutlineHeart /> <span className="text-sm">{like}</span>
-                  </div>
-                  <div className="flex gap-1 items-center">
-                    <AiOutlineComment /> <span className="text-sm">{komen}</span>
-                  </div>
-                </div>
-                <p className="text-sm text-black/50 uppercase">{lingkup == 'nasional' ? provinsi : negara}</p>
-              </>
-            }
+            totalLike={like}
+            totalComment={komen}
+            type={lingkup}
+            region={negara}
+            province={provinsi}
+            liked={isLiked}
           />
         );
     });
@@ -119,8 +121,14 @@ function TravelSpots() {
     let list = [];
 
     for (let i = 0; i < 3; i++) {
-      const { nama, like, deskripsi } = travelSpotsData[i].objek_wisata;
-      list.push(<SmallCard key={i} title={nama} description={deskripsi} date="26 Jan 2023" linkTo="/place_detail" />);
+      const { id, nama, like, komen, deskripsi } = travelSpotsData[i].objek_wisata;
+      let isLiked = false;
+
+      if (travelSpotsData[i].objek_wisata.hasOwnProperty('is_like_user')) {
+        isLiked = travelSpotsData[i].objek_wisata.is_like_user;
+      }
+
+      list.push(<SmallCard key={i} title={nama} description={deskripsi} totalLike={like} liked={isLiked} totalComment={komen} to={`/travelspot_detail/${id}`} />);
     }
 
     return <>{list}</>;
