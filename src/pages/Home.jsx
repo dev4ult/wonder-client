@@ -62,12 +62,12 @@ function Home() {
           <h1 className="font-black uppercase text-5xl font-archivo">Discover</h1>
           <p className="text-xl font-medium mt-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, asperiores!</p>
           <div className="flex gap-3 mt-8">
-            <Link to="/discover" className="btn btn-md capitalize text-base rounded-full btn-primary px-8 text-white">
+            <Link to="/travelspots" className="btn btn-md capitalize text-base rounded-full btn-primary px-8 text-white btn-outline">
               Temukan Wisata
             </Link>
-            <Link to="/article" className="btn btn-md capitalize text-base rounded-full btn-primary px-8 btn-outline">
+            {/* <Link to="/article" className="btn btn-md capitalize text-base rounded-full btn-primary px-8 btn-outline">
               Bagikan Pengalaman
-            </Link>
+            </Link> */}
           </div>
         </div>
         <div className="w-[30rem] flex items-center">
@@ -86,7 +86,7 @@ function Home() {
 
       <div className="py-14">
         <h2 className="font-semibold text-xl">Rekomendasi Wisata</h2>
-        <div className="grid grid-flow-row grid-cols-3 gap-3 mt-8">{travelSpotsData.length != 0 ? TravelSpotCards() : SkeletonCards()}</div>
+        <div className="grid grid-flow-row grid-cols-4 gap-3 mt-8">{travelSpotsData.length != 0 ? TravelSpotCards() : SkeletonCards()}</div>
       </div>
     </>
   );

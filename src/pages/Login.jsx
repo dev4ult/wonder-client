@@ -9,7 +9,7 @@ import Navbar from '../components/navbar/Navbar';
 import InputGroup from '../components/InputGroup';
 
 function Login() {
-  const { user, isError, message } = useSelector((state) => state.auth);
+  const { user, isError, isSuccessfull, message } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -38,10 +38,16 @@ function Login() {
   }, [user]);
 
   useEffect(() => {
-    if (isError) {
+    if (isSuccessfull && message != '') {
+      toast.success(message);
+    }
+  }, [isSuccessfull, message]);
+
+  useEffect(() => {
+    if (isError && message != '') {
       toast.error(message);
     }
-  }, [isError]);
+  }, [isError, message]);
 
   const { email, password } = form;
 
@@ -60,8 +66,8 @@ function Login() {
             <h2 className="text-2xl font-semibold mb-1">Login</h2>
             <p className="text-sm max-w-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta, fugit.</p>
           </div>
-          <InputGroup label="Email" name="email" type="email" placeholder="emailmu@example.com" onChange={handleChangeInput} value={email} isRequired={true} />
-          <InputGroup label="Password" name="password" type="password" placeholder="passwordMu4213" onChange={handleChangeInput} value={password} isRequired={true} />
+          <InputGroup label="Email" name="email" type="email" placeholder="emailmu@example.com" onChange={handleChangeInput} value={email} required />
+          <InputGroup label="Password" name="password" type="password" placeholder="passwordMu4213" onChange={handleChangeInput} value={password} required autoComplete="current-password" />
           <button type="submit" className="mt-3 rounded-full btn btn-primary w-full">
             Login
           </button>

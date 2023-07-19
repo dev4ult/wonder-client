@@ -73,10 +73,22 @@ const logout = async () => {
   deleteCookie('w_username');
   deleteCookie('w_token_id');
 
-  return response.data;
+  return response.data.message;
 };
 
-const register = async (data) => {};
+const register = async (username, email, password) => {
+  const response = await axios.post(
+    `${endpoint}/registration`,
+    { username, email, password, role: 'visitor' },
+    {
+      headers: {
+        'content-type': 'application/json',
+      },
+    }
+  );
+
+  return response.data.message;
+};
 
 const authService = { login, setUserDetail, logout, register };
 

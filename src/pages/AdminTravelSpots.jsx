@@ -25,7 +25,7 @@ function AdminTravelSpots() {
   const [travelSpotsData, setTravelSpotsData] = useState(travelSpots);
   const [searchKey, setSearchKey] = useState('');
 
-  function openDetailModal() {
+  function openDetailModal(travelspot) {
     document.getElementById('modal-detail-travelspot').showModal();
 
     const travelspot_id = travelspot.id;
@@ -67,7 +67,7 @@ function AdminTravelSpots() {
                 <p className="text-sm text-black/50 uppercase">{provinsi}</p>
               </>
             }
-            onClick={openDetailModal}
+            onClick={openDetailModal.bind(null, travelspot)}
           />
         );
     });

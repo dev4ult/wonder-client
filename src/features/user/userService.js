@@ -93,7 +93,7 @@ const updateProfile = async (profile_detail, user_id, token_id) => {
     _method: 'PUT',
     username,
     email,
-    bio,
+    bio: bio != '' ? bio : '',
     role,
   };
 

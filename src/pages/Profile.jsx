@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { toast } from 'react-toastify';
 
@@ -22,8 +23,9 @@ const UserPhotoUrl = import.meta.env.VITE_USERPHOTOURL;
 function Profile() {
   const { user, isSuccessfull } = useSelector((state) => state.auth);
   const { message, isSuccessfull: userUpdateSuccess, isError, errorMessages } = useSelector((state) => state.user);
-
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const [profile, setProfile] = useState({
     photo: null,
@@ -84,7 +86,7 @@ function Profile() {
   useEffect(() => {
     if (user != null && isSuccessfull) {
       setProfile({
-        photo: `${UserPhotoUrl}/${user.w_foto}`,
+        photo: user.w_foto != null ? `${UserPhotoUrl}/${user.w_foto}` : null,
         username: user.w_username,
         email: user.email,
         role: user.role,
@@ -96,9 +98,10 @@ function Profile() {
   }, [user, isSuccessfull]);
 
   function onUploadPhoto(e) {
+    console.log(e.target.files[0]);
     setProfile((prev) => ({
       ...prev,
-      photo: URL.createObjectURL(e.target.files[0]),
+      photo: e.target.files[0],
     }));
   }
 
@@ -122,7 +125,11 @@ function Profile() {
                   Foto
                 </label>
                 <div className="relative w-fit">
-                  {photo != null ? <img src={photo} alt="profil" className="w-[5.5rem] h-[5.5rem] rounded bg-cover" /> : <DefaultUserPhoto size="5rem" className="rounded-md" isRoundedFull={false} />}
+                  {photo != null ? (
+                    <img src={typeof photo == 'string' ? photo : URL.createObjectURL(photo)} alt="profil" className="w-[5.5rem] h-[5.5rem] rounded bg-cover" />
+                  ) : (
+                    <DefaultUserPhoto size="5rem" className="rounded-md" isRoundedFull={false} />
+                  )}
                   <div className="tooltip absolute -top-2 -right-2 text-neutral" data-tip="Upload Foto">
                     <label htmlFor="photo" className="cursor-pointer">
                       <AiFillSetting size="1.5rem" className="p-1 bg-accent text-white rounded-full" />
@@ -160,8 +167,6 @@ function Profile() {
               </div>
             </div>
           </HistoryBox>
-          <HistoryBox title="Komentar" id="comments" description="Lorem ipsum dolor sit amet consectetur" icon={<FaComment size="1.1rem" className="text-blue-600" />} amount="10" />
-          <HistoryBox title="Artikel Anda" id="articles" description="Lorem ipsum dolor sit amet consectetur" icon={<MdArticle size="1.2rem" className="text-accent" />} amount="10" />
         </div>
       </div>
     </div>

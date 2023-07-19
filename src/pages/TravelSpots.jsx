@@ -24,10 +24,18 @@ function TravelSpots() {
 
   const [travelSpotsData, setTravelSpotsData] = useState(travelSpots);
 
-  const [category, setCategory] = useState({
-    local: false,
-    internasional: false,
-  });
+  const [category, setCategory] = useState([
+    {
+      name: 'lokal',
+      value: 'nasional',
+      selected: false,
+    },
+    {
+      name: 'internasional',
+      value: 'internasional',
+      selected: false,
+    },
+  ]);
 
   const { search_key } = useParams();
 
@@ -65,9 +73,11 @@ function TravelSpots() {
 
   const TravelSpotCards = () => {
     const datas = [];
+
     travelSpotsData.map((data, index) => {
-      const { id, deskripsi, nama, provinsi, foto, like, komen } = data.objek_wisata;
-      nama.toLowerCase().match(searchKey.toLowerCase() + '.*') &&
+      const { id, deskripsi, nama, lingkup, negara, provinsi, foto, like, komen } = data.objek_wisata;
+      (category.every((item) => item.selected == false) || category.some((item) => item.selected == true && item.value == lingkup)) &&
+        nama.toLowerCase().match(searchKey.toLowerCase() + '.*') &&
         datas.push(
           <Card
             key={index}
@@ -85,7 +95,7 @@ function TravelSpots() {
                     <AiOutlineComment /> <span className="text-sm">{komen}</span>
                   </div>
                 </div>
-                <p className="text-sm text-black/50 uppercase">{provinsi}</p>
+                <p className="text-sm text-black/50 uppercase">{lingkup == 'nasional' ? provinsi : negara}</p>
               </>
             }
           />
@@ -122,6 +132,15 @@ function TravelSpots() {
     setSearchKey(value);
   }
 
+  function toogleCategory(e) {
+    const { id } = e.target;
+
+    const newChanges = [...category];
+
+    newChanges[id].selected = !newChanges[id].selected;
+
+    setCategory(newChanges);
+  }
   return (
     <>
       <Navbar displaySearch={false} />
@@ -132,24 +151,9 @@ function TravelSpots() {
           <div className="py-7 border-b-2 ">
             <h3 className="text-black/30 font-medium mb-2 text-sm">Filter</h3>
             <div className="flex flex-wrap gap-2">
-              <CategoryButton
-                selected={category.local}
-                onClick={setCategory.bind(null, (prev) => ({
-                  ...prev,
-                  local: !prev.local,
-                }))}
-              >
-                Lokal
-              </CategoryButton>
-              <CategoryButton
-                selected={category.internasional}
-                onClick={setCategory.bind(null, (prev) => ({
-                  ...prev,
-                  internasional: !prev.internasional,
-                }))}
-              >
-                Internasional
-              </CategoryButton>
+              {category.map((item, index) => (
+                <CategoryButton key={index} id={index} name={item.name} selected={item.selected} onClick={toogleCategory} />
+              ))}
             </div>
           </div>
           <div className="py-7">

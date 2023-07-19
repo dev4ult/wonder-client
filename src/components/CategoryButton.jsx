@@ -1,7 +1,7 @@
-function CategoryButton({ children, selected, onClick }) {
+function CategoryButton({ id, name, selected, onClick }) {
   return (
-    <button type="button" onClick={onClick} className={`btn btn-sm capitalize btn-neutral ${selected ? undefined : 'btn-outline'}  rounded-full`}>
-      {children}
+    <button type="button" id={id} name={name} onClick={onClick} className={`btn btn-sm capitalize btn-neutral ${selected ? undefined : 'btn-outline'}  rounded-full`}>
+      {name}
     </button>
   );
 }

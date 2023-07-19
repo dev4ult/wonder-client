@@ -15,6 +15,7 @@ const initialState = {
   isSuccessfull: false,
   isError: false,
   message: '',
+  errorMessages: [],
 };
 
 const login = createAsyncThunk('auth/login', async (userData, thunkApi) => {
@@ -24,6 +25,16 @@ const login = createAsyncThunk('auth/login', async (userData, thunkApi) => {
     return await authService.login(email, password);
   } catch (err) {
     return thunkApi.rejectWithValue('Email atau Password salah');
+  }
+});
+
+const register = createAsyncThunk('auth/register', async (data, thunkApi) => {
+  try {
+    const { username, email, password } = data;
+
+    return await authService.register(username, email, password);
+  } catch (err) {
+    return thunkApi.rejectWithValue(err.response.data.data || err.response.data.message);
   }
 });
 
@@ -45,7 +56,7 @@ const setUserDetail = createAsyncThunk('auth/profile', async (userData, thunkApi
   }
 });
 
-export { login, logout, setUserDetail };
+export { login, register, logout, setUserDetail };
 
 const authSlice = createSlice({
   name: 'auth',
@@ -67,6 +78,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.user = action.payload;
         state.isSuccessfull = true;
+        state.message = 'Login Berhasil!';
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
@@ -74,9 +86,29 @@ const authSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
+
+      .addCase(register.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(register.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload;
+        state.isSuccessfull = true;
+        state.message = 'Registrasi Berhasil!';
+      })
+      .addCase(register.rejected, (state, action) => {
+        state.isLoading = false;
+        state.user = null;
+        state.isError = true;
+        state.errorMessages = [];
+        for (const key in action.payload) {
+          state.errorMessages.push(action.payload[key][0]);
+        }
+      })
+
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
-        state.message = 'logget out';
+        state.message = 'Logget out';
       })
       .addCase(logout.rejected, (state, action) => {
         reset(state);
@@ -84,6 +116,7 @@ const authSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
+
       .addCase(setUserDetail.fulfilled, (state, action) => {
         state.isLoading = false;
         state.user = action.payload;

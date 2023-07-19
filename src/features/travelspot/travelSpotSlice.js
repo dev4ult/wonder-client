@@ -134,6 +134,7 @@ const travelSpotSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
+
       .addCase(getTravelSpotsAdmin.pending, (state) => {
         state.isLoading = true;
       })
@@ -148,6 +149,7 @@ const travelSpotSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
+
       .addCase(getTravelSpotDetail.pending, (state) => {
         state.isLoading = true;
       })
@@ -162,6 +164,7 @@ const travelSpotSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
+
       .addCase(addTravelSpot.pending, (state) => {
         state.isLoading = true;
       })
@@ -182,6 +185,7 @@ const travelSpotSlice = createSlice({
           }
         }
       })
+
       .addCase(updateTravelSpot.pending, (state) => {
         state.isLoading = true;
       })
