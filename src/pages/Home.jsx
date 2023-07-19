@@ -34,8 +34,8 @@ function Home() {
     const length = travelSpotsData.length >= 6 ? 6 : travelSpotsData.length;
 
     for (let i = 0; i < length; i++) {
-      const { nama, like, komen, deskripsi } = travelSpotsData[i].objek_wisata;
-      list.push(<SmallCard key={i} title={nama} description={deskripsi} />);
+      const { id, nama, like, komen, deskripsi } = travelSpotsData[i].objek_wisata;
+      list.push(<SmallCard key={i} title={nama} description={deskripsi} to={`/travelspot_detail/${id}`} />);
     }
 
     return <>{list}</>;

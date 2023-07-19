@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom';
 
 import { AiOutlineHeart, AiOutlineComment } from 'react-icons/ai';
 
-function SmallCard({ title, date, description, linkTo }) {
+function SmallCard({ title, date, description, to }) {
   return (
-    <Link to={linkTo}>
+    <Link to={to}>
       <h3 className="font-bold text-base">{title}</h3>
       <p className="text-xs">{description}</p>
       <div className="flex gap-2 mt-1 text-black/30">
