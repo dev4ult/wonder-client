@@ -122,19 +122,17 @@ function TravelSpotDetail() {
                     if (user != null) {
                       const post_id = travelSpotData.id;
 
-                      if (user != null) {
-                        const token_id = user.w_token_id;
-                        const liked = isLiked();
+                      const token_id = user.w_token_id;
+                      const liked = isLiked();
 
-                        setLiked(!liked);
-                        setTotalLiked((prev) => (liked ? prev - 1 : prev + 1));
+                      setLiked(!liked);
+                      setTotalLiked((prev) => (liked ? prev - 1 : prev + 1));
 
-                        dispatch(likeAPost({ like: !liked, post_type: 'discover', post_id, token_id }));
+                      dispatch(likeAPost({ like: !liked, post_type: 'discover', post_id, token_id }));
 
-                        dispatch(resetLikeState());
-                      } else {
-                        toast.warning('Harus login terlebih dahulu sebelum menyukai wisata ini agar tersimpan di histori-mu');
-                      }
+                      dispatch(resetLikeState());
+                    } else {
+                      toast.warning('Harus login terlebih dahulu sebelum menyukai wisata ini agar tersimpan di histori-mu');
                     }
                   }}
                   className={`flex items-center gap-2 ${liked ? 'text-red-500' : 'hover:text-black'} cursor-pointer`}
