@@ -11,12 +11,21 @@ const user = {
 
 const initialState = {
   user: user.w_token_id ? user : null,
+  // csrf_token:
   isLoading: false,
   isSuccessfull: false,
   isError: false,
   message: '',
   errorMessages: [],
 };
+
+const index = createAsyncThunk('auth/first-hit', async (_, thunkApi) => {
+  try {
+    return await authService.index();
+  } catch (err) {
+    return thunkApi.rejectWithValue(err.message || 'first hit error');
+  }
+});
 
 const login = createAsyncThunk('auth/login', async (userData, thunkApi) => {
   try {
@@ -56,7 +65,7 @@ const setUserDetail = createAsyncThunk('auth/profile', async (userData, thunkApi
   }
 });
 
-export { login, register, logout, setUserDetail };
+export { index, login, register, logout, setUserDetail };
 
 const authSlice = createSlice({
   name: 'auth',
@@ -71,6 +80,13 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+
+      .addCase(index.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccessfull = true;
+        state.message = 'First hit';
+      })
+
       .addCase(login.pending, (state) => {
         state.isLoading = true;
       })

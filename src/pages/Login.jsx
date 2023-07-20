@@ -2,7 +2,7 @@ import { toast } from 'react-toastify';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login, reset } from '../features/auth/authSlice';
+import { login, setUserDetail, reset } from '../features/auth/authSlice';
 import { Link } from 'react-router-dom';
 
 import Navbar from '../components/navbar/Navbar';
@@ -40,6 +40,9 @@ function Login() {
   useEffect(() => {
     if (isSuccessfull && message != '') {
       toast.success(message);
+
+      const { w_token_id: token_id, w_user_id: user_id } = user;
+      dispatch(setUserDetail({ token_id, user_id }));
 
       dispatch(reset());
     }

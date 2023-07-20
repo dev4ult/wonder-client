@@ -2,13 +2,34 @@ import axios from 'axios';
 import { setCookie, getCookie, deleteCookie } from './cookieFunc';
 
 const endpoint = import.meta.env.VITE_BASEURL;
+const firshit = import.meta.env.VITE_FIRSTHIT;
+
+const index = async () => {
+  axios.defaults.withCredentials = true;
+
+  const response = await axios.get(`${firshit}/sanctum/csrf-cookie`);
+
+  console.log(response);
+  return response.data;
+};
 
 const login = async (email, password) => {
-  const response = await axios.post(`${endpoint}/login`, JSON.stringify({ email: email, password: password }), {
+  const response = await axios.post(`${endpoint}/login`, JSON.stringify({ email, password }), {
     headers: {
       'content-type': 'application/json',
     },
   });
+
+  // const response = await fetch(`${endpoint}/login`, {
+  //   method: 'POST', // *GET, POST, PUT, DELETE, etc.
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     'Access-Control-Allow-Origin': '*',
+  //   },
+  //   body: { email, password }, // body data type must match "Content-Type" header
+  // });
+
+  // console.log(response.json());
 
   if (response.data) {
     const { token_id } = response.data;
@@ -90,6 +111,6 @@ const register = async (username, email, password) => {
   return response.data.message;
 };
 
-const authService = { login, setUserDetail, logout, register };
+const authService = { index, login, setUserDetail, logout, register };
 
 export default authService;

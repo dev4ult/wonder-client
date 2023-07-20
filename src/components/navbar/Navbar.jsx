@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { logout, reset } from '../../features/auth/authSlice';
+import { getTravelSpots } from '../../features/travelspot/travelSpotSlice';
 
 import { BiLogIn } from 'react-icons/bi';
 
@@ -29,6 +30,10 @@ function Navbar({ displaySearch = true }) {
     dispatch(logout());
 
     dispatch(reset());
+
+    if (location.pathname == '/travelspots') {
+      dispatch(getTravelSpots());
+    }
 
     navigate('/travelspots');
   }

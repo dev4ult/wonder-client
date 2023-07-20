@@ -10,10 +10,10 @@ import Login from './pages/Login';
 import Registration from './pages/Registration';
 import Dashboard from './pages/Dashboard';
 
-import Articles from './pages/Articles';
-import ArticleDetail from './pages/ArticleDetail';
-import PostNewArticle from './pages/PostNewArticle';
-import AdminArticles from './pages/AdminArticles';
+// import Articles from './pages/Articles';
+// import ArticleDetail from './pages/ArticleDetail';
+// import PostNewArticle from './pages/PostNewArticle';
+// import AdminArticles from './pages/AdminArticles';
 
 import TravelSpots from './pages/TravelSpots';
 import TravelSpotDetail from './pages/TravelSpotDetail';
@@ -40,6 +40,9 @@ function App() {
   const { isLogin, adminLogin, superadminLogin } = loginState;
 
   useEffect(() => {
+    // first hit sanctum
+    // dispatch(index());
+
     if (!isLogin && user != null) {
       const { w_token_id: token_id, w_user_id: user_id } = user;
       dispatch(setUserDetail({ token_id, user_id }));
