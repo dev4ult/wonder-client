@@ -154,7 +154,7 @@ function TravelSpots() {
       <Navbar displaySearch={false} />
       <div className="mt-7 flex items-start gap-10 justify-between">
         <div className="grid grid-flow-row grid-cols-2 gap-5 max-w-xl w-full">{travelSpotsData.length != 0 ? TravelSpotCards() : SkeletonCards()}</div>
-        <aside className="sticky top-7">
+        <aside className="sticky top-7 flex-shrink-0 flex-grow">
           <SearchInput placeholder="Cari Wisata..." size="sm" value={searchKey} onChange={onInputChange} />
           <div className="py-7 border-b-2 ">
             <h3 className="text-black/30 font-medium mb-2 text-sm">Filter</h3>
@@ -164,7 +164,7 @@ function TravelSpots() {
               ))}
             </div>
           </div>
-          <div className="py-7">
+          <div className="py-7 ">
             <h3 className="text-black/30 font-medium mb-2 text-sm">Rekomendasi Wisata</h3>
             <div className="grid grid-flow-row grid-cols-2 gap-5">{travelSpotsData.length != 0 ? TopRangkedTravelSpotCards() : SkeletonSmallCards()}</div>
           </div>

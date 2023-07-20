@@ -46,7 +46,11 @@ function Home() {
         isLiked = travelSpotsData[i].objek_wisata.is_like_user;
       }
 
-      list.push(<SmallCard key={i} title={nama} description={deskripsi} totalLike={like} liked={isLiked} totalComment={komen} to={`/travelspot_detail/${id}`} />);
+      list.push(
+        <div key={i} className="p-3 rounded border-2 hover:shadow">
+          <SmallCard title={nama} description={deskripsi} totalLike={like} liked={isLiked} totalComment={komen} to={`/travelspot_detail/${id}`} />
+        </div>
+      );
     }
 
     return <>{list}</>;
