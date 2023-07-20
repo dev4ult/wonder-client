@@ -3,13 +3,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { reset, register } from '../features/auth/authSlice';
+import { register } from '../features/auth/authSlice';
 
 import Navbar from '../components/navbar/Navbar';
 import InputGroup from '../components/InputGroup';
 
 function Registration() {
-  const { user, message, isSuccessfull, isError, errorMessages } = useSelector((state) => state.auth);
+  const { user, isSuccessfull, isError, errorMessages } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -31,12 +31,10 @@ function Registration() {
   }, [user]);
 
   useEffect(() => {
-    if (isSuccessfull && message != '') {
-      toast.success(message);
-
+    if (isSuccessfull) {
       navigate('/auth');
     }
-  }, [isSuccessfull, message]);
+  }, [isSuccessfull]);
 
   useEffect(() => {
     if (isError && errorMessages.length != 0) {
@@ -57,7 +55,6 @@ function Registration() {
     e.preventDefault();
 
     dispatch(register(form));
-    dispatch(reset());
   }
 
   const { username, email, password } = form;

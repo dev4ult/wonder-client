@@ -2,7 +2,7 @@ import { toast } from 'react-toastify';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../features/auth/authSlice';
+import { login, reset } from '../features/auth/authSlice';
 import { Link } from 'react-router-dom';
 
 import Navbar from '../components/navbar/Navbar';
@@ -40,14 +40,18 @@ function Login() {
   useEffect(() => {
     if (isSuccessfull && message != '') {
       toast.success(message);
+
+      dispatch(reset());
     }
-  }, [isSuccessfull, message]);
+  }, [isSuccessfull]);
 
   useEffect(() => {
     if (isError && message != '') {
       toast.error(message);
+
+      dispatch(reset());
     }
-  }, [isError, message]);
+  }, [isError]);
 
   const { email, password } = form;
 

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { toast } from 'react-toastify';
 
+import { getTravelSpots, resetSpots } from '../features/travelspot/travelSpotSlice';
 import { setUserDetail, logout, reset } from '../features/auth/authSlice';
 import { updateProfile, reset as resetUpdateStatus } from '../features/user/userSlice';
 
@@ -15,14 +16,13 @@ import DefaultUserPhoto from '../components/DefaultUserPhoto';
 import SmallCard from '../components/card/SmallCard';
 
 import { AiFillHeart, AiFillSetting } from 'react-icons/ai';
-import { FaComment } from 'react-icons/fa';
-import { MdArticle } from 'react-icons/md';
 
 const UserPhotoUrl = import.meta.env.VITE_USERPHOTOURL;
 
 function Profile() {
   const { user, isSuccessfull } = useSelector((state) => state.auth);
   const { message, isSuccessfull: userUpdateSuccess, isError, errorMessages } = useSelector((state) => state.user);
+  const { travelSpots, isSuccessfull: getTravelspotSuccess } = useSelector((state) => state.travelspot);
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
@@ -36,6 +36,8 @@ function Profile() {
     new_password: '',
     old_password: '',
   });
+
+  const [travelSpotsData, setTravelSpotsData] = useState(travelSpots);
 
   function onTextChange(e) {
     const { name, value } = e.target;
@@ -66,6 +68,14 @@ function Profile() {
     dispatch(resetUpdateStatus());
   }
 
+  function onUploadPhoto(e) {
+    console.log(e.target.files[0]);
+    setProfile((prev) => ({
+      ...prev,
+      photo: e.target.files[0],
+    }));
+  }
+
   useEffect(() => {
     if (userUpdateSuccess && message != '') {
       toast.success(message);
@@ -94,16 +104,18 @@ function Profile() {
         new_password: '',
         old_password: '',
       });
+
+      dispatch(getTravelSpots(user.w_token_id));
     }
   }, [user, isSuccessfull]);
 
-  function onUploadPhoto(e) {
-    console.log(e.target.files[0]);
-    setProfile((prev) => ({
-      ...prev,
-      photo: e.target.files[0],
-    }));
-  }
+  useEffect(() => {
+    if (travelSpots.length != 0 && getTravelspotSuccess) {
+      setTravelSpotsData(travelSpots);
+
+      dispatch(resetSpots());
+    }
+  }, [travelSpots, getTravelspotSuccess]);
 
   const { username, email, bio, new_password, old_password, photo } = profile;
 
@@ -140,7 +152,7 @@ function Profile() {
               </div>
             </div>
             <InputGroup label="Username" name="username" onChange={onTextChange} value={username} placeholder="usernammu" required />
-            <InputGroup label="Password Baru" name="new_password" onChange={onTextChange} type="password" value={new_password} placeholder="passwordBaru323" />
+            <InputGroup label="Password Baru" name="new_password" onChange={onTextChange} value={new_password} placeholder="passwordBaru323" />
             <InputGroup label="Email" name="email" onChange={onTextChange} type="email" value={email} placeholder="emailmu@example.com" required />
             <InputGroup label="Konfirmasi Password Lama" name="old_password" onChange={onTextChange} type="password" value={old_password} placeholder="passwordLama342" />
             <InputGroup label="Bio" name="bio" onChange={onTextChange} value={bio} isTextArea={true} placeholder="Petualang ..." />

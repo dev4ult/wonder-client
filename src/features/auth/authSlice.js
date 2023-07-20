@@ -92,7 +92,6 @@ const authSlice = createSlice({
       })
       .addCase(register.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.user = action.payload;
         state.isSuccessfull = true;
         state.message = 'Registrasi Berhasil!';
       })
