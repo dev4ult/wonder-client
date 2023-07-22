@@ -12,8 +12,8 @@ function HistoryBox({ title, id, description, icon, amount, children }) {
         <p className="text-sm mt-1">{description}</p>
       </div>
 
-      <dialog id={id} className="modal modal-bottom sm:modal-middle">
-        <form method="dialog" className="modal-box w-96">
+      <dialog id={id} className="modal">
+        <form method="dialog" className="modal-box max-w-3xl">
           <div className="">{children}</div>
           <div className="modal-action">
             <button className="btn">Close</button>

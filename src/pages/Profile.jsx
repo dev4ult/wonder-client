@@ -14,10 +14,12 @@ import HistoryBox from '../components/HistoryBox';
 import DefaultUserPhoto from '../components/DefaultUserPhoto';
 
 import SmallCard from '../components/card/SmallCard';
+import NoImage from '../images/no-image.webp';
 
 import { AiFillHeart, AiFillSetting } from 'react-icons/ai';
 
 const UserPhotoUrl = import.meta.env.VITE_USERPHOTOURL;
+const PostPictureUrl = import.meta.env.VITE_POSTPICTUREURL;
 
 function Profile() {
   const { user, isSuccessfull } = useSelector((state) => state.auth);
@@ -69,12 +71,23 @@ function Profile() {
   }
 
   function onUploadPhoto(e) {
-    console.log(e.target.files[0]);
     setProfile((prev) => ({
       ...prev,
       photo: e.target.files[0],
     }));
   }
+
+  const LikedTravelSpots = () => {
+    return travelSpotsData.map((travelspot, index) => {
+      const { id, nama, deskripsi, like, komen, foto } = travelspot.objek_wisata;
+      return (
+        <div key={index} className="p-3 border-2 rounded hover:shadow">
+          <img src={foto[0] != '' ? `${PostPictureUrl}/${foto[0]}` : NoImage} alt="gambar" className="h-28 w-full bg-cover mb-1 rounded" />
+          <SmallCard title={nama} description={deskripsi} liked={true} to={`/travelspot_detail/${id}`} totalLike={like} totalComment={komen} />
+        </div>
+      );
+    });
+  };
 
   useEffect(() => {
     if (userUpdateSuccess && message != '') {
@@ -111,7 +124,16 @@ function Profile() {
 
   useEffect(() => {
     if (travelSpots.length != 0 && getTravelspotSuccess) {
-      setTravelSpotsData(travelSpots);
+      const liked = [];
+      travelSpots.map((travelspot) => {
+        const { is_like_user } = travelspot.objek_wisata;
+
+        if (is_like_user) {
+          liked.push(travelspot);
+        }
+      });
+
+      setTravelSpotsData(liked);
 
       dispatch(resetSpots());
     }
@@ -165,19 +187,9 @@ function Profile() {
         </form>
         <div className="flex flex-col gap-3 pr-8">
           <h2 className="font-semibold text-lg">Histori User</h2>
-          <HistoryBox title="Disukai" id="liked" description="Lorem ipsum dolor sit amet consectetur" icon={<AiFillHeart size="1.2rem" className="text-red-500" />} amount="10">
-            <h3 className="text-sm font-medium text-black/30">Objek Wisata</h3>
-            <div className="flex gap-5">
-              <div className="max-w-[15rem]">
-                <SmallCard title="Pulau Melinjo" description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat, nostrum." />
-              </div>
-              <div className="max-w-[15rem]">
-                <SmallCard title="Pulau Melinjo" description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat, nostrum." />
-              </div>
-              <div className="max-w-[15rem]">
-                <SmallCard title="Pulau Melinjo" description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat, nostrum." />
-              </div>
-            </div>
+          <HistoryBox title="Disukai" id="liked" description="Lorem ipsum dolor sit amet consectetur" icon={<AiFillHeart size="1.2rem" className="text-red-500" />} amount={travelSpotsData.length}>
+            <h3 className="badge badge-neutral mb-2">Objek Wisata yang Disukai</h3>
+            <div className="grid grid-flow-row grid-cols-3 gap-3">{LikedTravelSpots()}</div>
           </HistoryBox>
         </div>
       </div>

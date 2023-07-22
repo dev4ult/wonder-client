@@ -87,6 +87,7 @@ const assesmentSlice = createSlice({
         state.allAssesments = [];
         state.message = action.payload;
       })
+
       .addCase(addAssesment.pending, (state) => {
         state.isLoading = true;
       })
@@ -104,6 +105,7 @@ const assesmentSlice = createSlice({
           state.errorMessages.push(action.payload[key][0]);
         }
       })
+
       .addCase(deleteAssesment.pending, (state) => {
         state.isLoading = true;
       })
@@ -118,6 +120,7 @@ const assesmentSlice = createSlice({
         state.assesment = null;
         state.message = action.payload;
       })
+
       .addCase(updateAssesment.pending, (state) => {
         state.isLoading = true;
       })
