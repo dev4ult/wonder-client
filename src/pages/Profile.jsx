@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 import { toast } from 'react-toastify';
 
@@ -13,10 +13,11 @@ import InputGroup from '../components/InputGroup';
 import HistoryBox from '../components/HistoryBox';
 import DefaultUserPhoto from '../components/DefaultUserPhoto';
 
-import SmallCard from '../components/card/SmallCard';
-import NoImage from '../images/no-image.webp';
-
 import { AiFillHeart, AiFillSetting } from 'react-icons/ai';
+
+import SmallCard from '../components/card/SmallCard';
+import SkeletonSmallCard from '../components/skeleton/SkeletonSmallCard';
+import NoImage from '../images/no-image.webp';
 
 const UserPhotoUrl = import.meta.env.VITE_USERPHOTOURL;
 const PostPictureUrl = import.meta.env.VITE_POSTPICTUREURL;
@@ -40,6 +41,7 @@ function Profile() {
   });
 
   const [travelSpotsData, setTravelSpotsData] = useState(travelSpots);
+  const [successLoad, setSuccessLoad] = useState(false);
 
   function onTextChange(e) {
     const { name, value } = e.target;
@@ -77,16 +79,39 @@ function Profile() {
     }));
   }
 
-  const LikedTravelSpots = () => {
-    return travelSpotsData.map((travelspot, index) => {
-      const { id, nama, deskripsi, like, komen, foto } = travelspot.objek_wisata;
-      return (
-        <div key={index} className="p-3 border-2 rounded hover:shadow">
-          <img src={foto[0] != '' ? `${PostPictureUrl}/${foto[0]}` : NoImage} alt="gambar" className="h-28 w-full bg-cover mb-1 rounded" />
-          <SmallCard title={nama} description={deskripsi} liked={true} to={`/travelspot_detail/${id}`} totalLike={like} totalComment={komen} />
+  const SkeletonCards = () => {
+    const list = [];
+
+    for (let i = 0; i < 9; i++) {
+      list.push(
+        <div key={i} className="p-3 border-2 rounded h-fit">
+          <div className="w-full h-32 mb-2 rounded bg-gray-300 animate-pulse"></div>
+          <SkeletonSmallCard />
         </div>
       );
-    });
+    }
+
+    return <>{list}</>;
+  };
+
+  const LikedTravelSpots = () => {
+    return travelSpotsData.length != 0 ? (
+      travelSpotsData.map((travelspot, index) => {
+        const { id, nama, deskripsi, like, komen, foto } = travelspot.objek_wisata;
+        return (
+          <div key={index} className="p-3 border-2 rounded hover:shadow">
+            <Link to={`/travelspot_detail/${id}`}>
+              <img src={foto[0] != '' ? `${PostPictureUrl}/${foto[0]}` : NoImage} alt="gambar" className="h-32 w-full bg-cover mb-1 rounded" />
+            </Link>
+            <SmallCard title={nama} description={deskripsi} liked={true} to={`/travelspot_detail/${id}`} totalLike={like} totalComment={komen} />
+          </div>
+        );
+      })
+    ) : (
+      <h1 className="text-lg col-span-3">
+        Belum ada <span className="font-bold">Wisata</span> yang disukai
+      </h1>
+    );
   };
 
   useEffect(() => {
@@ -134,6 +159,8 @@ function Profile() {
       });
 
       setTravelSpotsData(liked);
+
+      setSuccessLoad(true);
 
       dispatch(resetSpots());
     }
@@ -188,8 +215,8 @@ function Profile() {
         <div className="flex flex-col gap-3 pr-8">
           <h2 className="font-semibold text-lg">Histori User</h2>
           <HistoryBox title="Disukai" id="liked" description="Lorem ipsum dolor sit amet consectetur" icon={<AiFillHeart size="1.2rem" className="text-red-500" />} amount={travelSpotsData.length}>
-            <h3 className="badge badge-neutral mb-2">Objek Wisata yang Disukai</h3>
-            <div className="grid grid-flow-row grid-cols-3 gap-3">{LikedTravelSpots()}</div>
+            <h3 className="badge badge-neutral mb-2">Disukai</h3>
+            <div className="grid grid-flow-row grid-cols-3 gap-3">{successLoad != 0 ? LikedTravelSpots() : SkeletonCards()}</div>
           </HistoryBox>
         </div>
       </div>
