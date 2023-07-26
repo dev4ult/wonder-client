@@ -200,6 +200,26 @@ function ModalDetailTravelspot({ travelspot, isLoaded }) {
   const { attractiveness: u_attractiveness, cost: u_cost, cleanliness: u_cleanliness, facilities: u_facilities } = formUpdateAsessment;
 
   const AssesmentDetail = (assesment) => {
+    let { daya_tarik, biaya, kebersihan, sarana_dan_prasarana } = assesment;
+
+    let ket_daya_tarik = daya_tarik >= 20 && daya_tarik < 40 ? 'Sedikit' : daya_tarik >= 40 && daya_tarik < 70 ? 'Cukup' : 'Banyak';
+
+    let ket_biaya = {
+      20: 'X > Rp 100.000',
+      40: 'Rp 80.000 < X <= Rp 100.000',
+      60: 'Rp 60.000 < X <= Rp 80.000',
+      80: 'Rp 40.000 < X <= Rp 60.000',
+      100: 'X <= Rp 40.000',
+    }[biaya];
+
+    let ket_kebersihan = kebersihan >= 1 && kebersihan < 3 ? 'Kurang Bersihn' : kebersihan >= 3 && kebersihan < 6 ? 'Cukup Bersih' : 'Sangat Bersih';
+
+    let ket_sarpras = {
+      0: 'Tidak Ada',
+      50: 'Cukup Ada',
+      100: 'Lengkap',
+    }[sarana_dan_prasarana];
+
     return isFAUpdateOpen ? (
       <>
         <BackBtn onClick={setIsFAUpdateOpen.bind(null, false)} />
@@ -256,19 +276,27 @@ function ModalDetailTravelspot({ travelspot, isLoaded }) {
             <tbody>
               <tr>
                 <td>Daya Tarik</td>
-                <td>{assesment.daya_tarik}</td>
+                <td>
+                  {daya_tarik} ({ket_daya_tarik})
+                </td>
               </tr>
               <tr>
                 <td>Biaya</td>
-                <td>{assesment.biaya}</td>
+                <td>
+                  {biaya} ({ket_biaya})
+                </td>
               </tr>
               <tr>
                 <td>Kebersihan</td>
-                <td>{assesment.kebersihan}</td>
+                <td>
+                  {kebersihan} ({ket_kebersihan})
+                </td>
               </tr>
               <tr>
                 <td>Sarana dan Prasarana</td>
-                <td>{assesment.sarana_dan_prasarana}</td>
+                <td>
+                  {sarana_dan_prasarana} ({ket_sarpras})
+                </td>
               </tr>
             </tbody>
           </table>
