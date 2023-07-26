@@ -187,23 +187,27 @@ function TravelSpotDetail() {
               <div className="mt-8 py-8">
                 <h2 className="text-xl font-bold mb-3">Komentar</h2>
                 <div className="flex flex-col gap-7 mt-7 pl-8 border-l-2">
-                  {travelSpotData.comments.map((comment, index) => (
-                    <Comment
-                      key={index}
-                      profileImage={
-                        comment.foto != '' ? (
-                          <div className="h-fit rounded-full overflow-hidden">
-                            <img src={`${UserPhotoUrl}/${comment.foto}`} className="w-12 bg-cover" alt="profil" />
-                          </div>
-                        ) : (
-                          ''
-                        )
-                      }
-                      username={comment.username}
-                      date={timestampToDate(comment.created_at)}
-                      comment={comment.komentar}
-                    />
-                  ))}
+                  {travelSpotData.comments.length != 0 ? (
+                    travelSpotData.comments.map((comment, index) => (
+                      <Comment
+                        key={index}
+                        profileImage={
+                          comment.foto != '' ? (
+                            <div className="h-fit rounded-full overflow-hidden">
+                              <img src={`${UserPhotoUrl}/${comment.foto}`} className="w-12 bg-cover" alt="profil" />
+                            </div>
+                          ) : (
+                            ''
+                          )
+                        }
+                        username={comment.username}
+                        date={timestampToDate(comment.created_at)}
+                        comment={comment.komentar}
+                      />
+                    ))
+                  ) : (
+                    <p className="text-black/50">Belum ada Komentar</p>
+                  )}
                 </div>
               </div>
             </div>
